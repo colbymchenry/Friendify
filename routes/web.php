@@ -15,3 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/index', 'IndexController@index');
+
+
+
+
+// Keep at bottom
+Route::redirect('/{any}', '/')->where('any', '[\s\S]*');
