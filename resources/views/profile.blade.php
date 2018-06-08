@@ -113,16 +113,118 @@
 	</div>
 </div>
 
-<!-- Friends -->
+@php
+	$count = 0;
+@endphp
 
 <div class="container">
+	@foreach ($friends as $friend)
+
+		@if ($count % 4 == 0)
+		<div class="row">
+		@endif
+			<div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+				<div class="ui-block">
+				<!-- Friends -->
+					<div class="friend-item">
+						<div class="friend-header-thumb">
+							<img src="{{ $friend['cover_image'] }}" alt="friend">
+						</div>
+
+						<div class="friend-item-content">
+
+							<div class="more">
+								<svg class="olymp-three-dots-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+								<ul class="more-dropdown">
+									<li>
+										<a href="#">Report Profile</a>
+									</li>
+									<li>
+										<a href="#">Block Profile</a>
+									</li>
+									<li>
+										<a href="#">Turn Off Notifications</a>
+									</li>
+								</ul>
+							</div>
+							<div class="friend-avatar">
+								<div class="author-thumb">
+									<img src="{{ $friend['avatar'] }}" alt="author">
+								</div>
+								<div class="author-content">
+									<a href="#" class="h5 author-name">{{ $friend['name'] }}</a>
+									<div class="country">{{ $friend['location'] }}</div>
+								</div>
+							</div>
+
+							<div class="swiper-container" data-slide="fade">
+								<div class="swiper-wrapper">
+									<div class="swiper-slide">
+										<div class="friend-count" data-swiper-parallax="-500">
+											<a href="#" class="friend-count-item">
+												<div class="h6">{{ $friend['friend_count'] }}</div>
+												<div class="title">Friends</div>
+											</a>
+											<a href="#" class="friend-count-item">
+												<div class="h6">{{ $friend['photo_count'] }}</div>
+												<div class="title">Photos</div>
+											</a>
+											<a href="#" class="friend-count-item">
+												<div class="h6">{{ $friend['video_count'] }}</div>
+												<div class="title">Videos</div>
+											</a>
+										</div>
+										<div class="control-block-button" data-swiper-parallax="-100">
+											<a href="#" class="btn btn-control bg-blue">
+												<svg class="olymp-happy-face-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+											</a>
+
+											<a href="#" class="btn btn-control bg-purple">
+												<svg class="olymp-chat---messages-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+											</a>
+
+										</div>
+									</div>
+
+									<div class="swiper-slide">
+										<p class="friend-about" data-swiper-parallax="-500">{{ $friend['about'] }}</p>
+
+										<div class="friend-since" data-swiper-parallax="-100">
+											<span>Friends Since:</span>
+											<div class="h6">{{ $friend['friends_since'] }}</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- If we need pagination -->
+								<div class="swiper-pagination"></div>
+							</div>
+						</div>
+					</div>
+					<!-- ... end Friend Item -->
+
+				</div>
+			</div>
+		@if ($count % 4 == 3)
+		</div>
+		@endif
+		@php
+			$count = $count + 1;
+		@endphp
+	@endforeach
+	@if ($count % 4 != 0)
+	</div>
+	@endif
+</div>
+
+<!-- <div class="container">
 	<div class="row">
 		<div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-			<div class="ui-block">
+			<div class="ui-block"> -->
 
 				<!-- Friend Item -->
 
-				<div class="friend-item">
+				<!-- <div class="friend-item">
 					<div class="friend-header-thumb">
 						<img src="img/friend1.jpg" alt="friend">
 					</div>
@@ -192,22 +294,22 @@
 										<div class="h6">December 2014</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 
 							<!-- If we need pagination -->
-							<div class="swiper-pagination"></div>
+							<!-- <div class="swiper-pagination"></div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<!-- ... end Friend Item -->			</div>
-		</div>
+				<!-- ... end Friend Item -->			<!-- </div> -->
+		<!-- </div>
 		<div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-			<div class="ui-block">
+			<div class="ui-block"> -->
 
 				<!-- Friend Item -->
 
-				<div class="friend-item">
+				<!-- <div class="friend-item">
 					<div class="friend-header-thumb">
 						<img src="img/friend2.jpg" alt="friend">
 					</div>
@@ -277,22 +379,23 @@
 										<div class="h6">December 2014</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 
 							<!-- If we need pagination -->
-							<div class="swiper-pagination"></div>
+							<!-- <div class="swiper-pagination"></div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<!-- ... end Friend Item -->			</div>
-		</div>
+				<!-- ... end Friend Item -->
+			<!-- </div> -->
+		<!-- </div>
 		<div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-			<div class="ui-block">
+			<div class="ui-block"> -->
 
 				<!-- Friend Item -->
 
-				<div class="friend-item">
+				<!-- <div class="friend-item">
 					<div class="friend-header-thumb">
 						<img src="img/friend3.jpg" alt="friend">
 					</div>
@@ -362,22 +465,23 @@
 										<div class="h6">December 2014</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 
 							<!-- If we need pagination -->
-							<div class="swiper-pagination"></div>
+							<!-- <div class="swiper-pagination"></div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<!-- ... end Friend Item -->			</div>
-		</div>
+				<!-- ... end Friend Item -->
+			<!-- </div> -->
+		<!-- </div>
 		<div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-			<div class="ui-block">
+			<div class="ui-block"> -->
 
 				<!-- Friend Item -->
 
-				<div class="friend-item">
+				<!-- <div class="friend-item">
 					<div class="friend-header-thumb">
 						<img src="img/friend4.jpg" alt="friend">
 					</div>
@@ -447,23 +551,24 @@
 										<div class="h6">December 2014</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 
 							<!-- If we need pagination -->
-							<div class="swiper-pagination"></div>
+							<!-- <div class="swiper-pagination"></div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<!-- ... end Friend Item -->			</div>
-		</div>
+				<!-- ... end Friend Item -->
+			<!-- </div> -->
+		<!-- </div>
 
 		<div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-			<div class="ui-block">
+			<div class="ui-block"> -->
 
 				<!-- Friend Item -->
 
-				<div class="friend-item">
+				<!-- <div class="friend-item">
 					<div class="friend-header-thumb">
 						<img src="img/friend5.jpg" alt="friend">
 					</div>
@@ -533,22 +638,23 @@
 										<div class="h6">December 2014</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 
 							<!-- If we need pagination -->
-							<div class="swiper-pagination"></div>
+							<!-- <div class="swiper-pagination"></div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<!-- ... end Friend Item -->			</div>
-		</div>
+				<!-- ... end Friend Item -->
+			<!-- </div> -->
+		<!-- </div>
 		<div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-			<div class="ui-block">
+			<div class="ui-block"> -->
 
 				<!-- Friend Item -->
 
-				<div class="friend-item">
+				<!-- <div class="friend-item">
 					<div class="friend-header-thumb">
 						<img src="img/friend6.jpg" alt="friend">
 					</div>
@@ -618,22 +724,23 @@
 										<div class="h6">December 2014</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 
 							<!-- If we need pagination -->
-							<div class="swiper-pagination"></div>
+							<!-- <div class="swiper-pagination"></div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<!-- ... end Friend Item -->			</div>
-		</div>
+				<!-- ... end Friend Item -->
+			<!-- </div> -->
+		<!-- </div>
 		<div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-			<div class="ui-block">
+			<div class="ui-block"> -->
 
 				<!-- Friend Item -->
 
-				<div class="friend-item">
+				<!-- <div class="friend-item">
 					<div class="friend-header-thumb">
 						<img src="img/friend7.jpg" alt="friend">
 					</div>
@@ -703,22 +810,23 @@
 										<div class="h6">December 2014</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 
 							<!-- If we need pagination -->
-							<div class="swiper-pagination"></div>
+							<!-- <div class="swiper-pagination"></div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<!-- ... end Friend Item -->			</div>
-		</div>
+				<!-- ... end Friend Item -->
+			<!-- </div> -->
+		<!-- </div>
 		<div class="col col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-			<div class="ui-block">
+			<div class="ui-block"> -->
 
 				<!-- Friend Item -->
 
-				<div class="friend-item">
+				<!-- <div class="friend-item">
 					<div class="friend-header-thumb">
 						<img src="img/friend8.jpg" alt="friend">
 					</div>
@@ -788,18 +896,19 @@
 										<div class="h6">December 2014</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 
 							<!-- If we need pagination -->
-							<div class="swiper-pagination"></div>
+							<!-- <div class="swiper-pagination"></div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
-				<!-- ... end Friend Item -->			</div>
-		</div>
+				<!-- ... end Friend Item -->
+			<!-- </div> -->
+		<!-- </div>
 	</div>
-</div>
+</div> -->
 
 <!-- ... end Friends -->
 
