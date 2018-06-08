@@ -271,7 +271,7 @@
 										</div>
 									</div>
 
-									<a href="#" class="btn btn-purple btn-lg full-width">Complete Registration!</a>
+									<a href="#" id="register-btn" class="btn btn-purple btn-lg full-width">Complete Registration!</a>
 								</div>
 							</div>
 						</form>
@@ -322,4 +322,47 @@
 			<!-- ... end Login-Registration Form  -->		</div>
 	</div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+
+	$(document).ready(function(){
+		$.ajaxSetup({
+		  headers: {
+		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		  }
+		});
+
+		$( "#register-btn" ).click(function(e) {
+						e.preventDefault();
+		        $.ajax({
+		            type: 'POST',
+		            url: '/register',
+		            headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') },
+		            data: { },
+		        }).done(function (data) {
+		            swal({
+		                type: 'success',
+		                title: '',
+		                text: 'The password for this database has been reset.',
+		            });
+		        }).fail(function(jqXHR, textStatus, errorThrown) {
+		            console.error(jqXHR);
+		            var error = 'An error occurred while trying to process this request.';
+		            if (typeof jqXHR.responseJSON !== 'undefined' && typeof jqXHR.responseJSON.error !== 'undefined') {
+		                error = jqXHR.responseJSON.error;
+		            }
+		            swal({
+		                type: 'error',
+		                title: 'Whoops!',
+		                text: error
+		            });
+		        }).always(function () {
+		            // block.removeClass('disabled').find('i').removeClass('fa-spin');
+		        });
+			  });
+		});
+
+</script>
 @endsection

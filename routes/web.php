@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 Route::get('/index', 'IndexController@index');
 
-
+Route::post('/register', 'AuthController@register');
 
 
 // Keep at bottom
