@@ -8,9 +8,13 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 	<!-- Main Font -->
 	<script src="js/webfontloader.min.js"></script>
+
+	<script src="js/sweetalert.js"></script>
+	<link rel="stylesheet" href="css/sweetalert.css">
 
 	<script>
 		WebFont.load({
