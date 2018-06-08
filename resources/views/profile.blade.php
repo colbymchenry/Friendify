@@ -152,7 +152,7 @@
 									<img src="{{ $friend['avatar'] }}" alt="author">
 								</div>
 								<div class="author-content">
-									<a href="#" class="h5 author-name">{{ $friend['name'] }}</a>
+									<a href="{{ $friend['profile_link'] }}" class="h5 author-name">{{ $friend['name'] }}</a>
 									<div class="country">{{ $friend['location'] }}</div>
 								</div>
 							</div>
