@@ -12,12 +12,12 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+  return view('welcome');
 });
 Route::get('/index', 'IndexController@index');
 
 Route::post('/register', 'AuthController@register');
 
-
 // Keep at bottom
+// Prevents snooping around through links
 Route::redirect('/{any}', '/')->where('any', '[\s\S]*');
