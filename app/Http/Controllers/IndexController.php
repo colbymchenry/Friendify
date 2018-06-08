@@ -11,6 +11,7 @@ class IndexController extends Controller
     $top_friends = array(
 
       array(
+        'email' => '',
         'cover_image' => 'img/friend1.jpg',
         'avatar' => 'img/avatar1.jpg',
         'name' => 'Nicholas Grissom',
@@ -24,6 +25,7 @@ class IndexController extends Controller
       ),
 
       array(
+        'email' => '',
         'cover_image' => 'img/friend2.jpg',
         'avatar' => 'img/avatar2.jpg',
         'name' => 'Seth Peden',
