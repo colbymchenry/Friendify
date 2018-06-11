@@ -8,6 +8,17 @@ class IndexController extends Controller
   function index()
   {
 
+    $user = array(
+
+      'cover_image' => 'img/top-header1.jpg',
+      'avatar' => 'img/author-main1.jpg',
+      'first_name' => 'Seth',
+      'last_name' => 'Peden',
+      'location' => 'San Francisco, CA',
+      'friend_count' => '86'
+
+    );
+
     $top_friends = array(
 
       array(
@@ -40,8 +51,7 @@ class IndexController extends Controller
 
     );
 
-    $profile = array();
-    return \View::make('profile')->with('profile', $profile)->with('friends', $top_friends);
+    return \View::make('profile')->with('user', $user)->with('friends', $top_friends);
   }
 
 }

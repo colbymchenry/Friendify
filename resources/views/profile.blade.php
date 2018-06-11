@@ -9,7 +9,7 @@
 			<div class="ui-block">
 				<div class="top-header">
 					<div class="top-header-thumb">
-						<img src="img/top-header1.jpg" alt="nature">
+						<img src="{{ $user['cover_image'] }}" alt="nature">
 					</div>
 					<div class="profile-section">
 						<div class="row">
@@ -79,11 +79,11 @@
 					</div>
 					<div class="top-header-author">
 						<a href="02-ProfilePage.html" class="author-thumb">
-							<img src="img/author-main1.jpg" alt="author">
+							<img src="{{ $user['avatar'] }}" alt="author">
 						</a>
 						<div class="author-content">
-							<a href="02-ProfilePage.html" class="h4 author-name">James Spiegel</a>
-							<div class="country">San Francisco, CA</div>
+							<a href="02-ProfilePage.html" class="h4 author-name">{{ $user['first_name'] }} {{ $user['last_name'] }}</a>
+							<div class="country">{{ $user['location'] }}</div>
 						</div>
 					</div>
 				</div>
@@ -97,7 +97,7 @@
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="ui-block responsive-flex">
 				<div class="ui-block-title">
-					<div class="h6 title">James’s Friends (86)</div>
+					<div class="h6 title">{{ $user['location'] }}’s Friends ({{ $user['friend_count'] }})</div>
 					<form class="w-search">
 						<div class="form-group with-button">
 							<input class="form-control" type="text" placeholder="Search Friends...">
