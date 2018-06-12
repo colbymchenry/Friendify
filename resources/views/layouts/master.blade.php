@@ -37,7 +37,7 @@
 
 </head>
 
-@if(isset($profile))
+@if(isset($user))
 <body>
 @else
 <body class="landing-page">
@@ -45,7 +45,7 @@
 
 <div class="content-bg-wrap"></div>
 
-@if(isset($profile))
+@if(isset($user))
 
 <!-- Fixed Sidebar Left -->
 
@@ -1761,7 +1761,7 @@
 
 @yield('content')
 
-@if(isset($profile))
+@if(isset($user))
 <a class="back-to-top" href="#">
 	<img src="svg-icons/back-to-top.svg" alt="arrow" class="back-icon">
 </a>
