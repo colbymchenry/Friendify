@@ -8,11 +8,15 @@ class IndexController extends Controller
   function index()
   {
 
+    $uuid = Utilities\UUID::random();
+
+    \Log::info($uuid);
+
     $user = array(
 
       'cover_image' => 'img/top-header1.jpg',
       'avatar' => 'img/author-main1.jpg',
-      'first_name' => 'Seth',
+      'first_name' => 'Josh',
       'last_name' => 'Peden',
       'location' => 'Chatsworth, GA',
       'friend_count' => '3'
