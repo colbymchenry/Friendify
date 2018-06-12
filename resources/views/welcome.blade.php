@@ -339,8 +339,9 @@
 		        $.ajax({
 		            type: 'POST',
 		            url: '/register',
+							  data: { 'id': '1' },
 		            headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') },
-		            data: { },
+								
 		        }).done(function (data) {
 		            swal({
 		                type: 'success',

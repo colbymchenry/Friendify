@@ -7,23 +7,26 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+  $uuid, $firstname, $lastname, $email, $hashed_password, $dob, $gender;
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+  function __construct($uuid)
+  {
+      $result = \DB::select("SELECT * FROM users WHERE uuid='$uuid'");
+
+      if($result->next)
+      {
+          $firstname = $result->firstname;
+          $lastname = $result->lastname;
+          $email = $result->email;
+          $hashed_password = $result->hashed_password;
+          $dob = $result->dob;
+          $gender = $result->gender;
+      }
+      else
+      {
+          throw new Exception("User was not found with that UUID.");
+      }
+  }
+
 }
