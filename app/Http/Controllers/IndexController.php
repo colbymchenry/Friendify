@@ -14,8 +14,8 @@ class IndexController extends Controller
       'avatar' => 'img/author-main1.jpg',
       'first_name' => 'Seth',
       'last_name' => 'Peden',
-      'location' => 'San Francisco, CA',
-      'friend_count' => '86'
+      'location' => 'Chatsworth, GA',
+      'friend_count' => '3'
 
     );
 
@@ -39,7 +39,7 @@ class IndexController extends Controller
         'email' => '',
         'cover_image' => 'img/friend2.jpg',
         'avatar' => 'img/avatar2.jpg',
-        'name' => 'Seth Peden',
+        'name' => 'Colby McHenry',
         'location' => 'Chatsworth, GA',
         'friend_count' => '23',
         'photo_count' => '0',
