@@ -327,6 +327,9 @@
 @section('scripts')
 <script>
 
+var token = '{{ Session::token() }}';
+var url = '{{ route('register') }}'
+
 	$(document).ready(function(){
 		$.ajaxSetup({
 		  headers: {
@@ -335,34 +338,24 @@
 		});
 
 		$( "#register-btn" ).click(function(e) {
-						e.preventDefault();
-		        $.ajax({
-		            type: 'POST',
-		            url: '/register',
-							  data: { 'id': '1' },
-		            headers: { 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content') },
-								
-		        }).done(function (data) {
-		            swal({
-		                type: 'success',
-		                title: '',
-		                text: 'The password for this database has been reset.',
-		            });
-		        }).fail(function(jqXHR, textStatus, errorThrown) {
-		            console.error(jqXHR);
-		            var error = 'An error occurred while trying to process this request.';
-		            if (typeof jqXHR.responseJSON !== 'undefined' && typeof jqXHR.responseJSON.error !== 'undefined') {
-		                error = jqXHR.responseJSON.error;
-		            }
-		            swal({
-		                type: 'error',
-		                title: 'Whoops!',
-		                text: error
-		            });
-		        }).always(function () {
-		            // block.removeClass('disabled').find('i').removeClass('fa-spin');
-		        });
-			  });
+				e.preventDefault();
+				$.ajax({
+					method: 'POST',
+					url: url,
+					data: {
+						firstname: 'Colby',
+						lastname: 'McHenry',
+						email: 'colbymchenry@gmail.com',
+						password: 'colbyspassword123',
+						dob: '11/06/1996',
+						gender: '0',
+						_token: token
+					 }
+				})
+				.done(function (msg) {
+					console.log(msg['message']);
+				});
+		  });
 		});
 
 </script>

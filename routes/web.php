@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 Route::get('/index', 'IndexController@index');
 
-Route::post('/register', 'AuthController@register');
+Route::post('/register', 'AuthController@register')->name('register');
 
 // Keep at bottom
 // Prevents snooping around through links

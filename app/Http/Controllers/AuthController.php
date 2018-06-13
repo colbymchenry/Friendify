@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 class AuthController extends Controller
 {
 
-  function register(\Request $request)
+  public function register(\Illuminate\Http\Request $request)
   {
-      dd($request->$id);
-      return response()->json(['success'=>'Data is successfully added']);
+      \App\User::create($request['firstname'], $request['lastname'], $request['email'], $request['password'], $request['dob'], $request['gender']);
+      return response()->json(['message' => 'Data is successfully added']);
   }
 
 }
