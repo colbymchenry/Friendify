@@ -227,28 +227,28 @@
 								<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">First Name</label>
-										<input class="form-control" placeholder="" type="text">
+										<input class="form-control" placeholder="" type="text" id="firstname">
 									</div>
 								</div>
 								<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Last Name</label>
-										<input class="form-control" placeholder="" type="text">
+										<input class="form-control" placeholder="" type="text" id="lastname">
 									</div>
 								</div>
 								<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Your Email</label>
-										<input class="form-control" placeholder="" type="email">
+										<input class="form-control" placeholder="" type="email" id="email">
 									</div>
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Your Password</label>
-										<input class="form-control" placeholder="" type="password">
+										<input class="form-control" placeholder="" type="password" id="password">
 									</div>
 
 									<div class="form-group date-time-picker label-floating">
 										<label class="control-label">Your Birthday</label>
-										<input name="datetimepicker" value="10/24/1984" />
+										<input name="datetimepicker" value="10/24/1984" id="dob" />
 										<span class="input-group-addon">
 														<svg class="olymp-calendar-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-calendar-icon"></use></svg>
 													</span>
@@ -256,7 +256,7 @@
 
 									<div class="form-group label-floating is-select">
 										<label class="control-label">Your Gender</label>
-										<select class="selectpicker form-control">
+										<select class="selectpicker form-control" id="gender">
 											<option value="MA">Male</option>
 											<option value="FE">Female</option>
 										</select>
@@ -330,7 +330,7 @@
 var token = '{{ Session::token() }}';
 var url = '{{ route('register') }}'
 
-	$(document).ready(function(){
+	$(document).ready(function() {
 		$.ajaxSetup({
 		  headers: {
 		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -343,17 +343,23 @@ var url = '{{ route('register') }}'
 					method: 'POST',
 					url: url,
 					data: {
-						firstname: 'Colby',
-						lastname: 'McHenry',
-						email: 'colbymchenry@gmail.com',
-						password: 'colbyspassword123',
-						dob: '11/06/1996',
-						gender: '0',
+						firstname: $('#firstname').val(),
+						lastname: $('#lastname').val(),
+						email: $('#email').val(),
+						password: $('#password').val(),
+						dob: $('#dob').val(),
+						gender: $('#gender').find(":selected").index(),
 						_token: token
 					 }
 				})
 				.done(function (msg) {
-					console.log(msg['message']);
+					if(msg.hasOwnProperty('success')) {
+						swal(msg['success'][0], msg['success'][1], "success");
+					} else if(msg.hasOwnProperty('failure')) {
+						swal("Uh-Oh!", msg['failure'], "error");
+					} else {
+						swal("Uh-Oh!", "Something went wrong on our end.", "error");
+					}
 				});
 		  });
 		});
