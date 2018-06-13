@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
 
+  static public $MALE = 0;
+  static public $FEMALE = 1;
+
   public $uuid;
   public $firstname;
   public $lastname;
@@ -49,11 +52,10 @@ class User extends Authenticatable
 
     if (count($result) != 0)
     {
-      \Log::error("Email already exists: $email");
+      throw new \Exception("Email already exists.");
     }
     else
     {
-      \Log::info("New user added: $email");
       \DB::table('users')->insert(array(
       'uuid' => HTTP\Controllers\Utilities\UUID::random(),
       'firstname' => $firstname,
