@@ -14,10 +14,14 @@
 Route::get('/', function () {
   return view('welcome');
 });
-Route::get('/index', 'IndexController@index');
+// Route::get('/profile', 'ProfileController@make');
+
+Route::get('/profile/{uuid}', 'ProfileController@make');
+
+// Route::get('/test/{value}', 'ProfileController@test');
 
 Route::post('/register', 'AuthController@register')->name('register');
 
 // Keep at bottom
 // Prevents snooping around through links
-Route::redirect('/{any}', '/')->where('any', '[\s\S]*');
+// Route::redirect('/{any}', '/')->where('any', '[\s\S]*');

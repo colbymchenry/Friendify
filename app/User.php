@@ -26,9 +26,9 @@ class User extends Authenticatable
       $this->dob = '';
       $this->gender = '';
 
-      $result = \DB::select("SELECT * FROM users WHERE uuid='$uuid'");
+      $result = \DB::table('users')->where('uuid', $uuid)->first();
 
-      if($result->next)
+      if(count($result) == 1)
       {
           $firstname = $result->firstname;
           $lastname = $result->lastname;

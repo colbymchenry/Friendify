@@ -2,24 +2,45 @@
 
 namespace App\Http\Controllers;
 
-class IndexController extends Controller
+class ProfileController extends Controller
 {
 
-  function index()
+  // function test($value) {
+  //   $value = $value + 1;
+  //   return \View::make('test')->with('value', $value);
+  // }
+
+  function make($uuid)
   {
 
-    $uuid = Utilities\UUID::random();
-
     \Log::info($uuid);
+
+    try {
+
+    $result = new \App\User($uuid);
+    \Log::info($result);
+    return $result->firstname;
+
+    } catch (\Exception $e) {
+
+    }
+
+    // \Log::info($uuid);
+
+    // return $uuid;
+
+    // $result = new \App\User($uuid);
 
     $user = array(
 
       'cover_image' => 'img/top-header1.jpg',
       'avatar' => 'img/author-main1.jpg',
-      'first_name' => 'Josh',
+      // 'first_name' => $result->firstname,
+      // 'last_name' => $result->lastname,
+      'first_name' => 'Seth',
       'last_name' => 'Peden',
-      'location' => 'Chatsworth, GA',
-      'friend_count' => '3'
+      'location' => 'NULL',
+      'friend_count' => '0'
 
     );
 
