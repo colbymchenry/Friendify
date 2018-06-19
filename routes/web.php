@@ -18,8 +18,6 @@ Route::get('/', function () {
 
 Route::get('/profile/{uuid}', 'ProfileController@make');
 
-// Route::get('/test/{value}', 'ProfileController@test');
-
 Route::post('/register', 'AuthController@register')->name('register');
 
 // Keep at bottom

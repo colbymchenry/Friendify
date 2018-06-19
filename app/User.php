@@ -33,12 +33,12 @@ class User extends Authenticatable
 
       if(count($result) == 1)
       {
-          $firstname = $result->firstname;
-          $lastname = $result->lastname;
-          $email = $result->email;
-          $hashed_password = $result->hashed_password;
-          $dob = $result->dob;
-          $gender = $result->gender;
+          $this->firstname = $result->firstname;
+          $this->lastname = $result->lastname;
+          $this->email = $result->email;
+          $this->hashed_password = $result->hashed_password;
+          $this->dob = $result->dob;
+          $this->gender = $result->gender;
       }
       else
       {

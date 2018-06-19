@@ -9,7 +9,7 @@
 			<div class="ui-block">
 				<div class="top-header">
 					<div class="top-header-thumb">
-						<img src="{{ $user['cover_image'] }}" alt="nature">
+						<img src="{{ asset($profile['cover_image']) }}" alt="nature">
 					</div>
 					<div class="profile-section">
 						<div class="row">
@@ -36,7 +36,7 @@
 									</li>
 									<li>
 										<div class="more">
-											<svg class="olymp-three-dots-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+											<svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg>
 											<ul class="more-dropdown more-with-triangle">
 												<li>
 													<a href="#">Report Profile</a>
@@ -53,15 +53,15 @@
 
 						<div class="control-block-button">
 							<a href="35-YourAccount-FriendsRequests.html" class="btn btn-control bg-blue">
-								<svg class="olymp-happy-face-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+								<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
 							</a>
 
 							<a href="#" class="btn btn-control bg-purple">
-								<svg class="olymp-chat---messages-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+								<svg class="olymp-chat---messages-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-chat---messages-icon') }}"></use></svg>
 							</a>
 
 							<div class="btn btn-control bg-primary more">
-								<svg class="olymp-settings-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-settings-icon"></use></svg>
+								<svg class="olymp-settings-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-settings-icon') }}"></use></svg>
 
 								<ul class="more-dropdown more-with-triangle triangle-bottom-right">
 									<li>
@@ -79,11 +79,11 @@
 					</div>
 					<div class="top-header-author">
 						<a href="02-ProfilePage.html" class="author-thumb">
-							<img src="{{ $user['avatar'] }}" alt="author">
+							<img src="{{ asset($profile['avatar']) }}" alt="author">
 						</a>
 						<div class="author-content">
-							<a href="02-ProfilePage.html" class="h4 author-name">{{ $user['first_name'] }} {{ $user['last_name'] }}</a>
-							<div class="country">{{ $user['location'] }}</div>
+							<a href="02-ProfilePage.html" class="h4 author-name">{{ $profile['first_name'] }} {{ $profile['last_name'] }}</a>
+							<div class="country">{{ $profile['location'] }}</div>
 						</div>
 					</div>
 				</div>
@@ -97,16 +97,16 @@
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="ui-block responsive-flex">
 				<div class="ui-block-title">
-					<div class="h6 title">{{ $user['first_name'] }}’s Friends ({{ $user['friend_count'] }})</div>
+					<div class="h6 title">{{ $profile['first_name'] }}’s Friends ({{ $profile['friend_count'] }})</div>
 					<form class="w-search">
 						<div class="form-group with-button">
 							<input class="form-control" type="text" placeholder="Search Friends...">
 							<button>
-								<svg class="olymp-magnifying-glass-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon"></use></svg>
+								<svg class="olymp-magnifying-glass-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-magnifying-glass-icon') }}"></use></svg>
 							</button>
 						</div>
 					</form>
-					<a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
+					<a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg></a>
 				</div>
 			</div>
 		</div>
@@ -128,13 +128,13 @@
 				<!-- Friends -->
 					<div class="friend-item">
 						<div class="friend-header-thumb">
-							<img src="{{ $friend['cover_image'] }}" alt="friend">
+							<img src="{{ asset($friend['cover_image']) }}" alt="friend">
 						</div>
 
 						<div class="friend-item-content">
 
 							<div class="more">
-								<svg class="olymp-three-dots-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg>
+								<svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg>
 								<ul class="more-dropdown">
 									<li>
 										<a href="#">Report Profile</a>
@@ -149,7 +149,7 @@
 							</div>
 							<div class="friend-avatar">
 								<div class="author-thumb">
-									<img src="{{ $friend['avatar'] }}" alt="author">
+									<img src="{{ asset($friend['avatar']) }}" alt="author">
 								</div>
 								<div class="author-content">
 									<a href="{{ $friend['profile_link'] }}" class="h5 author-name">{{ $friend['name'] }}</a>
@@ -176,11 +176,11 @@
 										</div>
 										<div class="control-block-button" data-swiper-parallax="-100">
 											<a href="#" class="btn btn-control bg-blue">
-												<svg class="olymp-happy-face-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
+												<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
 											</a>
 
 											<a href="#" class="btn btn-control bg-purple">
-												<svg class="olymp-chat---messages-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-chat---messages-icon"></use></svg>
+												<svg class="olymp-chat---messages-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-chat---messages-icon') }}"></use></svg>
 											</a>
 
 										</div>
@@ -223,7 +223,7 @@
 	<div class="modal-dialog window-popup update-header-photo" role="document">
 		<div class="modal-content">
 			<a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
-				<svg class="olymp-close-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-close-icon"></use></svg>
+				<svg class="olymp-close-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-close-icon') }}"></use></svg>
 			</a>
 
 			<div class="modal-header">
@@ -232,7 +232,7 @@
 
 			<div class="modal-body">
 				<a href="#" class="upload-photo-item">
-				<svg class="olymp-computer-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-computer-icon"></use></svg>
+				<svg class="olymp-computer-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-computer-icon') }}"></use></svg>
 
 				<h6>Upload Photo</h6>
 				<span>Browse your computer.</span>
@@ -240,7 +240,7 @@
 
 				<a href="#" class="upload-photo-item" data-toggle="modal" data-target="#choose-from-my-photo">
 
-			<svg class="olymp-photos-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-photos-icon"></use></svg>
+			<svg class="olymp-photos-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-photos-icon') }}"></use></svg>
 
 			<h6>Choose from My Photos</h6>
 			<span>Choose from your uploaded photos</span>
@@ -257,7 +257,7 @@
 	<div class="modal-dialog window-popup update-header-photo" role="document">
 		<div class="modal-content">
 			<a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
-				<svg class="olymp-close-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-close-icon"></use></svg>
+				<svg class="olymp-close-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-close-icon') }}"></use></svg>
 			</a>
 
 			<div class="modal-header">
@@ -266,7 +266,7 @@
 
 			<div class="modal-body">
 				<a href="#" class="upload-photo-item">
-				<svg class="olymp-computer-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-computer-icon"></use></svg>
+				<svg class="olymp-computer-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-computer-icon') }}"></use></svg>
 
 				<h6>Upload Photo</h6>
 				<span>Browse your computer.</span>
@@ -274,7 +274,7 @@
 
 				<a href="#" class="upload-photo-item" data-toggle="modal" data-target="#choose-from-my-photo">
 
-			<svg class="olymp-photos-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-photos-icon"></use></svg>
+			<svg class="olymp-photos-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-photos-icon') }}"></use></svg>
 
 			<h6>Choose from My Photos</h6>
 			<span>Choose from your uploaded photos</span>
@@ -291,7 +291,7 @@
 
 		<div class="modal-content">
 			<a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
-				<svg class="olymp-close-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-close-icon"></use></svg>
+				<svg class="olymp-close-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-close-icon') }}"></use></svg>
 			</a>
 			<div class="modal-header">
 				<h6 class="title">Choose from My Photos</h6>
@@ -300,12 +300,12 @@
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="nav-item">
 						<a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-expanded="true">
-							<svg class="olymp-photos-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-photos-icon"></use></svg>
+							<svg class="olymp-photos-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-photos-icon') }}"></use></svg>
 						</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-expanded="false">
-							<svg class="olymp-albums-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-albums-icon"></use></svg>
+							<svg class="olymp-albums-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-albums-icon') }}"></use></svg>
 						</a>
 					</li>
 				</ul>
@@ -319,7 +319,7 @@
 						<div class="choose-photo-item" data-mh="choose-item">
 							<div class="radio">
 								<label class="custom-radio">
-									<img src="img/choose-photo1.jpg" alt="photo">
+									<img src="{{ asset('img/choose-photo1.jpg') }}" alt="photo">
 									<input type="radio" name="optionsRadios">
 								</label>
 							</div>
@@ -327,7 +327,7 @@
 						<div class="choose-photo-item" data-mh="choose-item">
 							<div class="radio">
 								<label class="custom-radio">
-									<img src="img/choose-photo2.jpg" alt="photo">
+									<img src="{{ asset('img/choose-photo2.jpg') }}" alt="photo">
 									<input type="radio" name="optionsRadios">
 								</label>
 							</div>
@@ -335,32 +335,7 @@
 						<div class="choose-photo-item" data-mh="choose-item">
 							<div class="radio">
 								<label class="custom-radio">
-									<img src="img/choose-photo3.jpg" alt="photo">
-									<input type="radio" name="optionsRadios">
-								</label>
-							</div>
-						</div>
-
-						<div class="choose-photo-item" data-mh="choose-item">
-							<div class="radio">
-								<label class="custom-radio">
-									<img src="img/choose-photo4.jpg" alt="photo">
-									<input type="radio" name="optionsRadios">
-								</label>
-							</div>
-						</div>
-						<div class="choose-photo-item" data-mh="choose-item">
-							<div class="radio">
-								<label class="custom-radio">
-									<img src="img/choose-photo5.jpg" alt="photo">
-									<input type="radio" name="optionsRadios">
-								</label>
-							</div>
-						</div>
-						<div class="choose-photo-item" data-mh="choose-item">
-							<div class="radio">
-								<label class="custom-radio">
-									<img src="img/choose-photo6.jpg" alt="photo">
+									<img src="{{ asset('img/choose-photo3.jpg') }}" alt="photo">
 									<input type="radio" name="optionsRadios">
 								</label>
 							</div>
@@ -369,7 +344,7 @@
 						<div class="choose-photo-item" data-mh="choose-item">
 							<div class="radio">
 								<label class="custom-radio">
-									<img src="img/choose-photo7.jpg" alt="photo">
+									<img src="{{ asset('img/choose-photo4.jpg') }}" alt="photo">
 									<input type="radio" name="optionsRadios">
 								</label>
 							</div>
@@ -377,7 +352,7 @@
 						<div class="choose-photo-item" data-mh="choose-item">
 							<div class="radio">
 								<label class="custom-radio">
-									<img src="img/choose-photo8.jpg" alt="photo">
+									<img src="{{ asset('img/choose-photo5.jpg') }}" alt="photo">
 									<input type="radio" name="optionsRadios">
 								</label>
 							</div>
@@ -385,7 +360,32 @@
 						<div class="choose-photo-item" data-mh="choose-item">
 							<div class="radio">
 								<label class="custom-radio">
-									<img src="img/choose-photo9.jpg" alt="photo">
+									<img src="{{ asset('img/choose-photo6.jpg') }}" alt="photo">
+									<input type="radio" name="optionsRadios">
+								</label>
+							</div>
+						</div>
+
+						<div class="choose-photo-item" data-mh="choose-item">
+							<div class="radio">
+								<label class="custom-radio">
+									<img src="{{ asset('img/choose-photo7.jpg') }}" alt="photo">
+									<input type="radio" name="optionsRadios">
+								</label>
+							</div>
+						</div>
+						<div class="choose-photo-item" data-mh="choose-item">
+							<div class="radio">
+								<label class="custom-radio">
+									<img src="{{ asset('img/choose-photo8.jpg') }}" alt="photo">
+									<input type="radio" name="optionsRadios">
+								</label>
+							</div>
+						</div>
+						<div class="choose-photo-item" data-mh="choose-item">
+							<div class="radio">
+								<label class="custom-radio">
+									<img src="{{ asset('img/choose-photo9.jpg') }}" alt="photo">
 									<input type="radio" name="optionsRadios">
 								</label>
 							</div>
@@ -400,7 +400,7 @@
 
 						<div class="choose-photo-item" data-mh="choose-item">
 							<figure>
-								<img src="img/choose-photo10.jpg" alt="photo">
+								<img src="{{ asset('img/choose-photo10.jpg') }}" alt="photo">
 								<figcaption>
 									<a href="#">South America Vacations</a>
 									<span>Last Added: 2 hours ago</span>
@@ -409,7 +409,7 @@
 						</div>
 						<div class="choose-photo-item" data-mh="choose-item">
 							<figure>
-								<img src="img/choose-photo11.jpg" alt="photo">
+								<img src="{{ asset('img/choose-photo11.jpg') }}" alt="photo">
 								<figcaption>
 									<a href="#">Photoshoot Summer 2016</a>
 									<span>Last Added: 5 weeks ago</span>
@@ -418,7 +418,7 @@
 						</div>
 						<div class="choose-photo-item" data-mh="choose-item">
 							<figure>
-								<img src="img/choose-photo12.jpg" alt="photo">
+								<img src="{{ asset('img/choose-photo12.jpg') }}" alt="photo">
 								<figcaption>
 									<a href="#">Amazing Street Food</a>
 									<span>Last Added: 6 mins ago</span>
@@ -428,7 +428,7 @@
 
 						<div class="choose-photo-item" data-mh="choose-item">
 							<figure>
-								<img src="img/choose-photo13.jpg" alt="photo">
+								<img src="{{ asset('img/icon-chat13.png') }}" alt="photo">
 								<figcaption>
 									<a href="#">Graffity & Street Art</a>
 									<span>Last Added: 16 hours ago</span>
@@ -437,7 +437,7 @@
 						</div>
 						<div class="choose-photo-item" data-mh="choose-item">
 							<figure>
-								<img src="img/choose-photo14.jpg" alt="photo">
+								<img src="{{ asset('img/icon-chat14.png') }}" alt="photo">
 								<figcaption>
 									<a href="#">Amazing Landscapes</a>
 									<span>Last Added: 13 mins ago</span>
@@ -446,7 +446,7 @@
 						</div>
 						<div class="choose-photo-item" data-mh="choose-item">
 							<figure>
-								<img src="img/choose-photo15.jpg" alt="photo">
+								<img src="{{ asset('img/icon-chat15.png') }}" alt="photo">
 								<figcaption>
 									<a href="#">The Majestic Canyon</a>
 									<span>Last Added: 57 mins ago</span>
@@ -470,5 +470,5 @@
 @endsection
 
 @section('scripts')
-<script src="js/sticky-sidebar.js"></script>
+<script src="{{ asset('js/sticky-sidebar.js') }}"></script>
 @endsection
