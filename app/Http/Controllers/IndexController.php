@@ -7,20 +7,15 @@ class IndexController extends Controller
 
   function index()
   {
-
     $uuid = Utilities\UUID::random();
 
-    \Log::info($uuid);
-
     $user = array(
-
       'cover_image' => 'img/top-header1.jpg',
       'avatar' => 'img/author-main1.jpg',
       'first_name' => 'Josh',
       'last_name' => 'Peden',
       'location' => 'Chatsworth, GA',
       'friend_count' => '3'
-
     );
 
     $top_friends = array(
@@ -56,6 +51,16 @@ class IndexController extends Controller
     );
 
     return \View::make('profile')->with('user', $user)->with('friends', $top_friends);
+  }
+
+  function interests_setup($uuid)
+  {
+    try {
+      $user = new \User($uuid);
+      return \View::make('interests_setup')->with('user', $user->to_array());
+    } catch (\Exception $e) {
+        return response()->json(['failure' => $e->getMessage() ]);
+    }
   }
 
 }

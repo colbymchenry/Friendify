@@ -14,7 +14,10 @@
 Route::get('/', function () {
   return view('welcome');
 });
+
 Route::get('/index', 'IndexController@index');
+
+Route::get('/interests_setup', 'IndexController@interests_setup');
 
 Route::post('/register', 'AuthController@register')->name('register');
 
