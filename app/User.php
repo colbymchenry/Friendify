@@ -49,6 +49,7 @@ class User extends Authenticatable
 
       $result = \DB::table('users')->where('uuid', $uuid)->first();
 
+<<<<<<< HEAD
       if(count($result) != 0)
       {
           $firstname = $result->firstname;
@@ -106,6 +107,16 @@ class User extends Authenticatable
           $democrat = $result->democrat;
           $republican = $result->republican;
           $liberal = $result->liberal;
+=======
+      if(count($result) == 1)
+      {
+          $this->firstname = $result->firstname;
+          $this->lastname = $result->lastname;
+          $this->email = $result->email;
+          $this->hashed_password = $result->hashed_password;
+          $this->dob = $result->dob;
+          $this->gender = $result->gender;
+>>>>>>> d8226279f45eca51a90d455102bc736585ea5b98
       }
       else
       {
