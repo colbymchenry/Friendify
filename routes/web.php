@@ -14,7 +14,6 @@
 Route::get('/', function () {
   return view('welcome');
 });
-// Route::get('/profile', 'ProfileController@make');
 
 Route::get('/profile/{uuid}', 'ProfileController@make');
 
