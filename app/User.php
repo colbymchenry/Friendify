@@ -21,9 +21,7 @@ class User extends Authenticatable
   public $location;
   public $cover_image;
   public $avatar;
-  public $interests_top;
-  public $interests_middle;
-  public $interests_bottom;
+  public $interests;
   public $democrat;
   public $republican;
   public $liberal;
@@ -40,16 +38,13 @@ class User extends Authenticatable
       $this->location = '';
       $this->cover_image = 'https://i.imgur.com/A6J7EpN.png';
       $this->avatar = 'https://i.imgur.com/3gokj8j.png';
-      $this->interests_top = array();
-      $this->interests_middle = array();
-      $this->interests_bottom = array();
+      $this->interests = array();
       $this->democrat = false;
       $this->republican = false;
       $this->liberal = false;
 
       $result = \DB::table('users')->where('uuid', $uuid)->first();
 
-<<<<<<< HEAD
       if(count($result) != 0)
       {
           $firstname = $result->firstname;
@@ -60,69 +55,31 @@ class User extends Authenticatable
           $gender = $result->gender;
 
           /*
-          * BEGIN FILLING INTERESTS TOP
+          * BEGIN FILLING INTERESTS
           */
-          $result_interests_top = \DB::table('interests_top')->where('uuid', $uuid)->first();
+          $result_interests = \DB::table('interests')->where('uuid', $uuid)->first();
 
           if(count($result) == 0)
           {
-            throw new \Exception("User not found in interests_top table.");
+            throw new \Exception("User not found in interests table.");
           }
 
-          foreach(\DB::getSchemaBuilder()->getColumnListing('interests_top') as $column)
+          foreach(\DB::getSchemaBuilder()->getColumnListing('interests') as $column)
           {
-            $interests_top[$column] = $result_interests_top->$column;
-          }
-
-          /*
-          * BEGIN FILLING INTERESTS MIDDLE
-          */
-          $result_interests_middle = \DB::table('interests_middle')->where('uuid', $uuid)->first();
-
-          if(count($result) == 0)
-          {
-            throw new \Exception("User not found in interests_middle table.");
-          }
-
-          foreach(\DB::getSchemaBuilder()->getColumnListing('interests_middle') as $column)
-          {
-            $interests_middle[$column] = $result_interests_middle->$column;
-          }
-
-          /*
-          * BEGIN FILLING INTERESTS BOTTOM
-          */
-          $result_interests_bottom = \DB::table('interests_bottom')->where('uuid', $uuid)->first();
-
-          if(count($result) == 0)
-          {
-            throw new \Exception("User not found in interests_bottom table.");
-          }
-
-          foreach(\DB::getSchemaBuilder()->getColumnListing('interests_bottom') as $column)
-          {
-            $interests_bottom[$column] = $result_interests_bottom->$column;
+            $interests[$column] = $result_interests->$column;
           }
 
           $democrat = $result->democrat;
           $republican = $result->republican;
           $liberal = $result->liberal;
-=======
-      if(count($result) == 1)
-      {
-          $this->firstname = $result->firstname;
-          $this->lastname = $result->lastname;
-          $this->email = $result->email;
-          $this->hashed_password = $result->hashed_password;
-          $this->dob = $result->dob;
-          $this->gender = $result->gender;
->>>>>>> d8226279f45eca51a90d455102bc736585ea5b98
       }
       else
       {
           throw new \Exception("User was not found with that UUID.");
       }
   }
+
+  // $json = json_decode(file_get_contents($path), true); 
 
   function to_array()
   {
@@ -133,9 +90,7 @@ class User extends Authenticatable
       'email' => $email,
       'dob' => $dob,
       'gender' => $gender,
-      'interests_top' => $interests_top,
-      'interests_middle' => $interests_middle,
-      'interests_bottom' => $interests_bottom,
+      'interests' => $interests,
       'democrat' => $democrat,
       'republican' => $republican,
       'liberal' => $liberal
