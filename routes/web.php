@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Route::get('/profile/{uuid}', 'ProfileController@make');
 
+Route::get('/interests_setup', 'IndexController@interests_setup');
+
 Route::post('/register', 'AuthController@register')->name('register');
 
 // Keep at bottom

@@ -18,6 +18,13 @@ class User extends Authenticatable
   public $hashed_password;
   public $dob;
   public $gender;
+  public $location;
+  public $cover_image;
+  public $avatar;
+  public $interests;
+  public $democrat;
+  public $republican;
+  public $liberal;
 
   function __construct($uuid)
   {
@@ -28,22 +35,66 @@ class User extends Authenticatable
       $this->hashed_password = '';
       $this->dob = '';
       $this->gender = '';
+      $this->location = '';
+      $this->cover_image = 'https://i.imgur.com/A6J7EpN.png';
+      $this->avatar = 'https://i.imgur.com/3gokj8j.png';
+      $this->interests = array();
+      $this->democrat = false;
+      $this->republican = false;
+      $this->liberal = false;
 
       $result = \DB::table('users')->where('uuid', $uuid)->first();
 
-      if(count($result) == 1)
+      if(count($result) != 0)
       {
-          $this->firstname = $result->firstname;
-          $this->lastname = $result->lastname;
-          $this->email = $result->email;
-          $this->hashed_password = $result->hashed_password;
-          $this->dob = $result->dob;
-          $this->gender = $result->gender;
+          $firstname = $result->firstname;
+          $lastname = $result->lastname;
+          $email = $result->email;
+          $hashed_password = $result->hashed_password;
+          $dob = $result->dob;
+          $gender = $result->gender;
+
+          /*
+          * BEGIN FILLING INTERESTS
+          */
+          $result_interests = \DB::table('interests')->where('uuid', $uuid)->first();
+
+          if(count($result) == 0)
+          {
+            throw new \Exception("User not found in interests table.");
+          }
+
+          foreach(\DB::getSchemaBuilder()->getColumnListing('interests') as $column)
+          {
+            $interests[$column] = $result_interests->$column;
+          }
+
+          $democrat = $result->democrat;
+          $republican = $result->republican;
+          $liberal = $result->liberal;
       }
       else
       {
-          throw new Exception("User was not found with that UUID.");
+          throw new \Exception("User was not found with that UUID.");
       }
+  }
+
+  // $json = json_decode(file_get_contents($path), true); 
+
+  function to_array()
+  {
+    return array(
+      'uuid' => $uuid,
+      'firstname' => $firstname,
+      'lastname' => $lastname,
+      'email' => $email,
+      'dob' => $dob,
+      'gender' => $gender,
+      'interests' => $interests,
+      'democrat' => $democrat,
+      'republican' => $republican,
+      'liberal' => $liberal
+    );
   }
 
   static function create($firstname, $lastname, $email, $hashed_password, $dob, $gender)
