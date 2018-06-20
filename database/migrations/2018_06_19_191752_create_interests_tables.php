@@ -21,9 +21,9 @@ class CreateInterestsTables extends Migration
           foreach ($data as $key => $value) {
             if (is_array($value)) {
               if ($prefix != '') {
-                $table->boolean($prefix . '_' . $key);
+                $table->boolean($prefix . '_' . $key)->default(0);
               } else {
-                $table->boolean($key);
+                $table->boolean($key)->default(0);
               }
               if ($prefix != '') {
                 add($table, $prefix . '_' . $key, $value);
@@ -32,9 +32,9 @@ class CreateInterestsTables extends Migration
               }
             } else {
               if ($prefix != '') {
-                $table->boolean($prefix . '_' . $value);
+                $table->boolean($prefix . '_' . $value)->default(0);
               } else {
-                $table->boolean($value);
+                $table->boolean($value)->default(0);
               }
             }
           }
