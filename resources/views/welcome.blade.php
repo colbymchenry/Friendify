@@ -265,7 +265,7 @@
 									<div class="remember">
 										<div class="checkbox">
 											<label>
-												<input name="optionsCheckboxes" type="checkbox">
+												<input name="optionsCheckboxes" type="checkbox" id="eula">
 												I accept the <a href="#">Terms and Conditions</a> of the website
 											</label>
 										</div>
@@ -349,6 +349,7 @@ var url = '{{ route('register') }}'
 						password: $('#password').val(),
 						dob: $('#dob').val(),
 						gender: $('#gender').find(":selected").index(),
+						eula: $('#eula').prop('checked'),
 						_token: token
 					 }
 				})
