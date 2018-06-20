@@ -6,9 +6,12 @@ class TestController extends Controller {
 
   function index() {
 
-    $data = 'Hello, World!';
+    $seth = new \App\User(\DB::table('users')->where('firstname', 'Seth')->first()->uuid);
+    $colby = new \App\User(\DB::table('users')->where('firstname', 'Colby')->first()->uuid);
 
-    return \View::make('test')->with('data', $data);
+    $score = $seth->match_score_with($colby);
+
+    return \View::make('test')->with('data', ["Score: $score"]);
 
   }
 

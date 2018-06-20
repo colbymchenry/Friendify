@@ -47,6 +47,7 @@ class User extends Authenticatable
 
       if(count($result) != 0)
       {
+          $this->uuid = $result->uuid;
           $this->firstname = $result->firstname;
           $this->lastname = $result->lastname;
           $this->email = $result->email;
@@ -117,8 +118,9 @@ class User extends Authenticatable
     }
     else
     {
+      $uuid = HTTP\Controllers\Utilities\UUID::random();
       \DB::table('users')->insert(array(
-      'uuid' => HTTP\Controllers\Utilities\UUID::random(),
+      'uuid' => $uuid,
       'firstname' => $firstname,
       'lastname' => $lastname,
       'email' => $email,
@@ -126,17 +128,27 @@ class User extends Authenticatable
       'dob' => $dob,
       'gender' => $gender
       ));
+      \DB::table('interests')->insert(array('uuid' => $uuid));
     }
 
   }
 
-  function matchScoreWith($otherUser) {
+  function match_score_with($other_user) {
+    // $first = \DB::select("SELECT * FROM interests WHERE uuid='$this->uuid'")[0]->toArray();
+    // $second = \DB::select("SELECT * FROM interests WHERE uuid='$other_user->uuid'")[0]->toArray();
+    $first = \DB::table('interests')->where('uuid', $this->uuid)->first();
+    $second = \DB::table('interests')->where('uuid', $other_user->uuid)->first();
 
-    $first_interests = \DB::table('interests')->where('uuid', $this->uuid)->first();
-    $second_interests = \DB::table('interests')->where('uuid', $otherUser->uuid)->first();
+    foreach ($$first as $key => $value) {
+      \Log::info("$key : $value");
+    }
 
-
-
+    $sum = 0;
+    // foreach ($first as $key => $value) {
+    //   \Log::info($key);
+    //   $sum += $first[$key] * $second[$key];
+    // }
+    return sum;
   }
 
 }

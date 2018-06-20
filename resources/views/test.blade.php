@@ -1,1 +1,3 @@
-<p>{{ $data }}</p>
+@foreach ($data as $key => $value)
+  <p>{{ $key }} : {{ $value }}</p>
+@endforeach
