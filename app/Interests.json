@@ -1,16 +1,14 @@
 {
   "Sports" : {
     "Football" : {
-      "Professional" : [ "Atlanta Falcons", "New England Patriots", "Louisiane Saints" ],
-      "Collegiate" : [ "Georgia Bulldogs", "Georgia Tech Yellow Jackets", "Auburn Tigers" ],
-      "Recreational" : [],
-      "Analytics" : []
+      "Professional Football" : [ "Atlanta Falcons", "New England Patriots", "Louisiane Saints" ],
+      "Collegiate Football" : [ "Georgia Bulldogs", "Georgia Tech Yellow Jackets", "Auburn Tigers" ],
+      "Recreational Football" : []
     },
     "Baseball" : {
-      "Professional" : [ "Atlanta Braves", "New Yorks Yankees" ],
-      "Collegiate" : [ "Georgia Bulldogs", "Georgia Tech Yellow Jackets", "Auburn Tigers" ],
-      "Recreational" : [],
-      "Analytics" : []
+      "Professional Football" : [ "Atlanta Braves", "New Yorks Yankees" ],
+      "Collegiate Football" : [ "Georgia Bulldogs", "Georgia Tech Yellow Jackets", "Auburn Tigers" ],
+      "Recreational Football" : []
     }
   },
   "Technology" : {
