@@ -22,8 +22,8 @@ class CreateUsersTable extends Migration
           $table->string('dob');
           $table->boolean('gender');
           $table->string('location')->default('');
-          $table->string('cover_image')->default('');
-          $table->string('avatar')->default('');
+          $table->string('cover_image')->default('https://i.imgur.com/A6J7EpN.png');
+          $table->string('avatar')->default('https://i.imgur.com/3gokj8j.png');
           $table->boolean('democrat')->default(0);
           $table->boolean('republican')->default(0);
           $table->boolean('liberal')->default(0);

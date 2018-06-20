@@ -12,22 +12,6 @@ class ProfileController extends Controller
 
       $user = new \App\User($uuid);
 
-      $profile = array(
-
-        'cover_image' => 'img/top-header1.jpg',
-        'avatar' => 'img/author-main1.jpg',
-        'first_name' => $user->firstname,
-        'last_name' => $user->lastname,
-        // 'first_name' => 'Seth',
-        // 'last_name' => 'Peden',
-        'location' => 'NULL',
-        'friend_count' => '0'
-
-      );
-
-      \Log::info($profile);
-      // return "<h1>$user->firstname $user->lastname</h1>";
-
       $top_friends = array(
 
         array(
@@ -60,9 +44,7 @@ class ProfileController extends Controller
 
       );
 
-      \Log::info($profile);
-
-      return \View::make('profile')->with('profile', $profile)->with('friends', $top_friends);
+      return \View::make('profile')->with('profile', $user)->with('friends', $top_friends);
 
     } catch (\Exception $e) {
 
