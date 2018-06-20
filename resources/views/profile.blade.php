@@ -9,7 +9,7 @@
 			<div class="ui-block">
 				<div class="top-header">
 					<div class="top-header-thumb">
-						<img src="{{ asset($profile['cover_image']) }}" alt="nature">
+						<img src="{{ $profile->cover_image }}" alt="nature">
 					</div>
 					<div class="profile-section">
 						<div class="row">
@@ -79,11 +79,11 @@
 					</div>
 					<div class="top-header-author">
 						<a href="02-ProfilePage.html" class="author-thumb">
-							<img src="{{ asset($profile['avatar']) }}" alt="author">
+							<img src="{{ $profile->avatar }}" alt="author">
 						</a>
 						<div class="author-content">
-							<a href="02-ProfilePage.html" class="h4 author-name">{{ $profile['first_name'] }} {{ $profile['last_name'] }}</a>
-							<div class="country">{{ $profile['location'] }}</div>
+							<a href="02-ProfilePage.html" class="h4 author-name">{{ $profile->firstname }} {{ $profile->lastname }}</a>
+							<div class="country">{{ $profile->location }}</div>
 						</div>
 					</div>
 				</div>
@@ -97,7 +97,7 @@
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="ui-block responsive-flex">
 				<div class="ui-block-title">
-					<div class="h6 title">{{ $profile['first_name'] }}’s Friends ({{ $profile['friend_count'] }})</div>
+					<div class="h6 title">{{ $profile->firstname }}’s Friends ({{ 10 }})</div>
 					<form class="w-search">
 						<div class="form-group with-button">
 							<input class="form-control" type="text" placeholder="Search Friends...">

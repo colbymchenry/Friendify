@@ -53,6 +53,7 @@ class User extends Authenticatable
           $this->hashed_password = $result->hashed_password;
           $this->dob = $result->dob;
           $this->gender = $result->gender;
+          $this->location = $result->location;
 
           /*
           * BEGIN FILLING INTERESTS
