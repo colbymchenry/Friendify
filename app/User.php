@@ -134,21 +134,13 @@ class User extends Authenticatable
   }
 
   function match_score_with($other_user) {
-    // $first = \DB::select("SELECT * FROM interests WHERE uuid='$this->uuid'")[0]->toArray();
-    // $second = \DB::select("SELECT * FROM interests WHERE uuid='$other_user->uuid'")[0]->toArray();
     $first = \DB::table('interests')->where('uuid', $this->uuid)->first();
     $second = \DB::table('interests')->where('uuid', $other_user->uuid)->first();
-
-    foreach ($$first as $key => $value) {
-      \Log::info("$key : $value");
-    }
-
     $sum = 0;
-    // foreach ($first as $key => $value) {
-    //   \Log::info($key);
-    //   $sum += $first[$key] * $second[$key];
-    // }
-    return sum;
+    foreach ($first as $key => $value) {
+      $sum = $sum + ((int) $value) * ((int) $second->$key);
+    }
+    return $sum;
   }
 
 }
