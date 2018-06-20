@@ -90,16 +90,19 @@ class User extends Authenticatable
   function to_array()
   {
     return array(
-      'uuid' => $uuid,
-      'firstname' => $firstname,
-      'lastname' => $lastname,
-      'email' => $email,
-      'dob' => $dob,
-      'gender' => $gender,
-      'interests' => $interests,
-      'democrat' => $democrat,
-      'republican' => $republican,
-      'liberal' => $liberal
+      'uuid' => $this->uuid,
+      'firstname' => $this->firstname,
+      'lastname' => $this->lastname,
+      'email' => $this->email,
+      'dob' => $this->dob,
+      'gender' => $this->gender,
+      'interests' => $this->interests,
+      'democrat' => $this->democrat,
+      'republican' => $this->republican,
+      'liberal' => $this->liberal,
+      'cover_image' => $this->cover_image,
+      'avatar' => $this->avatar,
+      'location' => $this->location
     );
   }
 
