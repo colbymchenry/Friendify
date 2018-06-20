@@ -468,7 +468,3 @@
 <!-- ... end Window-popup Choose from my Photo -->
 
 @endsection
-
-@section('scripts')
-<script src="{{ asset('js/sticky-sidebar.js') }}"></script>
-@endsection

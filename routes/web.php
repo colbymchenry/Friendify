@@ -21,6 +21,8 @@ Route::get('/interests_setup', 'IndexController@interests_setup');
 
 Route::post('/register', 'AuthController@register')->name('register');
 
+Route::get('/search_people', 'SearchController@search_people');
+
 Route::get('/test', 'TestController@index');
 
 // Keep at bottom
