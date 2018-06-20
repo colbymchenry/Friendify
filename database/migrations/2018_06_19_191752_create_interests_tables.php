@@ -15,17 +15,36 @@ class CreateInterestsTables extends Migration
     {
       Schema::create('interests', function (Blueprint $table) {
         $table->string('uuid')->unique();
-        $table->string('sports');
-        $table->string('food');
-        $table->string('entertainment');
-        $table->string('technology');
-        $table->string('politics');
-        $table->string('religion');
-        $table->string('education');
-        $table->string('philosophy');
-        $table->string('art');
+        $json = json_decode(\Storage::get('Interests.json'), true);
+
+        function add($table, $prefix, $data) {
+          foreach ($data as $key => $value) {
+            if (is_array($value)) {
+              if ($prefix != '') {
+                $table->boolean($prefix . '_' . $key);
+              } else {
+                $table->boolean($key);
+              }
+              if ($prefix != '') {
+                add($table, $prefix . '_' . $key, $value);
+              } else {
+                add($table, $key, $value);
+              }
+            } else {
+              if ($prefix != '') {
+                $table->boolean($prefix . '_' . $value);
+              } else {
+                $table->boolean($value);
+              }
+            }
+          }
+        }
+
+        add($table, '' , $json);
+
       });
     }
+
 
     /**
      * Reverse the migrations.

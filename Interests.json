@@ -1,0 +1,19 @@
+{
+  "Sports" : {
+    "Football" : {
+      "Professional" : [ "Atlanta Falcons", "New England Patriots", "Louisiane Saints" ],
+      "Collegiate" : [ "Georgia Bulldogs", "Georgia Tech Yellow Jackets", "Auburn Tigers" ],
+      "Recreational" : [],
+      "Analytics" : []
+    },
+    "Baseball" : {
+      "Professional" : [ "Atlanta Braves", "New Yorks Yankees" ],
+      "Collegiate" : [ "Georgia Bulldogs", "Georgia Tech Yellow Jackets", "Auburn Tigers" ],
+      "Recreational" : [],
+      "Analytics" : []
+    }
+  },
+  "Technology" : {
+    "Gaming" : [ "PC", "XBox", "PS4", "Switch" ]
+  }
+}
