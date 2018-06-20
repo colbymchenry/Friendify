@@ -21,12 +21,12 @@ class CreateUsersTable extends Migration
           $table->string('hashed_password');
           $table->string('dob');
           $table->boolean('gender');
-          $table->string('location');
-          $table->string('cover_image');
-          $table->string('avatar');
-          $table->boolean('democrat');
-          $table->boolean('republican');
-          $table->boolean('liberal');
+          $table->string('location')->default('');
+          $table->string('cover_image')->default('');
+          $table->string('avatar')->default('');
+          $table->boolean('democrat')->default(0);
+          $table->boolean('republican')->default(0);
+          $table->boolean('liberal')->default(0);
           $table->rememberToken();
           $table->timestamps();
         });

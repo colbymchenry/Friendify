@@ -47,31 +47,37 @@ class User extends Authenticatable
 
       if(count($result) != 0)
       {
-          $firstname = $result->firstname;
-          $lastname = $result->lastname;
-          $email = $result->email;
-          $hashed_password = $result->hashed_password;
-          $dob = $result->dob;
-          $gender = $result->gender;
+          $this->firstname = $result->firstname;
+          $this->lastname = $result->lastname;
+          $this->email = $result->email;
+          $this->hashed_password = $result->hashed_password;
+          $this->dob = $result->dob;
+          $this->gender = $result->gender;
 
           /*
           * BEGIN FILLING INTERESTS
           */
           $result_interests = \DB::table('interests')->where('uuid', $uuid)->first();
 
-          if(count($result) == 0)
+          if(count($result_interests) == 0)
           {
             throw new \Exception("User not found in interests table.");
           }
 
+          $this->interests = array();
+
           foreach(\DB::getSchemaBuilder()->getColumnListing('interests') as $column)
           {
-            $interests[$column] = $result_interests->$column;
+
+            if ($column != 'uuid') {
+              $this->interests[$column] = $result_interests->$column;
+            }
+
           }
 
-          $democrat = $result->democrat;
-          $republican = $result->republican;
-          $liberal = $result->liberal;
+          $this->democrat = $result->democrat;
+          $this->republican = $result->republican;
+          $this->liberal = $result->liberal;
       }
       else
       {
@@ -79,7 +85,7 @@ class User extends Authenticatable
       }
   }
 
-  // $json = json_decode(file_get_contents($path), true); 
+  // $json = json_decode(file_get_contents($path), true);
 
   function to_array()
   {
@@ -118,6 +124,15 @@ class User extends Authenticatable
       ));
     }
 
-}
+  }
+
+  function matchScoreWith($otherUser) {
+
+    $first_interests = \DB::table('interests')->where('uuid', $this->uuid)->first();
+    $second_interests = \DB::table('interests')->where('uuid', $otherUser->uuid)->first();
+
+
+
+  }
 
 }

@@ -21,6 +21,8 @@ Route::get('/interests_setup', 'IndexController@interests_setup');
 
 Route::post('/register', 'AuthController@register')->name('register');
 
+Route::get('/test', 'TestController@index');
+
 // Keep at bottom
 // Prevents snooping around through links
 // Route::redirect('/{any}', '/')->where('any', '[\s\S]*');

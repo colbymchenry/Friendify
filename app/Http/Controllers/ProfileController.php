@@ -66,7 +66,7 @@ class ProfileController extends Controller
 
     } catch (\Exception $e) {
 
-      return 'Fail.';
+      return "Fail.<br>Error: $e";
 
     }
 
