@@ -22,3 +22,5 @@ Route::post('/register', 'AuthController@register')->name('register');
 // Keep at bottom
 // Prevents snooping around through links
 // Route::redirect('/{any}', '/')->where('any', '[\s\S]*');
+
+?>
