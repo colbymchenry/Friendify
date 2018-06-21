@@ -25,17 +25,13 @@ Route::group(['middleware' => ['checkemail']], function () {
 
   Route::get('/interests_setup', 'IndexController@interests_setup');
 
-<<<<<<< HEAD
-  Route::get('/search_people', 'SearchController@search_people');
+  Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
+
+  Route::post('/search_people', 'SearchController@search_people')->name('search_people');
 
   Route::get('/test', 'TestController@index');
 
 });
-=======
-Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
-
-Route::get('/test', 'TestController@index');
->>>>>>> 2b332bc6d1210c58c76ce4aeaf7c524e9f230002
 
 // Keep at bottom
 // Prevents snooping around through links
