@@ -17,7 +17,7 @@ class AuthController extends Controller
         {
           throw new \Exception($validator->errors()->first());
         }
-        \App\User::create($request['firstname'], $request['lastname'], $request['email'], \Hash::make($request['password']), $request['dob'], $request['gender']);
+        $uuid = \App\User::create($request['firstname'], $request['lastname'], $request['email'], \Hash::make($request['password']), $request['dob'], $request['gender']);
       } catch (\Exception $e) {
           return response()->json(['failure' => $e->getMessage() ]);
       }
@@ -34,6 +34,36 @@ class AuthController extends Controller
           'gender' => 'required|boolean',
           'dob' => 'required|string|date',
       ]);
+  }
+
+  public function login(\Illuminate\Http\Request $request)
+  {
+    $email = $request['email'];
+    $password = $request['password'];
+
+    $result = \DB::table('users')->where('email', $email)->first();
+
+    if(count($result) == 0) {
+      return response()->json(['failure' => ['Sorry!', 'Incorrect Email/Password']]);
+    }
+
+    $getpassword = \DB::table('users')->select('hashed_password')->where('email', $email)->first();
+
+    if(password_verify($password, $getpassword->hashed_password) == false) {
+      return response()->json(['failure' => ['Sorry!', 'Incorrect Email/Password']]);
+    }
+
+    \Log::info($request->session()->all());
+
+    $request->session()->put('uuid', $result->uuid);
+    $request->session()->save();
+    \Session::save();
+    return response()->json(['success' => '/profile/' . $result->uuid]);
+  }
+
+  public function logout(\Illuminate\Http\Request $request)
+  {
+    $request->session()->flush();
   }
 
 }

@@ -227,28 +227,28 @@
 								<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">First Name</label>
-										<input class="form-control" placeholder="" type="text" id="firstname">
+										<input class="form-control" placeholder="" type="text" id="register-firstname">
 									</div>
 								</div>
 								<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Last Name</label>
-										<input class="form-control" placeholder="" type="text" id="lastname">
+										<input class="form-control" placeholder="" type="text" id="register-lastname">
 									</div>
 								</div>
 								<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Your Email</label>
-										<input class="form-control" placeholder="" type="email" id="email">
+										<input class="form-control" placeholder="" type="email" id="register-email">
 									</div>
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Your Password</label>
-										<input class="form-control" placeholder="" type="password" id="password">
+										<input class="form-control" placeholder="" type="password" id="register-password">
 									</div>
 
 									<div class="form-group date-time-picker label-floating">
 										<label class="control-label">Your Birthday</label>
-										<input name="datetimepicker" value="10/24/1984" id="dob" />
+										<input name="datetimepicker" value="10/24/1984" id="register-dob" />
 										<span class="input-group-addon">
 														<svg class="olymp-calendar-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-calendar-icon"></use></svg>
 													</span>
@@ -256,7 +256,7 @@
 
 									<div class="form-group label-floating is-select">
 										<label class="control-label">Your Gender</label>
-										<select class="selectpicker form-control" id="gender">
+										<select class="selectpicker form-control" id="register-gender">
 											<option value="MA">Male</option>
 											<option value="FE">Female</option>
 										</select>
@@ -265,7 +265,7 @@
 									<div class="remember">
 										<div class="checkbox">
 											<label>
-												<input name="optionsCheckboxes" type="checkbox" id="eula">
+												<input name="optionsCheckboxes" type="checkbox" id="register-eula">
 												I accept the <a href="#">Terms and Conditions</a> of the website
 											</label>
 										</div>
@@ -284,11 +284,11 @@
 								<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Your Email</label>
-										<input class="form-control" placeholder="" type="email">
+										<input class="form-control" placeholder="" type="email" id="login-email">
 									</div>
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Your Password</label>
-										<input class="form-control" placeholder="" type="password">
+										<input class="form-control" placeholder="" type="password" id="login-password">
 									</div>
 
 									<div class="remember">
@@ -302,7 +302,7 @@
 										<a href="#" class="forgot">Forgot my Password</a>
 									</div>
 
-									<a href="#" class="btn btn-lg btn-primary full-width">Login</a>
+									<a href="#" id="login-btn" class="btn btn-lg btn-primary full-width">Login</a>
 
 									<div class="or"></div>
 
@@ -328,7 +328,6 @@
 <script>
 
 var token = '{{ Session::token() }}';
-var url = '{{ route('register') }}'
 
 	$(document).ready(function() {
 		$.ajaxSetup({
@@ -337,19 +336,20 @@ var url = '{{ route('register') }}'
 		  }
 		});
 
+		// == REGISTER AJAX REQUEST ==
 		$( "#register-btn" ).click(function(e) {
 				e.preventDefault();
 				$.ajax({
 					method: 'POST',
-					url: url,
+					url: '{{ route('register') }}',
 					data: {
-						firstname: $('#firstname').val(),
-						lastname: $('#lastname').val(),
-						email: $('#email').val(),
-						password: $('#password').val(),
-						dob: $('#dob').val(),
-						gender: $('#gender').find(":selected").index(),
-						eula: $('#eula').prop('checked'),
+						firstname: $('#register-firstname').val(),
+						lastname: $('#register-lastname').val(),
+						email: $('#register-email').val(),
+						password: $('#register-password').val(),
+						dob: $('#register-dob').val(),
+						gender: $('#register-gender').find(":selected").index(),
+						eula: $('#register-eula').prop('checked'),
 						_token: token
 					 }
 				})
@@ -363,6 +363,29 @@ var url = '{{ route('register') }}'
 					}
 				});
 		  });
+
+			// == LOGIN AJAX REQUEST ==
+			$( "#login-btn" ).click(function(e) {
+					e.preventDefault();
+					$.ajax({
+						method: 'POST',
+						url: '{{ route('login') }}',
+						data: {
+							email: $('#login-email').val(),
+							password: $('#login-password').val(),
+							_token: token
+						 }
+					})
+					.done(function (msg) {
+						if(msg.hasOwnProperty('success')) {
+							 window.location = msg['success'];
+						} else if(msg.hasOwnProperty('failure')) {
+							swal("Uh-Oh!", msg['failure'], "error");
+						} else {
+							swal("Uh-Oh!", "Something went wrong on our end.", "error");
+						}
+					});
+				});
 		});
 
 </script>

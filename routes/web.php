@@ -15,15 +15,21 @@ Route::get('/', function () {
   return view('welcome');
 });
 
-Route::get('/profile/{uuid}', 'ProfileController@make');
-
-Route::get('/interests_setup', 'IndexController@interests_setup');
-
 Route::post('/register', 'AuthController@register')->name('register');
 
-Route::get('/search_people', 'SearchController@search_people');
+Route::post('/login', 'AuthController@login')->name('login');
 
-Route::get('/test', 'TestController@index');
+Route::group(['middleware' => ['checkemail']], function () {
+
+  Route::get('/profile/{uuid}', 'ProfileController@make');
+
+  Route::get('/interests_setup', 'IndexController@interests_setup');
+
+  Route::get('/search_people', 'SearchController@search_people');
+
+  Route::get('/test', 'TestController@index');
+
+});
 
 // Keep at bottom
 // Prevents snooping around through links

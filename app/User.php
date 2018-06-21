@@ -129,6 +129,7 @@ class User extends Authenticatable
       'gender' => $gender
       ));
       \DB::table('interests')->insert(array('uuid' => $uuid));
+      return $uuid;
     }
 
   }
