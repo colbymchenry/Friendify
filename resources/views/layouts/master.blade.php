@@ -2022,6 +2022,10 @@
 
 <script src="{{ asset('Bootstrap/dist/js/bootstrap.bundle.js') }}"></script>
 
+@if (isset($profile))
+<script src="{{ asset('js/sticky-sidebar.js') }}"></script>
+@endif
+
 @yield('scripts')
 
 </body>
