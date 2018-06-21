@@ -136,11 +136,13 @@ class User extends Authenticatable
   function match_score_with($other_user) {
     $first = \DB::table('interests')->where('uuid', $this->uuid)->first();
     $second = \DB::table('interests')->where('uuid', $other_user->uuid)->first();
-    $sum = 0;
+
     foreach ($first as $key => $value) {
-      $sum = $sum + ((int) $value) * ((int) $second->$key);
+      \Log::info("$key : $value");
     }
-    return $sum;
+
+    $sum = 0;
+    return sum;
   }
 
 }
