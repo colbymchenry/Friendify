@@ -23,6 +23,8 @@ Route::post('/register', 'AuthController@register')->name('register');
 
 Route::get('/search_people', 'SearchController@search_people');
 
+Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
+
 Route::get('/test', 'TestController@index');
 
 // Keep at bottom
