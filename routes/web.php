@@ -21,21 +21,15 @@ Route::post('/login', 'AuthController@login')->name('login');
 
 Route::group(['middleware' => ['checkemail']], function () {
 
-  Route::get('/profile/{uuid}', 'ProfileController@make');
+Route::get('/profile/{uuid}', 'ProfileController@make');
 
-  Route::get('/interests_setup', 'IndexController@interests_setup');
+Route::get('/interests_setup', 'IndexController@interests_setup');
 
-<<<<<<< HEAD
-  Route::get('/search_people', 'SearchController@search_people');
-
-  Route::get('/test', 'TestController@index');
-
-});
-=======
-Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
+Route::get('/search_people', 'SearchController@search_people');
 
 Route::get('/test', 'TestController@index');
->>>>>>> 2b332bc6d1210c58c76ce4aeaf7c524e9f230002
+
+Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
 
 // Keep at bottom
 // Prevents snooping around through links
