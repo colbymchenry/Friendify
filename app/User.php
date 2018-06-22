@@ -13,6 +13,7 @@ class User extends Model
   public $timestamps = true;
   protected $connection = 'mysql';
   protected $primaryKey = 'uuid';
+  public $incrementing = false;
   // static public $MALE = 0;
   // static public $FEMALE = 1;
   //

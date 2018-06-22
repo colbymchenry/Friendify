@@ -70,6 +70,7 @@ class ProfileController extends Controller
     try {
       $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
       $user->cover_image = 'http://localhost:8000/cover_images/' . $photoName;
+      \Log::info($user->uuid);
       $user->save();
     } catch (\Exception $e) {
         \Log::error($e);
