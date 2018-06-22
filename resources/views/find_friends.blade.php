@@ -8,7 +8,7 @@
   var loaded = 0;
   var search_string = 'NULL';
 
-  const search_result = `
+  const friend_match = `
   <div class="ui-block">
     <!-- Search Result -->
     <article class="hentry post searches-item">
@@ -137,7 +137,7 @@
         loaded = msg['output'].length;
         $('#search-items-grid').html('');
         for (var i = 0; i < msg['output'].length; i++) {
-          var result = search_result.replace('@FIRSTNAME@', msg['output'][i]['firstname'])
+          var result = friend_match.replace('@FIRSTNAME@', msg['output'][i]['firstname'])
           .replace('@LASTNAME@', msg['output'][i]['lastname']).replace('@LOCATION@', msg['output'][i]['location'])
           .replace('@AVATAR@', msg['output'][i]['avatar']);
           $('#search-items-grid').html($('#search-items-grid').html() + result);
