@@ -5,7 +5,7 @@ use \App\User;
 
 class SearchController extends Controller {
 
-  $min_match_score = 1;
+  static  $min_match_score = 1;
 
   function find_friends() {
     $profile = '';
@@ -23,7 +23,8 @@ class SearchController extends Controller {
       while ($loaded < $limit && $index < count($results)) {
         if ($results[$index]->uuid != $request['uuid']) {
           $match = User::where('uuid', $results[$index]->uuid)->get()->first();
-          if ($user->match_score_with($match) > 0) {
+          if ($user->match_score_with($match) >= self::$min_match_score) {
+            \Log::info('Here.');
             $loaded++;
             array_push($output, $match->to_array());
           }
