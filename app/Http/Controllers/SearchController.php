@@ -19,19 +19,14 @@ class SearchController extends Controller {
       $limit = min(count($users) - 1, $request['loaded'] + $request['to_load']);
       $output = array();
       $index = 0;
-      \Log::info('UUID: ' . $request['uuid']);
       $user = User::where('uuid', $request['uuid'])->get()->first();
-      \Log::info($user->uuid);
-      // \Log::info($users[0]->uuid);
       while ($loaded < $limit && $index < count($users)) {
-        // if ($users[$index]->uuid != $user->uuid) {
-          // \Log::info($user->match_score_with($users[$index]));
-          // if ($user->match_score_with($users[$index]) >= self::$min_match_score) {
-      //       \Log::info($match['firstname'] . " " . $match['lastname'] . ": " . $user->match_score_with($match));
-      //       $loaded++;
-      //       array_push($output, $match->toArray());
-      //     }
-        // }
+        if ($users[$index]['uuid'] != $user->uuid) {
+          if ($user->match_score_with($users[$index]) >= self::$min_match_score) {
+            $loaded++;
+            array_push($output, $users[$index]);
+          }
+        }
         $index++;
       }
       return response()->json(['output' => $output, 'loaded' => $loaded]);
