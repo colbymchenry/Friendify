@@ -330,11 +330,6 @@
 var token = '{{ Session::token() }}';
 
 	$(document).ready(function() {
-		$.ajaxSetup({
-		  headers: {
-		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		  }
-		});
 
 		// == REGISTER AJAX REQUEST ==
 		$( "#register-btn" ).click(function(e) {

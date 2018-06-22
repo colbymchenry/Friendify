@@ -146,15 +146,15 @@ class User extends Model
   }
 
   function match_score_with($other_user) {
-    $first = \DB::table('interests')->where('uuid', $this->uuid)->first();
-    $second = \DB::table('interests')->where('uuid', $other_user->uuid)->first();
-
-    foreach ($first as $key => $value) {
-      \Log::info("$key : $value");
-    }
-
+    $first = (array) \DB::table('interests')->where('uuid', $this->uuid)->first();
+    $second = (array) \DB::table('interests')->where('uuid', $other_user->uuid)->first();
     $sum = 0;
-    return sum;
+    foreach ($first as $key => $value) {
+      if ($key != 'uuid') {
+        $sum = $sum + $value * $second[$key];
+      }
+    }
+    return $sum;
   }
 
 }
