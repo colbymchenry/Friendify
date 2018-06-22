@@ -8,7 +8,6 @@ class AuthController extends Controller
   public function register(\Illuminate\Http\Request $request)
   {
       try {
-        \Log::info("Registering!");
         if($request['eula'] == 'false')
         {
           throw new \Exception('You must agree to the EULA.');

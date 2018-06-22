@@ -926,7 +926,7 @@
 			</div>
 		</form>
 
-		<a href="#" class="link-find-friend">Find Friends</a>
+		<a href="{{ route('find_friends') }}" class="link-find-friend">Find Friends</a>
 
 		<div class="control-block">
 
@@ -2024,6 +2024,17 @@
 
 @if (isset($profile))
 <script src="{{ asset('js/sticky-sidebar.js') }}"></script>
+<script>
+
+	$(document).ready(function() {
+		$.ajaxSetup({
+		  headers: {
+		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		  }
+		});
+	});
+
+</script>
 @endif
 
 @yield('scripts')

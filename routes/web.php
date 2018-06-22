@@ -27,7 +27,7 @@ Route::group(['middleware' => ['checkemail']], function () {
 
   Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
 
-  Route::post('/search_people', 'SearchController@search_people')->name('search_people');
+  Route::get('/find_friends', 'SearchController@find_friends')->name('find_friends');
 
   Route::get('/test', 'TestController@index');
 
