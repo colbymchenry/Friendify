@@ -5,6 +5,8 @@ use \App\User;
 
 class SearchController extends Controller {
 
+  $min_match_score = 1;
+
   function find_friends() {
     $profile = '';
     return \View::make('find_friends')->with('profile', $profile);
