@@ -12,6 +12,10 @@ class AuthController extends Controller
         {
           throw new \Exception('You must agree to the EULA.');
         }
+
+        $dobArray = explode('/', $request['dob']);
+        $request['dob'] = $dobArray[1] . '/' . $dobArray[0] . '/' . $dobArray[2];
+
         $validator = $this->validator($request->all());
         if($validator->fails())
         {
