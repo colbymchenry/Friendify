@@ -8,8 +8,8 @@
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="ui-block">
 				<div class="top-header">
-					<div class="top-header-thumb">
-						<img src="{{ $profile->cover_image }}" alt="nature">
+					<div class="top-header-thumb" style="max-height:calc(100vh - 400px);min-height:240px;overflow:hidden;display: flex;justify-content: center;align-items: center;">
+						<img src="{{ $profile->cover_image }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%">
 					</div>
 					<div class="profile-section">
 						<div class="row">
@@ -231,12 +231,18 @@
 			</div>
 
 			<div class="modal-body">
+				<form action="{{ route('change.cover_image') }}" method="POST" enctype="multipart/form-data">
+				    {{ csrf_field() }}
+				    <input type="file" name="logo" />
+				    <br /><br />
+				    <input type="submit" value=" Save " />
+				</form>
 				<a href="#" class="upload-photo-item" id="upload_photo_choice">
-				<svg class="olymp-computer-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-computer-icon') }}"></use></svg>
+					<svg class="olymp-computer-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-computer-icon') }}"></use></svg>
 
-				<h6>Upload Photo</h6>
-				<span>Browse your computer.</span>
-			</a>
+					<h6>Upload Photo</h6>
+					<span>Browse your computer.</span>
+				</a>
 
 				<a href="#" class="upload-photo-item" data-toggle="modal" data-target="#choose-from-my-photo">
 					<svg class="olymp-photos-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-photos-icon') }}"></use></svg>
@@ -246,7 +252,7 @@
 				</a>
 			</div>
 
-			<div class="modal-body hidden" id="upload_photo_file">
+			<div class="modal-body" style="display:none;" id="upload_photo_file">
 				{{Form::open(['route' => 'change.cover_image', 'files' => true])}}
 
 				{{Form::label('user_photo', 'User Photo',['class' => 'control-label'])}}
@@ -493,7 +499,7 @@ var token = '{{ Session::token() }}';
 		// == SHOWING PHOTO PICKER ==
 		$( "#upload_photo_choice" ).click(function(e) {
 				e.preventDefault();
-				$("#upload_photo_file").removeClass('hidden');
+				$("#upload_photo_file").css('display', 'block');
 		  });
 		});
 
