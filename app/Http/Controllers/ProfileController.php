@@ -69,10 +69,10 @@ class ProfileController extends Controller
 
     try {
       $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
-      $user->cover_image = 'http://localhost:8000/' . $photoName;
+      $user->cover_image = 'http://localhost:8000/cover_images/' . $photoName;
       $user->save();
     } catch (\Exception $e) {
-
+        \Log::error($e);
     }
 
     return redirect()->route('profile', $request->session()->get('uuid'));
