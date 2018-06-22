@@ -5,7 +5,7 @@ use \App\User;
 
 class SearchController extends Controller {
 
-  static  $min_match_score = 1;
+  static $min_match_score = 1;
 
   function find_friends() {
     $profile = '';
@@ -15,20 +15,23 @@ class SearchController extends Controller {
   public function search_matches(\Illuminate\Http\Request $request) {
     try {
       $loaded = 0;
-      $results = \DB::table('users')->get()->toArray();
-      $limit = min(count($results) - 1, $request['loaded'] + $request['to_load']);
+      $users = User::all()->toArray();
+      $limit = min(count($users) - 1, $request['loaded'] + $request['to_load']);
       $output = array();
       $index = 0;
+      \Log::info('UUID: ' . $request['uuid']);
       $user = User::where('uuid', $request['uuid'])->get()->first();
-      while ($loaded < $limit && $index < count($results)) {
-        if ($results[$index]->uuid != $request['uuid']) {
-          $match = User::where('uuid', $results[$index]->uuid)->get()->first();
-          if ($user->match_score_with($match) >= self::$min_match_score) {
-            \Log::info('Here.');
-            $loaded++;
-            array_push($output, $match->to_array());
-          }
-        }
+      \Log::info($user->uuid);
+      // \Log::info($users[0]->uuid);
+      while ($loaded < $limit && $index < count($users)) {
+        // if ($users[$index]->uuid != $user->uuid) {
+          // \Log::info($user->match_score_with($users[$index]));
+          // if ($user->match_score_with($users[$index]) >= self::$min_match_score) {
+      //       \Log::info($match['firstname'] . " " . $match['lastname'] . ": " . $user->match_score_with($match));
+      //       $loaded++;
+      //       array_push($output, $match->toArray());
+      //     }
+        // }
         $index++;
       }
       return response()->json(['output' => $output, 'loaded' => $loaded]);
