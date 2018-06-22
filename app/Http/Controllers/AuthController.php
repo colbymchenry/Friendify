@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use \App\User;
 
 class AuthController extends Controller
 {
@@ -8,21 +9,24 @@ class AuthController extends Controller
   public function register(\Illuminate\Http\Request $request)
   {
       try {
-        \Log::info("Registering!");
         if($request['eula'] == 'false')
         {
           throw new \Exception('You must agree to the EULA.');
         }
 
         $dobArray = explode('/', $request['dob']);
-        $request['dob'] = $dobArray[1] . '/' . $dobArray[0] . '/' . $dobArray[2];
+
+        $dob = $dobArray[1] . '/' . $dobArray[0] . '/' . $dobArray[2];
+        $request['dob'] = $dob;
+
+        \Log::info($request->all());
 
         $validator = $this->validator($request->all());
         if($validator->fails())
         {
           throw new \Exception($validator->errors()->first());
         }
-        $uuid = \App\User::create($request['firstname'], $request['lastname'], $request['email'], \Hash::make($request['password']), $request['dob'], $request['gender']);
+        $uuid = User::create($request['firstname'], $request['lastname'], $request['email'], \Hash::make($request['password']), $request['dob'], $request['gender']);
       } catch (\Exception $e) {
           return response()->json(['failure' => $e->getMessage() ]);
       }

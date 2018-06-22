@@ -21,13 +21,15 @@ Route::post('/login', 'AuthController@login')->name('login');
 
 Route::group(['middleware' => ['checkemail']], function () {
 
-  Route::get('/profile/{uuid}', 'ProfileController@make');
-
-  Route::get('/interests_setup', 'IndexController@interests_setup');
+  Route::get('/profile/{uuid}', 'ProfileController@make')->name('profile');
 
   Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
 
   Route::post('/search_people', 'SearchController@search_people')->name('search_people');
+
+  Route::post('/change_cover_image', 'ProfileController@changeCoverImage')->name('change.cover_image');
+
+  Route::post('/change_avatar', 'ProfileController@changeAvatar')->name('change.avatar');
 
   Route::get('/test', 'TestController@index');
 

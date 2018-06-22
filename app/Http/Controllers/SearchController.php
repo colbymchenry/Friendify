@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use \App\User;
 
 class SearchController extends Controller {
 
@@ -15,7 +16,7 @@ class SearchController extends Controller {
       $limit = min(count($results), $request['loaded'] + $request['to_load']);
       $output = array();
       for ($i = 0; $i < $limit; $i++) {
-        $user = new \App\User($results[$i]->uuid);
+        $user = User::where('uuid', $results[$i]->uuid);
         array_push($output, $user->to_array());
       }
       \Log::info($output);

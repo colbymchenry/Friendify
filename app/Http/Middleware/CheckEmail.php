@@ -15,11 +15,9 @@ class CheckEmail
      */
     public function handle($request, Closure $next)
     {
-        \Log::info("TESTING");
         if($request->session()->get('uuid') === null) {
           return redirect('/');
         }
-        \Log::info("NOT NULL");
         return $next($request);
     }
 }

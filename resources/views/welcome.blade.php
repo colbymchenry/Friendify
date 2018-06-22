@@ -248,7 +248,7 @@
 
 									<div class="form-group date-time-picker label-floating">
 										<label class="control-label">Your Birthday</label>
-										<input name="datetimepicker" value="10/24/1984" id="register-dob" />
+										<input name="datetimepicker" value="24/10/1984" id="register-dob" />
 										<span class="input-group-addon">
 														<svg class="olymp-calendar-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-calendar-icon"></use></svg>
 													</span>

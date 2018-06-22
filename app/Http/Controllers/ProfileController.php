@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+use \App\User;
 
 class ProfileController extends Controller
 {
@@ -10,7 +12,7 @@ class ProfileController extends Controller
 
     try {
 
-      $user = new \App\User($uuid);
+      $user = User::where('uuid', $uuid)->get()->first();
 
       $top_friends = array(
 
@@ -45,13 +47,50 @@ class ProfileController extends Controller
       );
 
       return \View::make('profile')->with('profile', $user)->with('friends', $top_friends);
-
     } catch (\Exception $e) {
 
       return "Fail.<br>Error: $e";
 
     }
 
+  }
+
+  public function changeCoverImage(Request $request)
+  {
+    // get current time and append the upload file extension to it,
+    // then put that name to $photoName variable.
+    $photoName = $request->session()->get('uuid') . '.' . $request->user_photo->getClientOriginalExtension();
+
+    /*
+    talk the select file and move it public directory and make avatars
+    folder if doesn't exsit then give it that unique name.
+    */
+    $request->user_photo->move(public_path('cover_images'), $photoName);
+
+    try {
+      $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
+      $user->cover_image = 'http://localhost:8000/' . $photoName;
+      $user->save();
+    } catch (\Exception $e) {
+
+    }
+
+    return redirect()->route('profile', $request->session()->get('uuid'));
+  }
+
+  public function changeAvatar(Request $request)
+  {
+    // get current time and append the upload file extension to it,
+    // then put that name to $photoName variable.
+    $photoName = $request->session()->get('uuid') . '.' . $request->user_photo->getClientOriginalExtension();
+
+    /*
+    talk the select file and move it public directory and make avatars
+    folder if doesn't exsit then give it that unique name.
+    */
+    $request->user_photo->move(public_path('avatars'), $photoName);
+
+    redirect('/profile/' . $request->session()->get('uuid'));
   }
 
 }
