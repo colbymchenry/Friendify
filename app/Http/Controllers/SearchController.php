@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 class SearchController extends Controller {
 
+  $min_match_score = 1;
+
   function find_friends() {
     $profile = '';
     return \View::make('find_friends')->with('profile', $profile);
@@ -20,7 +22,7 @@ class SearchController extends Controller {
       while ($loaded < $limit && $index < count($results)) {
         if ($results[$index]->uuid != $request['uuid']) {
           $match = new \App\User($results[$index]->uuid);
-          if ($user->match_score_with($match) > 0) {
+          if ($user->match_score_with($match) >= $min_match_score) {
             $loaded++;
             array_push($output, $match->to_array());
           }
