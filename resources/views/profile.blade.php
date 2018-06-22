@@ -231,7 +231,7 @@
 			</div>
 
 			<div class="modal-body">
-				<a href="#" class="upload-photo-item">
+				<a href="#" class="upload-photo-item" id="upload_photo_choice">
 				<svg class="olymp-computer-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-computer-icon') }}"></use></svg>
 
 				<h6>Upload Photo</h6>
@@ -239,12 +239,21 @@
 			</a>
 
 				<a href="#" class="upload-photo-item" data-toggle="modal" data-target="#choose-from-my-photo">
+					<svg class="olymp-photos-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-photos-icon') }}"></use></svg>
 
-			<svg class="olymp-photos-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-photos-icon') }}"></use></svg>
+					<h6>Choose from My Photos</h6>
+					<span>Choose from your uploaded photos</span>
+				</a>
+			</div>
 
-			<h6>Choose from My Photos</h6>
-			<span>Choose from your uploaded photos</span>
-		</a>
+			<div class="modal-body hidden" id="upload_photo_file">
+				{{Form::open(['route' => 'change.cover_image', 'files' => true])}}
+
+				{{Form::label('user_photo', 'User Photo',['class' => 'control-label'])}}
+				{{Form::file('user_photo')}}
+				{{Form::submit('Save', ['class' => 'btn btn-success'])}}
+
+				{{Form::close()}}
 			</div>
 		</div>
 	</div>
@@ -467,4 +476,26 @@
 
 <!-- ... end Window-popup Choose from my Photo -->
 
+@endsection
+
+@section('scripts')
+<script>
+
+var token = '{{ Session::token() }}';
+
+	$(document).ready(function() {
+		$.ajaxSetup({
+		  headers: {
+		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		  }
+		});
+
+		// == SHOWING PHOTO PICKER ==
+		$( "#upload_photo_choice" ).click(function(e) {
+				e.preventDefault();
+				$("#upload_photo_file").removeClass('hidden');
+		  });
+		});
+
+</script>
 @endsection

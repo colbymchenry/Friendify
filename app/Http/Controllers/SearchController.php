@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use \App\User;
 
 class SearchController extends Controller {
 
@@ -18,11 +19,16 @@ class SearchController extends Controller {
       $limit = min(count($results) - 1, $request['loaded'] + $request['to_load']);
       $output = array();
       $index = 0;
-      $user = new \App\User($request['uuid']);
+      $user = User::where('uuid', $request['uuid'])->get()->first();
       while ($loaded < $limit && $index < count($results)) {
         if ($results[$index]->uuid != $request['uuid']) {
+<<<<<<< HEAD
           $match = new \App\User($results[$index]->uuid);
           if ($user->match_score_with($match) >= $min_match_score) {
+=======
+          $match = User::where('uuid', $results[$index]->uuid)->get()->first();
+          if ($user->match_score_with($match) > 0) {
+>>>>>>> 6e6a22992b3bdbc9467e7e2fc837fa484b1ae9a3
             $loaded++;
             array_push($output, $match->to_array());
           }
