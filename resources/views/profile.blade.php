@@ -231,13 +231,7 @@
 			</div>
 
 			<div class="modal-body">
-				<form action="{{ route('change.cover_image') }}" method="POST" enctype="multipart/form-data">
-				    {{ csrf_field() }}
-				    <input type="file" name="logo" />
-				    <br /><br />
-				    <input type="submit" value=" Save " />
-				</form>
-				<a href="#" class="upload-photo-item" id="upload_photo_choice">
+				<a href="#" class="upload-photo-item" onclick="chooseFile();" id="upload_photo_choice">
 					<svg class="olymp-computer-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-computer-icon') }}"></use></svg>
 
 					<h6>Upload Photo</h6>
@@ -252,11 +246,11 @@
 				</a>
 			</div>
 
-			<div class="modal-body" style="display:none;" id="upload_photo_file">
+			<div class="modal-body" style="height:0px;overflow:hidden;">
 				{{Form::open(['route' => 'change.cover_image', 'files' => true])}}
 
 				{{Form::label('user_photo', 'User Photo',['class' => 'control-label'])}}
-				{{Form::file('user_photo')}}
+				{{Form::file('user_photo', ['id' => 'user_photo'])}}
 				{{Form::submit('Save', ['class' => 'btn btn-success'])}}
 
 				{{Form::close()}}
@@ -502,6 +496,10 @@ var token = '{{ Session::token() }}';
 				$("#upload_photo_file").css('display', 'block');
 		  });
 		});
+
+		function chooseFile() {
+	      document.getElementById("user_photo").click();
+	   }
 
 </script>
 @endsection
