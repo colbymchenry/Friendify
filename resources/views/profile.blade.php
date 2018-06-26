@@ -247,7 +247,7 @@
 			</div>
 
 			<div class="modal-body" style="height:0px;overflow:hidden;">
-				{{Form::open(['route' => 'change.cover_image', 'files' => true])}}
+				{{Form::open(['route' => 'change.cover_image', 'files' => true, 'id' => 'cover_image_form'])}}
 
 				{{Form::label('user_photo', 'User Photo',['class' => 'control-label'])}}
 				{{Form::file('user_photo', ['id' => 'user_photo'])}}
@@ -500,6 +500,10 @@ var token = '{{ Session::token() }}';
 		function chooseFile() {
 	      document.getElementById("user_photo").click();
 	   }
+
+	 	document.getElementById("cover_image_form").onchange = function() {
+    	document.getElementById("cover_image_form").submit();
+		};
 
 </script>
 @endsection
