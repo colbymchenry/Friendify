@@ -150,23 +150,12 @@ class ProfileController extends Controller
     // then put that name to $photoName variable.
     $photoName = $request->session()->get('uuid') . '.' . $request->user_photo->getClientOriginalExtension();
 
-<<<<<<< HEAD
     /*
     talk the select file and move it public directory and make avatars
     folder if doesn't exsit then give it that unique name.
     */
     $request->user_photo->move(public_path('cover_images'), $photoName);
 
-    try {
-      $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
-      $user->cover_image = 'http://localhost:8000/cover_images/' . $photoName;
-      $user->save();
-    } catch (\Exception $e) {
-        \Log::error($e);
-    }
-
-    return redirect()->route('profile');
-=======
     $matches = Str::endsWith($photoName, '.png') | Str::endsWith($photoName, '.jpg') | Str::endsWith($photoName, '.jpeg');
 
     if ($matches) {
@@ -179,14 +168,12 @@ class ProfileController extends Controller
       try {
         $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
         $user->cover_image = 'http://localhost:8000/cover_images/' . $photoName;
-        \Log::info($user->uuid);
         $user->save();
       } catch (\Exception $e) {
           \Log::error($e);
       }
     }
     return redirect()->route('profile', $request->session()->get('uuid'));
->>>>>>> 26833bdb35d6cfd58cdcfb98b5ca08a95d5faf03
   }
 
   public function changeAvatar(Request $request)
