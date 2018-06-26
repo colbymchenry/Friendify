@@ -250,7 +250,7 @@
 				{{Form::open(['route' => 'change.cover_image', 'files' => true, 'id' => 'cover_image_form'])}}
 
 				{{Form::label('cover_image', 'User Photo',['class' => 'control-label'])}}
-				{{Form::file('user_photo', ['id' => 'cover_image_input', 'accept' => '.png,.jpg,.jpeg'])}}
+				{{Form::file('user_photo', ['id' => 'cover_image_input', 'accept' => 'image/*'])}}
 				{{Form::submit('Save', ['class' => 'btn btn-success'])}}
 
 				{{Form::close()}}
