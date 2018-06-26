@@ -21,7 +21,9 @@ Route::post('/login', 'AuthController@login')->name('login');
 
 Route::group(['middleware' => ['checkemail']], function () {
 
-  Route::get('/profile/{uuid}', 'ProfileController@make')->name('profile');
+  Route::get('/profile/{uuid}', 'ProfileController@get')->name('profile');
+
+  Route::get('/profile', 'ProfileController@me')->name('profile');
 
   Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
 

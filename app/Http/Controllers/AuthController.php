@@ -67,7 +67,7 @@ class AuthController extends Controller
     $request->session()->put('uuid', $result->uuid);
     $request->session()->save();
     \Session::save();
-    return response()->json(['success' => '/profile/' . $result->uuid]);
+    return response()->json(['success' => '/profile']);
   }
 
   public function logout(\Illuminate\Http\Request $request)

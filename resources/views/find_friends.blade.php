@@ -4,7 +4,7 @@
 
 <script>
 
-  const to_load = 3;
+  const to_load = 2;
   var loaded = 0;
   var search_string = 'NULL';
 
@@ -116,8 +116,6 @@
 
   $(document).ready(function() {
 
-    // $('#search-items-grid').style = "height: " + (window.innerHeight * 1.5) + ";";
-
     $('#search-items-grid').css('height', window.innerHeight * 1.1);
 
     load();
@@ -141,7 +139,6 @@
           .replace('@LASTNAME@', msg['output'][i]['lastname']).replace('@LOCATION@', msg['output'][i]['location'])
           .replace('@AVATAR@', msg['output'][i]['avatar']);
           $('#search-items-grid').html($('#search-items-grid').html() + result);
-          // alert(msg['output'][i]['firstname']);
         }
       });
       $('#desctiption-results').html('Showing ' + loaded + ' results for: \“<span class=\"c-primary\">' + search_string + '</span>\”');
