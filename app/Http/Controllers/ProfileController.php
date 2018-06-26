@@ -158,13 +158,12 @@ class ProfileController extends Controller
     try {
       $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
       $user->cover_image = 'http://localhost:8000/cover_images/' . $photoName;
-      \Log::info($user->uuid);
       $user->save();
     } catch (\Exception $e) {
         \Log::error($e);
     }
 
-    return redirect()->route('profile', $request->session()->get('uuid'));
+    return redirect()->route('profile');
   }
 
   public function changeAvatar(Request $request)
@@ -179,7 +178,15 @@ class ProfileController extends Controller
     */
     $request->user_photo->move(public_path('avatars'), $photoName);
 
-    redirect('/profile/' . $request->session()->get('uuid'));
+    try {
+      $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
+      $user->avatar = 'http://localhost:8000/avatars/' . $photoName;
+      $user->save();
+    } catch (\Exception $e) {
+        \Log::error($e);
+    }
+
+    return redirect()->route('profile');
   }
 
 }

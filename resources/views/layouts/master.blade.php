@@ -30,7 +30,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('Bootstrap/dist/css/bootstrap-grid.css') }}">
 
 	<!-- Main Styles CSS -->
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/main.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/fonts.min.css') }}">
 
 

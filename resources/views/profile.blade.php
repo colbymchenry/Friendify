@@ -8,7 +8,7 @@
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="ui-block">
 				<div class="top-header">
-					<div class="top-header-thumb" style="max-height:calc(100vh - 400px);min-height:240px;overflow:hidden;display: flex;justify-content: center;align-items: center;">
+					<div class="top-header-thumb" style="max-height:calc(100vh - 300px);min-height:240px;overflow:hidden;display: flex;justify-content: center;align-items: center;">
 						<img src="{{ $profile->cover_image }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%">
 					</div>
 					<div class="profile-section">
@@ -65,7 +65,7 @@
 
 								<ul class="more-dropdown more-with-triangle triangle-bottom-right">
 									<li>
-										<a href="#" data-toggle="modal" data-target="#update-header-photo">Update Profile Photo</a>
+										<a href="#" data-toggle="modal" data-target="#update-avatar-photo">Update Profile Photo</a>
 									</li>
 									<li>
 										<a href="#" data-toggle="modal" data-target="#update-header-photo">Update Header Photo</a>
@@ -78,9 +78,9 @@
 						</div>
 					</div>
 					<div class="top-header-author">
-						<a href="02-ProfilePage.html" class="author-thumb">
-							<img src="{{ $profile->avatar }}" alt="author">
-						</a>
+							<div class="top-header-thumb author-thumb" style="min-height:100px;overflow:hidden;display: flex;justify-content: center;align-items: center;">
+								<img src="{{ $profile->avatar }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;">
+							</div>
 						<div class="author-content">
 							<a href="02-ProfilePage.html" class="h4 author-name">{{ $profile->firstname }} {{ $profile->lastname }}</a>
 							<div class="country">{{ $profile->location }}</div>
@@ -231,7 +231,7 @@
 			</div>
 
 			<div class="modal-body">
-				<a href="#" class="upload-photo-item" onclick="chooseFile();" id="upload_photo_choice">
+				<a href="#" class="upload-photo-item" onclick="coverImageSubmit();">
 					<svg class="olymp-computer-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-computer-icon') }}"></use></svg>
 
 					<h6>Upload Photo</h6>
@@ -249,8 +249,8 @@
 			<div class="modal-body" style="height:0px;overflow:hidden;">
 				{{Form::open(['route' => 'change.cover_image', 'files' => true, 'id' => 'cover_image_form'])}}
 
-				{{Form::label('user_photo', 'User Photo',['class' => 'control-label'])}}
-				{{Form::file('user_photo', ['id' => 'user_photo', 'accept' => '.png,.jpg,.jpeg'])}}
+				{{Form::label('cover_image', 'User Photo',['class' => 'control-label'])}}
+				{{Form::file('user_photo', ['id' => 'cover_image_input', 'accept' => '.png,.jpg,.jpeg'])}}
 				{{Form::submit('Save', ['class' => 'btn btn-success'])}}
 
 				{{Form::close()}}
@@ -260,9 +260,9 @@
 </div>
 
 
-<!-- Window-popup Update Header Photo -->
+<!-- Window-popup Profile Header Photo -->
 
-<div class="modal fade" id="update-header-photo" tabindex="-1" role="dialog" aria-labelledby="update-header-photo" aria-hidden="true">
+<div class="modal fade" id="update-avatar-photo" tabindex="-1" role="dialog" aria-labelledby="update-avatar-photo" aria-hidden="true">
 	<div class="modal-dialog window-popup update-header-photo" role="document">
 		<div class="modal-content">
 			<a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
@@ -270,24 +270,33 @@
 			</a>
 
 			<div class="modal-header">
-				<h6 class="title">Update Header Photo</h6>
+				<h6 class="title">Update Profile Photo</h6>
 			</div>
 
 			<div class="modal-body">
-				<a href="#" class="upload-photo-item">
-				<svg class="olymp-computer-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-computer-icon') }}"></use></svg>
+				<a href="#" class="upload-photo-item" onclick="avatarSubmit();">
+					<svg class="olymp-computer-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-computer-icon') }}"></use></svg>
 
-				<h6>Upload Photo</h6>
-				<span>Browse your computer.</span>
-			</a>
+					<h6>Upload Photo</h6>
+					<span>Browse your computer.</span>
+				</a>
 
 				<a href="#" class="upload-photo-item" data-toggle="modal" data-target="#choose-from-my-photo">
+					<svg class="olymp-photos-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-photos-icon') }}"></use></svg>
 
-			<svg class="olymp-photos-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-photos-icon') }}"></use></svg>
+					<h6>Choose from My Photos</h6>
+					<span>Choose from your uploaded photos</span>
+				</a>
+			</div>
 
-			<h6>Choose from My Photos</h6>
-			<span>Choose from your uploaded photos</span>
-		</a>
+			<div class="modal-body" style="height:0px;overflow:hidden;">
+				{{Form::open(['route' => 'change.avatar', 'files' => true, 'id' => 'avatar_form'])}}
+
+				{{Form::label('avatar', 'User Photo',['class' => 'control-label'])}}
+				{{Form::file('user_photo', ['id' => 'avatar_input', 'accept' => '.png,.jpg,.jpeg'])}}
+				{{Form::submit('Save', ['class' => 'btn btn-success'])}}
+
+				{{Form::close()}}
 			</div>
 		</div>
 	</div>
@@ -489,21 +498,22 @@ var token = '{{ Session::token() }}';
 		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		  }
 		});
+	});
 
-		// == SHOWING PHOTO PICKER ==
-		$( "#upload_photo_choice" ).click(function(e) {
-				e.preventDefault();
-				$("#upload_photo_file").css('display', 'block');
-		  });
-		});
-
-		function chooseFile() {
-	      document.getElementById("user_photo").click();
+		function coverImageSubmit() {
+	      document.getElementById("cover_image_input").click();
 	   }
 
 	 	document.getElementById("cover_image_form").onchange = function() {
     	document.getElementById("cover_image_form").submit();
 		};
 
+		function avatarSubmit() {
+				document.getElementById("avatar_input").click();
+		 }
+
+		 document.getElementById("avatar_form").onchange = function() {
+     	document.getElementById("avatar_form").submit();
+ 		};
 </script>
 @endsection
