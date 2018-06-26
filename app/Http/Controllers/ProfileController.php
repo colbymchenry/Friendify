@@ -146,6 +146,9 @@ class ProfileController extends Controller
 
   public function changeCoverImage(Request $request)
   {
+
+    $this->validate($request, [ 'user_photo' => 'mimes:png,jpeg,jpg,gif | max:2048', ]);
+
     // get current time and append the upload file extension to it,
     // then put that name to $photoName variable.
     $photoName = $request->session()->get('uuid') . '.' . $request->user_photo->getClientOriginalExtension();
@@ -156,23 +159,14 @@ class ProfileController extends Controller
     */
     $request->user_photo->move(public_path('cover_images'), $photoName);
 
-    $matches = Str::endsWith($photoName, '.png') | Str::endsWith($photoName, '.jpg') | Str::endsWith($photoName, '.jpeg');
-
-    if ($matches) {
-      /*
-      talk the select file and move it public directory and make avatars
-      folder if doesn't exsit then give it that unique name.
-      */
-      $request->user_photo->move(public_path('cover_images'), $photoName);
-
-      try {
-        $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
-        $user->cover_image = 'http://localhost:8000/cover_images/' . $photoName;
-        $user->save();
-      } catch (\Exception $e) {
-          \Log::error($e);
-      }
+    try {
+      $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
+      $user->cover_image = 'http://localhost:8000/cover_images/' . $photoName;
+      $user->save();
+    } catch (\Exception $e) {
+        \Log::error($e);
     }
+
     return redirect()->route('profile', $request->session()->get('uuid'));
   }
 
