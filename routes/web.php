@@ -19,11 +19,13 @@ Route::post('/register', 'AuthController@register')->name('register');
 
 Route::post('/login', 'AuthController@login')->name('login');
 
-Route::group(['middleware' => ['checkemail']], function () {
+Route::group(['middleware' => ['checkuuid']], function () {
 
   Route::get('/profile/{uuid}', 'ProfileController@get')->name('profile');
 
   Route::get('/profile', 'ProfileController@me')->name('profile');
+
+  Route::get('/account_setup', 'ProfileController@getAccountSetupView')->name('setup_account');
 
   Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
 

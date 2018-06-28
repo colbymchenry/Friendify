@@ -9,7 +9,11 @@
 			<div class="ui-block">
 				<div class="top-header">
 					<div class="top-header-thumb" style="max-height:calc(100vh - 300px);min-height:240px;overflow:hidden;display: flex;justify-content: center;align-items: center;">
-						<img src="{{ $profile->cover_image }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%">
+						@if($profile->cover_image !== '')
+							<img src="{{ $profile->cover_image }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%">
+						@else
+							<img src="https://i.imgur.com/A6J7EpN.png" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%">
+						@endif
 					</div>
 					<div class="profile-section">
 						<div class="row">
@@ -79,7 +83,11 @@
 					</div>
 					<div class="top-header-author">
 							<div class="top-header-thumb author-thumb" style="min-height:100px;overflow:hidden;display: flex;justify-content: center;align-items: center;">
-								<img src="{{ $profile->avatar }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;">
+								@if($profile->avatar !== '')
+									<img src="{{ $profile->avatar }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;">
+								@else
+									<img src="https://i.imgur.com/3gokj8j.png" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;">
+								@endif
 							</div>
 						<div class="author-content">
 							<a href="02-ProfilePage.html" class="h4 author-name">{{ $profile->firstname }} {{ $profile->lastname }}</a>

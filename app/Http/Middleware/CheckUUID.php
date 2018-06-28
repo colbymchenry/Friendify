@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CheckEmail
+class CheckUUID
 {
     /**
      * Handle an incoming request.

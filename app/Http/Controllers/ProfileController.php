@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\User;
+use \App\Interests;
 use Illuminate\Support\Str;
 
 class ProfileController extends Controller
@@ -191,6 +192,19 @@ class ProfileController extends Controller
     }
 
     return redirect()->route('profile');
+  }
+
+  public function getAccountSetupView(Request $request)
+  {
+    try {
+        $uuid = $request->session()->get('uuid');
+        $user = User::where('uuid', $uuid)->get()->first();
+        $interests = Interests::where('uuid', $uuid)->get()->first();
+
+        return \View::make('account_setup')->with('profile', $user)->with('interests', $interests);
+    } catch (\Exception $e) {
+      \Log::error($e);
+    }
   }
 
 }
