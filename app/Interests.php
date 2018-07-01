@@ -15,4 +15,41 @@ class Interests extends Model
   protected $primaryKey = 'uuid';
   public $incrementing = false;
 
+/**
+* TOOK FOREVER TO GET THIS TO WORK RECURSIVELY, DON'T FUCK WITH THIS PLEASE.
+**/
+  public static function getInterests()
+  {
+    global $interests;
+    $interests = array();
+    $json = json_decode(\Storage::get('Interests.json'), true);
+
+    Interests::addInterests('' , $json, $interests);
+    return $interests;
+  }
+
+  static function addInterests($prefix, $data) {
+    global $interests;
+    foreach ($data as $key => $value) {
+      if (is_array($value)) {
+        if ($prefix != '') {
+          array_push($interests, $prefix . '_' . $key);
+        } else {
+          array_push($interests, $key);
+        }
+        if ($prefix != '') {
+            Interests::addInterests($prefix . '_' . $key, $value, $interests);
+        } else {
+            Interests::addInterests($key, $value, $interests);
+        }
+      } else {
+        if ($prefix != '') {
+          array_push($interests, $prefix . '_' . $key);
+        } else {
+          array_push($interests, $value);
+        }
+      }
+    }
+  }
+
 }

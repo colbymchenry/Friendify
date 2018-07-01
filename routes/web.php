@@ -25,7 +25,9 @@ Route::group(['middleware' => ['checkuuid']], function () {
 
   Route::get('/profile', 'ProfileController@me')->name('profile');
 
-  Route::get('/account_setup', 'ProfileController@getAccountSetupView')->name('setup_account');
+  Route::post('/account_setup/location', 'ProfileController@setLocation')->name('account_setup.location');
+
+  Route::get('/account_setup', 'ProfileController@getAccountSetupView')->name('account_setup');
 
   Route::post('/search_matches', 'SearchController@search_matches')->name('search_matches');
 

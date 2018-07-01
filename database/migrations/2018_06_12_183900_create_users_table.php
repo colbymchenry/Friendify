@@ -21,7 +21,12 @@ class CreateUsersTable extends Migration
           $table->string('hashed_password');
           $table->string('dob');
           $table->boolean('gender');
-          $table->string('location')->default('');
+          $table->integer('street_number')->default(0);
+          $table->string('route')->default('');
+          $table->string('city')->default('');
+          $table->string('state')->default('');
+          $table->integer('zip_code')->default(0);
+          $table->string('country')->default('');
           $table->string('cover_image')->default('');
           $table->string('avatar')->default('');
           $table->boolean('democrat')->default(0);

@@ -33,7 +33,10 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/fonts.min.css') }}">
 
+	<!-- Octicon CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ asset('octicons/build.css') }}">
 
+	@yield('head')
 
 </head>
 

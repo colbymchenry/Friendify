@@ -1,11 +1,22 @@
 @extends('layouts.master')
 
+@section('head')
+<style>
+	.disabled {
+	   pointer-events: none;
+	   cursor: default;
+	}
+</style>
+@endsection
+
 @section('content')
 <!-- Top Header-Profile -->
 
 <div class="container">
 	<div class="row">
+		<svg width="128" height="128"><use xlink:href="octicons/svg/home.svg#default"></use></svg>
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="padding-left: 50px;padding-right: 50px;">
+
 			<div class="ui-block">
 				<!-- Login-Registration Form  -->
 				<div class="registration-login-form">
@@ -13,7 +24,8 @@
 					<ul class="nav nav-tabs" role="tablist">
 						<li class="nav-item">
 							<a class="nav-link active" data-toggle="tab" href="#home" role="tab">
-								<svg class="olymp-login-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-login-icon"></use></svg>
+								<svg><use xlink:href="octicons/svg/home.svg#default"></use></svg>
+							<!-- <img style="fill:#ff5e3a" src="octicons/svg/home.svg"></object> -->
 							</a>
 						</li>
 						<li class="nav-item">
@@ -30,42 +42,42 @@
 							<form class="content">
 								<div class="row">
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-										<div class="form-group label-floating is-empty">
+										<div class="form-group is-empty">
 											<input class="form-control" placeholder="Enter your address" type="text" onFocus="geolocate()" id="autocomplete">
 										</div>
 									</div>
 									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-										<div class="form-group label-floating is-empty">
+										<div class="form-group is-empty">
 											<input class="form-control" placeholder="Street" type="text" readonly="readonly" id="street_number">
 										</div>
 									</div>
 									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-										<div class="form-group label-floating is-empty">
+										<div class="form-group is-empty">
 											<input class="form-control" placeholder="Address" type="text" readonly="readonly" id="route">
 										</div>
 									</div>
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-										<div class="form-group label-floating is-empty">
+										<div class="form-group is-empty">
 											<input class="form-control" placeholder="City" type="email" readonly="readonly" id="locality">
 										</div>
 									</div>
 									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-										<div class="form-group label-floating is-empty">
+										<div class="form-group is-empty">
 											<input class="form-control" placeholder="State" type="text" readonly="readonly" id="administrative_area_level_1">
 										</div>
 									</div>
 									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-										<div class="form-group label-floating is-empty">
+										<div class="form-group is-empty">
 											<input class="form-control" placeholder="Zip Code" type="text" readonly="readonly" id="postal_code">
 										</div>
 									</div>
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-										<div class="form-group label-floating is-empty">
+										<div class="form-group is-empty">
 											<input class="form-control" placeholder="Country" type="text" readonly="readonly" id="country">
 										</div>
 									</div>
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-										<a href="#" id="register-btn" class="btn btn-purple btn-lg full-width">Complete Registration!</a>
+										<a href="#" id="location-next" class="btn btn-purple btn-lg full-width disabled">Next!</a>
 									</div>
 								</div>
 							</form>
@@ -172,7 +184,13 @@
 					document.getElementById(addressType).value = val;
 				}
 			}
+
+			updateLocationNextBtn();
 		}
+
+		$( "#autocomplete" ).change(function() {
+			updateLocationNextBtn();
+		});
 
 		// Bias the autocomplete object to the user's geographical location,
 		// as supplied by the browser's 'navigator.geolocation' object.
@@ -190,7 +208,46 @@
 					autocomplete.setBounds(circle.getBounds());
 				});
 			}
+
+			updateLocationNextBtn();
 		}
+
+		function updateLocationNextBtn()
+		{
+			if($('#route').val().length === 0)
+			{
+				$('#location-next').addClass('disabled');
+			} else
+			{
+				$('#location-next').removeClass('disabled');
+			}
+		}
+
+		$( "#location-next" ).click(function(e) {
+				e.preventDefault();
+				$.ajax({
+					method: 'POST',
+					url: '{{ route('account_setup.location') }}',
+					data: {
+						street_number: $('#street_number').val(),
+						route: $('#route').val(),
+						city: $('#locality').val(),
+						state: $('#administrative_area_level_1').val(),
+						country: $('#country').val(),
+						zip_code: $('#postal_code').val(),
+						_token: token
+					 }
+				})
+				.done(function (msg) {
+					if(msg.hasOwnProperty('success')) {
+						 swal("Success!", msg['success'], "success");
+					} else if(msg.hasOwnProperty('failure')) {
+						swal("Uh-Oh!", msg['failure'], "error");
+					} else {
+						swal("Uh-Oh!", "Something went wrong on our end.", "error");
+					}
+				});
+			});
 
 </script>
 

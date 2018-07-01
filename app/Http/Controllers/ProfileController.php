@@ -199,11 +199,34 @@ class ProfileController extends Controller
     try {
         $uuid = $request->session()->get('uuid');
         $user = User::where('uuid', $uuid)->get()->first();
-        $interests = Interests::where('uuid', $uuid)->get()->first();
+        $user_interests = Interests::where('uuid', $uuid)->get()->first();
 
-        return \View::make('account_setup')->with('profile', $user)->with('interests', $interests);
+        return \View::make('account_setup')->with('profile', $user)->with('user_interests', $user_interests)->with('interests', Interests::getInterests());
     } catch (\Exception $e) {
       \Log::error($e);
+    }
+  }
+
+  public function setLocation(Request $request)
+  {
+    try {
+        $uuid = $request->session()->get('uuid');
+        $user = User::where('uuid', $uuid)->get()->first();
+        $interests = Interests::where('uuid', $uuid)->get()->first();
+
+        $user->street_number = $request['street_number'];
+        $user->route = $request['route'];
+        $user->city = $request['city'];
+        $user->state = $request['state'];
+        $user->zip_code = $request['zip_code'];
+        $user->country = $request['country'];
+
+        $user->save();
+
+        return response()->json(['success' => '/profile']);
+    } catch (\Exception $e) {
+      \Log::error($e);
+      return response()->json(['failure' => $e->getMessage() ]);
     }
   }
 

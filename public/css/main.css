@@ -4714,6 +4714,9 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
     .registration-login-form .nav-link svg {
       width: 21px;
       height: 21px; }
+    .registration-login-form .nav-link img {
+      width: 21px;
+      height: 21px; }
   .registration-login-form .tab-content {
     overflow: hidden; }
   .registration-login-form .content {
