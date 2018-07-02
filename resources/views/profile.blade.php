@@ -1,3 +1,10 @@
+@php
+
+use \App\User;
+use \App\Profile;
+
+@endphp
+
 @extends('layouts.master')
 
 @section('content')
@@ -91,7 +98,7 @@
 							</div>
 						<div class="author-content">
 							<a href="02-ProfilePage.html" class="h4 author-name">{{ $profile->firstname }} {{ $profile->lastname }}</a>
-							<div class="country">{{ $profile->location }}</div>
+							<div class="country">{{ $profile->city }}, {{ $profile->state }}</div>
 						</div>
 					</div>
 				</div>
@@ -105,7 +112,7 @@
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="ui-block responsive-flex">
 				<div class="ui-block-title">
-					<div class="h6 title">{{ $profile->firstname }}’s Friends ({{ 10 }})</div>
+					<div class="h6 title">{{ $profile->firstname }}’s Friends ({{ count(User::all()) - 1 }})</div>
 					<form class="w-search">
 						<div class="form-group with-button">
 							<input class="form-control" type="text" placeholder="Search Friends...">
@@ -128,6 +135,10 @@
 <div class="container">
 	@foreach ($friends as $friend)
 
+		@if ($friend->uuid == $profile->uuid)
+			@continue
+		@endif
+
 		@if ($count % 4 == 0)
 		<div class="row">
 		@endif
@@ -136,7 +147,12 @@
 				<!-- Friends -->
 					<div class="friend-item">
 						<div class="friend-header-thumb">
-							<img src="{{ asset($friend['cover_image']) }}" alt="friend">
+							<!-- <img src="{{ $friend->cover_image }}" alt="friend"> -->
+							@if($friend->cover_image !== '')
+								<img src="{{ $friend->cover_image }}" alt="friend">
+							@else
+								<img src="https://i.imgur.com/A6J7EpN.png" alt="friend">
+							@endif
 						</div>
 
 						<div class="friend-item-content">
@@ -157,11 +173,15 @@
 							</div>
 							<div class="friend-avatar">
 								<div class="author-thumb">
-									<img src="{{ asset($friend['avatar']) }}" alt="author">
+									@if($friend->avatar !== '')
+										<img src="{{ $friend->avatar }}" alt="author">
+									@else
+										<img src="https://i.imgur.com/3gokj8j.png" alt="author">
+									@endif
 								</div>
 								<div class="author-content">
-									<a href="{{ $friend['profile_link'] }}" class="h5 author-name">{{ $friend['name'] }}</a>
-									<div class="country">{{ $friend['location'] }}</div>
+									<a href="{{ $friend['profile_link'] }}" class="h5 author-name">{{ $friend->firstname }} {{ $friend->lastname }}</a>
+									<div class="country">{{ $friend->city }}, {{ $friend->state }}</div>
 								</div>
 							</div>
 
@@ -170,15 +190,15 @@
 									<div class="swiper-slide">
 										<div class="friend-count" data-swiper-parallax="-500">
 											<a href="#" class="friend-count-item">
-												<div class="h6">{{ $friend['friend_count'] }}</div>
+												<div class="h6">{{ count(User::all()) - 1 }}</div>
 												<div class="title">Friends</div>
 											</a>
 											<a href="#" class="friend-count-item">
-												<div class="h6">{{ $friend['photo_count'] }}</div>
+												<div class="h6">{{ 3 }}</div>
 												<div class="title">Photos</div>
 											</a>
 											<a href="#" class="friend-count-item">
-												<div class="h6">{{ $friend['video_count'] }}</div>
+												<div class="h6">{{ 4 }}</div>
 												<div class="title">Videos</div>
 											</a>
 										</div>
@@ -195,7 +215,7 @@
 									</div>
 
 									<div class="swiper-slide">
-										<p class="friend-about" data-swiper-parallax="-500">{{ $friend['about'] }}</p>
+										<p class="friend-about" data-swiper-parallax="-500">{{ Profile::where('uuid', $friend->uuid)->first()->about }}</p>
 
 										<div class="friend-since" data-swiper-parallax="-100">
 											<span>Friends Since:</span>
