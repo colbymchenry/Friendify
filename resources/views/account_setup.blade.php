@@ -14,7 +14,6 @@
 
 <div class="container">
 	<div class="row">
-		<svg width="128" height="128"><use xlink:href="octicons/svg/home.svg#default"></use></svg>
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="padding-left: 50px;padding-right: 50px;">
 
 			<div class="ui-block">
@@ -37,6 +36,8 @@
 
 					<!-- Tab panes -->
 					<div class="tab-content">
+
+						<!-- LOCATION SETUP -->
 						<div class="tab-pane active" id="home" role="tabpanel" data-mh="log-tab">
 							<div class="title h6">Where do you live?</div>
 							<form class="content">
@@ -82,46 +83,27 @@
 								</div>
 							</form>
 						</div>
+						<!-- LOCATION SETUP END -->
 
+						<!-- ABOUT SETUP -->
 						<div class="tab-pane" id="profile" role="tabpanel" data-mh="log-tab">
-							<div class="title h6">Login to your Account</div>
+							<div class="title h6">Tell us about yourself...</div>
 							<form class="content">
 								<div class="row">
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-										<div class="form-group label-floating is-empty">
-											<label class="control-label">Your Email</label>
-											<input class="form-control" placeholder="" type="email" id="login-email">
+										<div class="form-group label-floating">
+											<h5 style="padding-left: 10px;">About</h5>
+											<textarea class="form-control" maxlength="255" id="about-you" placeholder="About You..."></textarea>
+											<p style="text-align: right;"><b id="about-you-length">0/255</b></p>
 										</div>
-										<div class="form-group label-floating is-empty">
-											<label class="control-label">Your Password</label>
-											<input class="form-control" placeholder="" type="password" id="login-password">
-										</div>
-
-										<div class="remember">
-
-											<div class="checkbox">
-												<label>
-													<input name="optionsCheckboxes" type="checkbox">
-													Remember Me
-												</label>
-											</div>
-											<a href="#" class="forgot">Forgot my Password</a>
-										</div>
-
-										<a href="#" id="login-btn" class="btn btn-lg btn-primary full-width">Login</a>
-
-										<div class="or"></div>
-
-										<a href="#" class="btn btn-lg bg-facebook full-width btn-icon-left"><i class="fab fa-facebook-f" aria-hidden="true"></i>Login with Facebook</a>
-
-										<a href="#" class="btn btn-lg bg-twitter full-width btn-icon-left"><i class="fab fa-twitter" aria-hidden="true"></i>Login with Twitter</a>
-
-
-										<p>Don’t you have an account? <a href="#">Register Now!</a> it’s really simple and you can start enjoing all the benefits!</p>
+									</div>
+									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+										<a href="#" id="about-next" class="btn btn-purple btn-lg full-width disabled">Next!</a>
 									</div>
 								</div>
 							</form>
 						</div>
+						<!-- ABOUT SETUP END -->
 					</div>
 				</div>
 			</div>
@@ -248,6 +230,32 @@
 					}
 				});
 			});
+
+			$('#about-you').bind('input propertychange', function() {
+				var aboutYouLength = $('#about-you').val().length;
+	      $('#about-you-length').text(aboutYouLength + '/255');
+			});
+
+			$( "#about-next" ).click(function(e) {
+					e.preventDefault();
+					$.ajax({
+						method: 'POST',
+						url: '{{ route('account_setup.about') }}',
+						data: {
+							about: $('#about-you').val(),
+							_token: token
+						 }
+					})
+					.done(function (msg) {
+						if(msg.hasOwnProperty('success')) {
+							 swal("Success!", msg['success'], "success");
+						} else if(msg.hasOwnProperty('failure')) {
+							swal("Uh-Oh!", msg['failure'], "error");
+						} else {
+							swal("Uh-Oh!", "Something went wrong on our end.", "error");
+						}
+					});
+				});
 
 </script>
 

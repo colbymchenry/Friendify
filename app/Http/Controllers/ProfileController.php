@@ -230,4 +230,18 @@ class ProfileController extends Controller
     }
   }
 
+  public function setAbout(Request $request)
+  {
+    try {
+        $uuid = $request->session()->get('uuid');
+        $user = User::where('uuid', $uuid)->get()->first();
+        $interests = Interests::where('uuid', $uuid)->get()->first();
+
+        return response()->json(['success' => '/profile']);
+    } catch (\Exception $e) {
+      \Log::error($e);
+      return response()->json(['failure' => $e->getMessage() ]);
+    }
+  }
+
 }
