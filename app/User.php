@@ -142,6 +142,7 @@ class User extends Model
       'gender' => $gender
       ));
       \DB::table('interests')->insert(array('uuid' => $uuid));
+      \DB::table('profiles')->insert(array('uuid' => $uuid));
       return $uuid;
     }
 
