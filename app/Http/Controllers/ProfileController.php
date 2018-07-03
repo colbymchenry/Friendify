@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use \App\User;
 use \App\Interests;
 use Illuminate\Support\Str;
+use \App\Profile;
 
 class ProfileController extends Controller
 {
@@ -118,10 +119,13 @@ class ProfileController extends Controller
 
   public function setAbout(Request $request)
   {
+
     try {
-        $uuid = $request->session()->get('uuid');
-        $user = User::where('uuid', $uuid)->get()->first();
-        $interests = Interests::where('uuid', $uuid)->get()->first();
+        // $uuid = $request->session()->get('uuid');
+        // $user = User::where('uuid', $uuid)->get()->first();
+        // $interests = Interests::where('uuid', $uuid)->get()->first();
+
+        Profile::amend($request->session()->get('uuid'), $request['about']);
 
         return response()->json(['success' => '/profile']);
     } catch (\Exception $e) {

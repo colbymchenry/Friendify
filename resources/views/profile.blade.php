@@ -518,30 +518,21 @@ use \App\Profile;
 @section('scripts')
 <script>
 
-var token = '{{ Session::token() }}';
+	function coverImageSubmit() {
+      document.getElementById("cover_image_input").click();
+   }
 
-	$(document).ready(function() {
-		$.ajaxSetup({
-		  headers: {
-		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		  }
-		});
-	});
+ 	document.getElementById("cover_image_form").onchange = function() {
+  	document.getElementById("cover_image_form").submit();
+	};
 
-		function coverImageSubmit() {
-	      document.getElementById("cover_image_input").click();
-	   }
+	function avatarSubmit() {
+			document.getElementById("avatar_input").click();
+	 }
 
-	 	document.getElementById("cover_image_form").onchange = function() {
-    	document.getElementById("cover_image_form").submit();
-		};
+	 document.getElementById("avatar_form").onchange = function() {
+   	document.getElementById("avatar_form").submit();
+	};
 
-		function avatarSubmit() {
-				document.getElementById("avatar_input").click();
-		 }
-
-		 document.getElementById("avatar_form").onchange = function() {
-     	document.getElementById("avatar_form").submit();
- 		};
 </script>
 @endsection

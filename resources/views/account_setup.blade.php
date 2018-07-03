@@ -1,3 +1,9 @@
+@php
+
+use \App\Profile;
+
+@endphp
+
 @extends('layouts.master')
 
 @section('head')
@@ -93,12 +99,12 @@
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
 										<div class="form-group label-floating">
 											<h5 style="padding-left: 10px;">About</h5>
-											<textarea class="form-control" maxlength="255" id="about-you" placeholder="About You..."></textarea>
+											<textarea class="form-control" maxlength="255" id="about-you" placeholder="About You...">{{ Profile::where('uuid', Session::get('uuid'))->first()->about }}</textarea>
 											<p style="text-align: right;"><b id="about-you-length">0/255</b></p>
 										</div>
 									</div>
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-										<a href="#" id="about-next" class="btn btn-purple btn-lg full-width disabled">Next!</a>
+										<a href="#" id="about-next" class="btn btn-purple btn-lg full-width">Next!</a>
 									</div>
 								</div>
 							</form>
@@ -116,107 +122,123 @@
 @section('scripts')
 <script>
 
-	var token = '{{ Session::token() }}';
+	var placeSearch, autocomplete;
+	var componentForm = {
+		street_number: 'short_name',
+		route: 'long_name',
+		locality: 'long_name',
+		administrative_area_level_1: 'short_name',
+		country: 'long_name',
+		postal_code: 'short_name'
+	};
 
-	$(document).ready(function() {
-			$.ajaxSetup({
-			  headers: {
-			    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			  }
+	function initAutocomplete() {
+		// Create the autocomplete object, restricting the search to geographical
+		// location types.
+		autocomplete = new google.maps.places.Autocomplete(
+				/** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+				{types: ['geocode']});
+
+		// When the user selects an address from the dropdown, populate the address
+		// fields in the form.
+		autocomplete.addListener('place_changed', fillInAddress);
+	}
+
+	function fillInAddress() {
+		// Get the place details from the autocomplete object.
+		var place = autocomplete.getPlace();
+
+		for (var component in componentForm) {
+			document.getElementById(component).value = '';
+			document.getElementById(component).disabled = false;
+		}
+
+		// Get each component of the address from the place details
+		// and fill the corresponding field on the form.
+		for (var i = 0; i < place.address_components.length; i++) {
+			var addressType = place.address_components[i].types[0];
+			if (componentForm[addressType]) {
+				var val = place.address_components[i][componentForm[addressType]];
+				document.getElementById(addressType).value = val;
+			}
+		}
+
+		updateLocationNextBtn();
+	}
+
+	$( "#autocomplete" ).change(function() {
+		updateLocationNextBtn();
+	});
+
+	// Bias the autocomplete object to the user's geographical location,
+	// as supplied by the browser's 'navigator.geolocation' object.
+	function geolocate() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var geolocation = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				};
+				var circle = new google.maps.Circle({
+					center: geolocation,
+					radius: position.coords.accuracy
+				});
+				autocomplete.setBounds(circle.getBounds());
+			});
+		}
+
+		updateLocationNextBtn();
+	}
+
+	function updateLocationNextBtn()
+	{
+		if($('#route').val().length === 0)
+		{
+			$('#location-next').addClass('disabled');
+		} else
+		{
+			$('#location-next').removeClass('disabled');
+		}
+	}
+
+	$( "#location-next" ).click(function(e) {
+			e.preventDefault();
+			$.ajax({
+				method: 'POST',
+				url: '{{ route('account_setup.location') }}',
+				data: {
+					street_number: $('#street_number').val(),
+					route: $('#route').val(),
+					city: $('#locality').val(),
+					state: $('#administrative_area_level_1').val(),
+					country: $('#country').val(),
+					zip_code: $('#postal_code').val(),
+					_token: token
+				 }
+			})
+			.done(function (msg) {
+				if(msg.hasOwnProperty('success')) {
+					 swal("Success!", msg['success'], "success");
+				} else if(msg.hasOwnProperty('failure')) {
+					swal("Uh-Oh!", msg['failure'], "error");
+				} else {
+					swal("Uh-Oh!", "Something went wrong on our end.", "error");
+				}
 			});
 		});
 
-		var placeSearch, autocomplete;
-		var componentForm = {
-			street_number: 'short_name',
-			route: 'long_name',
-			locality: 'long_name',
-			administrative_area_level_1: 'short_name',
-			country: 'long_name',
-			postal_code: 'short_name'
-		};
-
-		function initAutocomplete() {
-			// Create the autocomplete object, restricting the search to geographical
-			// location types.
-			autocomplete = new google.maps.places.Autocomplete(
-					/** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
-					{types: ['geocode']});
-
-			// When the user selects an address from the dropdown, populate the address
-			// fields in the form.
-			autocomplete.addListener('place_changed', fillInAddress);
-		}
-
-		function fillInAddress() {
-			// Get the place details from the autocomplete object.
-			var place = autocomplete.getPlace();
-
-			for (var component in componentForm) {
-				document.getElementById(component).value = '';
-				document.getElementById(component).disabled = false;
-			}
-
-			// Get each component of the address from the place details
-			// and fill the corresponding field on the form.
-			for (var i = 0; i < place.address_components.length; i++) {
-				var addressType = place.address_components[i].types[0];
-				if (componentForm[addressType]) {
-					var val = place.address_components[i][componentForm[addressType]];
-					document.getElementById(addressType).value = val;
-				}
-			}
-
-			updateLocationNextBtn();
-		}
-
-		$( "#autocomplete" ).change(function() {
-			updateLocationNextBtn();
+		$('#about-you').bind('input propertychange', function() {
+			var aboutYouLength = $('#about-you').val().length;
+      $('#about-you-length').text(aboutYouLength + '/255');
 		});
 
-		// Bias the autocomplete object to the user's geographical location,
-		// as supplied by the browser's 'navigator.geolocation' object.
-		function geolocate() {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function(position) {
-					var geolocation = {
-						lat: position.coords.latitude,
-						lng: position.coords.longitude
-					};
-					var circle = new google.maps.Circle({
-						center: geolocation,
-						radius: position.coords.accuracy
-					});
-					autocomplete.setBounds(circle.getBounds());
-				});
-			}
-
-			updateLocationNextBtn();
-		}
-
-		function updateLocationNextBtn()
-		{
-			if($('#route').val().length === 0)
-			{
-				$('#location-next').addClass('disabled');
-			} else
-			{
-				$('#location-next').removeClass('disabled');
-			}
-		}
-
-		$( "#location-next" ).click(function(e) {
+		$("#about-next").click(function(e) {
 				e.preventDefault();
 				$.ajax({
 					method: 'POST',
-					url: '{{ route('account_setup.location') }}',
+					url: '{{ route('account_setup.about') }}',
 					data: {
-						street_number: $('#street_number').val(),
-						route: $('#route').val(),
-						city: $('#locality').val(),
-						state: $('#administrative_area_level_1').val(),
-						country: $('#country').val(),
-						zip_code: $('#postal_code').val(),
+						about: $('#about-you').val(),
 						_token: token
 					 }
 				})
@@ -230,32 +252,6 @@
 					}
 				});
 			});
-
-			$('#about-you').bind('input propertychange', function() {
-				var aboutYouLength = $('#about-you').val().length;
-	      $('#about-you-length').text(aboutYouLength + '/255');
-			});
-
-			$( "#about-next" ).click(function(e) {
-					e.preventDefault();
-					$.ajax({
-						method: 'POST',
-						url: '{{ route('account_setup.about') }}',
-						data: {
-							about: $('#about-you').val(),
-							_token: token
-						 }
-					})
-					.done(function (msg) {
-						if(msg.hasOwnProperty('success')) {
-							 swal("Success!", msg['success'], "success");
-						} else if(msg.hasOwnProperty('failure')) {
-							swal("Uh-Oh!", msg['failure'], "error");
-						} else {
-							swal("Uh-Oh!", "Something went wrong on our end.", "error");
-						}
-					});
-				});
 
 </script>
 
