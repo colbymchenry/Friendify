@@ -88,7 +88,7 @@ class ProfileController extends Controller
         $user = User::where('uuid', $uuid)->get()->first();
         $user_interests = Interests::where('uuid', $uuid)->get()->first();
 
-        return \View::make('account_setup')->with('profile', $user)->with('user_interests', $user_interests)->with('interests', Interests::getInterests());
+        return \View::make('account_setup')->with('profile', $user)->with('user_interests', $user_interests)->with('interests', Interests::getInterestsHTML());
     } catch (\Exception $e) {
       \Log::error($e);
     }

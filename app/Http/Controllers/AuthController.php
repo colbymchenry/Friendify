@@ -67,6 +67,7 @@ class AuthController extends Controller
     $request->session()->put('uuid', $result->uuid);
     $request->session()->save();
     \Session::save();
+    \Log::info("HELLO");
     return response()->json(['success' => '/profile']);
   }
 

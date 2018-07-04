@@ -33,8 +33,13 @@ use \App\Profile;
 							<!-- <img style="fill:#ff5e3a" src="octicons/svg/home.svg"></object> -->
 							</a>
 						</li>
-						<li class="nav-item">
+						<!-- <li class="nav-item">
 							<a class="nav-link" data-toggle="tab" href="#profile" role="tab">
+								<svg class="olymp-register-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-register-icon"></use></svg>
+							</a>
+						</li> -->
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#interests" role="tab">
 								<svg class="olymp-register-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-register-icon"></use></svg>
 							</a>
 						</li>
@@ -110,6 +115,65 @@ use \App\Profile;
 							</form>
 						</div>
 						<!-- ABOUT SETUP END -->
+
+						<ol>
+						@foreach($interests as $block)
+							{!! $block !!}
+						@endforeach
+						</ol>
+
+						<!-- INTERESTS SETUP -->
+						<div class="tab-pane" id="interests" role="tabpanel" data-mh="log-tab">
+							<div class="title h6">Let's find out what you like...</div>
+							<form class="content">
+								<div class="row">
+									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+
+										<div class="ui-block-title">
+											<div class="h6 title">Number with Slider</div>
+											<a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
+										</div>
+
+										<div class="ui-block-content">
+											<div class="swiper-container" data-slide="fade">
+												<div class="swiper-wrapper">
+													<div class="swiper-slide">
+														<div class="statistics-slide">
+
+														</div>
+													</div>
+													<div class="swiper-slide">
+														<div class="statistics-slide">
+															<div class="count-stat" data-swiper-parallax="-500">358</div>
+															<div class="title" data-swiper-parallax="-100"><span class="c-primary">Olympus</span> Posts Rank</div>
+															<div class="sub-title" data-swiper-parallax="-100">The Olympus Rank measures the quantity of comments, likes and posts.</div>
+														</div>
+													</div>
+													<div class="swiper-slide">
+														<div class="statistics-slide">
+															<div class="count-stat" data-swiper-parallax="-500">711</div>
+															<div class="title" data-swiper-parallax="-100"><span class="c-primary">Olympus</span> Posts Rank</div>
+															<div class="sub-title" data-swiper-parallax="-100">The Olympus Rank measures the quantity of comments, likes and posts.</div>
+														</div>
+													</div>
+												</div>
+
+												<!-- If we need pagination -->
+												<div class="swiper-pagination pagination-blue"></div>
+											</div>
+										</div>
+
+										<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+											<a href="#" id="interests-next" class="btn btn-purple btn-lg full-width">Next!</a>
+										</div>
+
+									</div>
+
+								</div>
+							</form>
+						</div>
+						<!-- INTERESTS SETUP END -->
+
 					</div>
 				</div>
 			</div>
