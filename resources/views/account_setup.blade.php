@@ -1,6 +1,8 @@
 @php
 
+use \App\User;
 use \App\Profile;
+use \App\Friends;
 
 @endphp
 
@@ -31,19 +33,26 @@ use \App\Profile;
 				<!-- Login-Registration Form  -->
 				<div class="registration-login-form">
 					<!-- Nav tabs -->
+					<!-- Used to gaurantee correct size of the tab items. -->
+					<style>
+						.custom {
+							width: 33.333333333% !important;
+							height: 33.333333333% !important;
+						}
+					</style>
 					<ul class="nav nav-tabs" role="tablist">
-						<li class="nav-item">
+						<li class="nav-item custom">
 							<a class="nav-link active" data-toggle="tab" href="#home" role="tab">
 								<svg><use xlink:href="octicons/svg/home.svg#default"></use></svg>
 							<!-- <img style="fill:#ff5e3a" src="octicons/svg/home.svg"></object> -->
 							</a>
 						</li>
-						<!-- <li class="nav-item">
+						<li class="nav-item custom">
 							<a class="nav-link" data-toggle="tab" href="#profile" role="tab">
 								<svg class="olymp-register-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-register-icon"></use></svg>
 							</a>
-						</li> -->
-						<li class="nav-item">
+						</li>
+						<li class="nav-item custom">
 							<a class="nav-link" data-toggle="tab" href="#interests" role="tab">
 								<svg class="olymp-register-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-register-icon"></use></svg>
 							</a>
@@ -60,37 +69,37 @@ use \App\Profile;
 								<div class="row">
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
 										<div class="form-group is-empty">
-											<input class="form-control" placeholder="Enter your address" type="text" onFocus="geolocate()" id="autocomplete">
+											<input class="form-control" placeholder="Enter your address" type="text" onFocus="geolocate()" id="autocomplete"></input>
 										</div>
 									</div>
 									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 										<div class="form-group is-empty">
-											<input class="form-control" placeholder="Street" type="text" readonly="readonly" id="street_number">
+											<input class="form-control" placeholder="Address" type="text" readonly="readonly" value="{{ User::where('uuid', \Session::get('uuid'))->first()->street_number }}" id="street_number"></input>
 										</div>
 									</div>
 									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 										<div class="form-group is-empty">
-											<input class="form-control" placeholder="Address" type="text" readonly="readonly" id="route">
+											<input class="form-control" placeholder="Street" type="text" readonly="readonly" value="{{ User::where('uuid', \Session::get('uuid'))->first()->route }}" id="route"></input>
 										</div>
 									</div>
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
 										<div class="form-group is-empty">
-											<input class="form-control" placeholder="City" type="email" readonly="readonly" id="locality">
+											<input class="form-control" placeholder="City" type="email" readonly="readonly" value="{{ User::where('uuid', \Session::get('uuid'))->first()->city }}" id="locality"></input>
 										</div>
 									</div>
 									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 										<div class="form-group is-empty">
-											<input class="form-control" placeholder="State" type="text" readonly="readonly" id="administrative_area_level_1">
+											<input class="form-control" placeholder="State" type="text" readonly="readonly" value="{{ User::where('uuid', \Session::get('uuid'))->first()->state }}" id="administrative_area_level_1"></input>
 										</div>
 									</div>
 									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 										<div class="form-group is-empty">
-											<input class="form-control" placeholder="Zip Code" type="text" readonly="readonly" id="postal_code">
+											<input class="form-control" placeholder="Zip Code" type="text" readonly="readonly" value="{{ User::where('uuid', \Session::get('uuid'))->first()->zip_code }}" id="postal_code"></input>
 										</div>
 									</div>
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
 										<div class="form-group is-empty">
-											<input class="form-control" placeholder="Country" type="text" readonly="readonly" id="country">
+											<input class="form-control" placeholder="Country" type="text" readonly="readonly" value="{{ User::where('uuid', \Session::get('uuid'))->first()->country }}" id="country"></input>
 										</div>
 									</div>
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -105,6 +114,45 @@ use \App\Profile;
 						<div class="tab-pane" id="profile" role="tabpanel" data-mh="log-tab">
 							<div class="title h6">Tell us about yourself...</div>
 							<form class="content">
+
+								<div class="row">
+									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+										<h5 style="padding-left: 10px;">Name</h5>
+									</div>
+									<div class="col col-12 col-xl-4 col-lg-4 col-md-4 col-sm-12">
+										<div class="form-group label-floating">
+											<input class="form-control" id="firstname" placeholder="First Name" value="{{ User::where('uuid', Session::get('uuid'))->first()->firstname }}"></input>
+										</div>
+									</div>
+									<div class="col col-12 col-xl-4 col-lg-4 col-md-4 col-sm-12">
+										<div class="form-group label-floating">
+											<input class="form-control" id="middlename" placeholder="Middle Name" value="{{ User::where('uuid', Session::get('uuid'))->first()->middlename }}"></input>
+										</div>
+									</div>
+									<div class="col col-12 col-xl-4 col-lg-4 col-md-4 col-sm-12">
+										<div class="form-group label-floating">
+											<input class="form-control" id="lastname" placeholder="Last Name" value="{{ User::where('uuid', Session::get('uuid'))->first()->lastname }}"></input>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+										<h5 style="padding-left: 10px;">Contact Information</h5>
+									</div>
+									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+										<div class="form-group label-floating">
+											<input class="form-control" id="email" placeholder="Email" value="{{ User::where('uuid', Session::get('uuid'))->first()->email }}"></input>
+										</div>
+									</div>
+									<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+										<div class="form-group label-floating">
+											<input class="form-control" id="phonenumber" placeholder="Phone Number" value="{{ User::where('uuid', Session::get('uuid'))->first()->phonenumber }}" maxlength="16"></input>
+										</div>
+									</div>
+								</div>
+
+
 								<div class="row">
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
 										<div class="form-group label-floating">
@@ -121,7 +169,15 @@ use \App\Profile;
 						</div>
 						<!-- ABOUT SETUP END -->
 
+<<<<<<< HEAD
 
+=======
+						<!-- <ol>
+						@foreach($interests as $block)
+							{!! $block !!}
+						@endforeach
+						</ol> -->
+>>>>>>> afd5b5ccd8cdce2eac616edbca748622d7e59c6b
 
 						<!-- INTERESTS SETUP -->
 						<div class="tab-pane" id="interests" role="tabpanel" data-mh="log-tab">
@@ -235,56 +291,107 @@ use \App\Profile;
 	}
 
 	$( "#location-next" ).click(function(e) {
-			e.preventDefault();
-			$.ajax({
-				method: 'POST',
-				url: '{{ route('account_setup.location') }}',
-				data: {
-					street_number: $('#street_number').val(),
-					route: $('#route').val(),
-					city: $('#locality').val(),
-					state: $('#administrative_area_level_1').val(),
-					country: $('#country').val(),
-					zip_code: $('#postal_code').val(),
-					_token: token
-				 }
-			})
-			.done(function (msg) {
-				if(msg.hasOwnProperty('success')) {
-					 swal("Success!", msg['success'], "success");
-				} else if(msg.hasOwnProperty('failure')) {
-					swal("Uh-Oh!", msg['failure'], "error");
-				} else {
-					swal("Uh-Oh!", "Something went wrong on our end.", "error");
-				}
-			});
+		e.preventDefault();
+		$.ajax({
+			method: 'POST',
+			url: '{{ route('account_setup.location') }}',
+			data: {
+				street_number: $('#street_number').val(),
+				route: $('#route').val(),
+				city: $('#locality').val(),
+				state: $('#administrative_area_level_1').val(),
+				country: $('#country').val(),
+				zip_code: $('#postal_code').val(),
+				_token: '{{ Session::token() }}'
+			 }
+		})
+		.done(function (msg) {
+			if(msg.hasOwnProperty('success')) {
+				 swal("Success!", msg['success'], "success");
+			} else if(msg.hasOwnProperty('failure')) {
+				swal("Uh-Oh!", msg['failure'], "error");
+			} else {
+				swal("Uh-Oh!", "Something went wrong on our end.", "error");
+			}
 		});
+	});
 
-		$('#about-you').bind('input propertychange', function() {
-			var aboutYouLength = $('#about-you').val().length;
-      $('#about-you-length').text(aboutYouLength + '/255');
+	$('#about-you').bind('input propertychange', function() {
+		var aboutYouLength = $('#about-you').val().length;
+    $('#about-you-length').text(aboutYouLength + '/255');
+	});
+
+	$("#about-next").click(function(e) {
+		e.preventDefault();
+		$.ajax({
+			method: 'POST',
+			url: '{{ route('account_setup.information') }}',
+			data: {
+				firstname: $('#firstname').val(),
+				middlename: $('#middlename').val(),
+				lastname: $('#lastname').val(),
+				email: $('#email').val(),
+				phonenumber: $('#phonenumber').val(),
+				about: $('#about-you').val(),
+				_token: '{{ Session::token() }}'
+			 }
+		})
+		.done(function (msg) {
+			if(msg.hasOwnProperty('success')) {
+				 swal("Success!", msg['success'], "success");
+			} else if(msg.hasOwnProperty('failure')) {
+				swal("Uh-Oh!", msg['failure'], "error");
+			} else {
+				swal("Uh-Oh!", "Something went wrong on our end.", "error");
+			}
 		});
+	});
 
-		$("#about-next").click(function(e) {
-				e.preventDefault();
-				$.ajax({
-					method: 'POST',
-					url: '{{ route('account_setup.about') }}',
-					data: {
-						about: $('#about-you').val(),
-						_token: token
-					 }
-				})
-				.done(function (msg) {
-					if(msg.hasOwnProperty('success')) {
-						 swal("Success!", msg['success'], "success");
-					} else if(msg.hasOwnProperty('failure')) {
-						swal("Uh-Oh!", msg['failure'], "error");
-					} else {
-						swal("Uh-Oh!", "Something went wrong on our end.", "error");
-					}
-				});
-			});
+	const isNumericInput = (event) => {
+    const key = event.keyCode;
+    return ((key >= 48 && key <= 57) || // Allow number line
+    	(key >= 96 && key <= 105) // Allow number pad
+    );
+	};
+
+	const isModifierKey = (event) => {
+    const key = event.keyCode;
+    return (event.shiftKey === true || key === 35 || key === 36) || // Allow Shift, Home, End
+    	(key === 8 || key === 9 || key === 13 || key === 46) || // Allow Backspace, Tab, Enter, Delete
+    	(key > 36 && key < 41) || // Allow left, up, right, down
+    	(
+      	// Allow Ctrl/Command + A,C,V,X,Z
+        (event.ctrlKey === true || event.metaKey === true) &&
+    		(key === 65 || key === 67 || key === 86 || key === 88 || key === 90)
+      )
+	};
+
+	const enforceFormat = (event) => {
+		// alert('A');
+    // Input must be of a valid number format or a modifier key, and not longer than ten digits
+    if(!isNumericInput(event) && !isModifierKey(event)){
+      event.preventDefault();
+    }
+	};
+
+	const formatToPhone = (event) => {
+    if(isModifierKey(event)) {return;}
+
+    // I am lazy and don't like to type things more than once
+    const target = event.target;
+    const input = event.target.value.replace(/\D/g,'').substring(0,10); // First ten digits of input only
+    const zip = input.substring(0,3);
+    const middle = input.substring(3,6);
+    const last = input.substring(6,10);
+
+    if(input.length > 6){target.value = `(${zip}) ${middle} - ${last}`;}
+    else if(input.length > 3){target.value = `(${zip}) ${middle}`;}
+    else if(input.length > 0){target.value = `(${zip}`;}
+	};
+
+// const inputElement = document.getElementById('phoneNumber');
+$('#phonenumber').on('keydown', enforceFormat);
+$('#phonenumber').on('keyup', formatToPhone);
 
 			$('ul[id^="ulInterest"]').click(function(e) {
 				if(e.target.tagName === 'INPUT') {

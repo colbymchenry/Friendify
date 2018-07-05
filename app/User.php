@@ -14,6 +14,7 @@ class User extends Model
   protected $connection = 'mysql';
   protected $primaryKey = 'uuid';
   public $incrementing = false;
+  public $fillable = array('firstname', 'middlename', 'lastname', 'email', 'phonenumber');
 
   static function create($firstname, $lastname, $email, $hashed_password, $dob, $gender)
   {
@@ -37,6 +38,7 @@ class User extends Model
       ));
       \DB::table('interests')->insert(array('uuid' => $uuid));
       \DB::table('profiles')->insert(array('uuid' => $uuid));
+      \DB::table('friends')->insert(array('uuid' => $uuid));
       return $uuid;
     }
 
