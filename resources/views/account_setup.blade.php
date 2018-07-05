@@ -27,19 +27,26 @@ use \App\Profile;
 				<!-- Login-Registration Form  -->
 				<div class="registration-login-form">
 					<!-- Nav tabs -->
+					<!-- Used to gaurantee correct size of the tab items. -->
+					<style>
+						.custom {
+							width: 33.333333333% !important;
+							height: 33.333333333% !important;
+						}
+					</style>
 					<ul class="nav nav-tabs" role="tablist">
-						<li class="nav-item">
+						<li class="nav-item custom">
 							<a class="nav-link active" data-toggle="tab" href="#home" role="tab">
 								<svg><use xlink:href="octicons/svg/home.svg#default"></use></svg>
 							<!-- <img style="fill:#ff5e3a" src="octicons/svg/home.svg"></object> -->
 							</a>
 						</li>
-						<!-- <li class="nav-item">
+						<li class="nav-item custom">
 							<a class="nav-link" data-toggle="tab" href="#profile" role="tab">
 								<svg class="olymp-register-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-register-icon"></use></svg>
 							</a>
-						</li> -->
-						<li class="nav-item">
+						</li>
+						<li class="nav-item custom">
 							<a class="nav-link" data-toggle="tab" href="#interests" role="tab">
 								<svg class="olymp-register-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-register-icon"></use></svg>
 							</a>
@@ -156,11 +163,11 @@ use \App\Profile;
 						</div>
 						<!-- ABOUT SETUP END -->
 
-						<ol>
+						<!-- <ol>
 						@foreach($interests as $block)
 							{!! $block !!}
 						@endforeach
-						</ol>
+						</ol> -->
 
 						<!-- INTERESTS SETUP -->
 						<div class="tab-pane" id="interests" role="tabpanel" data-mh="log-tab">
