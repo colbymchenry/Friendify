@@ -2029,8 +2029,6 @@
 <script src="{{ asset('js/sticky-sidebar.js') }}"></script>
 <script>
 
-	var token = '{{ Session::token() }}';
-
 	$(document).ready(function() {
 		$.ajaxSetup({
 		  headers: {
