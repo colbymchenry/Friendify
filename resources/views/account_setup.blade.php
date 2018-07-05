@@ -2,6 +2,7 @@
 
 use \App\User;
 use \App\Profile;
+use \App\Friends;
 
 @endphp
 
@@ -324,7 +325,7 @@ use \App\Profile;
 				state: $('#administrative_area_level_1').val(),
 				country: $('#country').val(),
 				zip_code: $('#postal_code').val(),
-				_token: token
+				_token: '{{ Session::token() }}'
 			 }
 		})
 		.done(function (msg) {
@@ -355,7 +356,7 @@ use \App\Profile;
 				email: $('#email').val(),
 				phonenumber: $('#phonenumber').val(),
 				about: $('#about-you').val(),
-				_token: token
+				_token: '{{ Session::token() }}'
 			 }
 		})
 		.done(function (msg) {

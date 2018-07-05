@@ -327,61 +327,60 @@
 @section('scripts')
 <script>
 
-var token = '{{ Session::token() }}';
-
 	$(document).ready(function() {
 
-		// == REGISTER AJAX REQUEST ==
-		$( "#register-btn" ).click(function(e) {
-				e.preventDefault();
-				$.ajax({
-					method: 'POST',
-					url: '{{ route('register') }}',
-					data: {
-						firstname: $('#register-firstname').val(),
-						lastname: $('#register-lastname').val(),
-						email: $('#register-email').val(),
-						password: $('#register-password').val(),
-						dob: $('#register-dob').val(),
-						gender: $('#register-gender').find(":selected").index(),
-						eula: $('#register-eula').prop('checked'),
-						_token: token
-					 }
-				})
-				.done(function (msg) {
-					if(msg.hasOwnProperty('success')) {
-						swal(msg['success'][0], msg['success'][1], "success");
-					} else if(msg.hasOwnProperty('failure')) {
-						swal("Uh-Oh!", msg['failure'], "error");
-					} else {
-						swal("Uh-Oh!", "Something went wrong on our end.", "error");
-					}
-				});
-		  });
-
-			// == LOGIN AJAX REQUEST ==
-			$( "#login-btn" ).click(function(e) {
-					e.preventDefault();
-					$.ajax({
-						method: 'POST',
-						url: '{{ route('login') }}',
-						data: {
-							email: $('#login-email').val(),
-							password: $('#login-password').val(),
-							_token: token
-						 }
-					})
-					.done(function (msg) {
-						if(msg.hasOwnProperty('success')) {
-							 window.location = msg['success'];
-						} else if(msg.hasOwnProperty('failure')) {
-							swal("Uh-Oh!", msg['failure'], "error");
-						} else {
-							swal("Uh-Oh!", "Something went wrong on our end.", "error");
-						}
-					});
-				});
+	// == REGISTER AJAX REQUEST ==
+	$( "#register-btn" ).click(function(e) {
+		// alert('A: ' + token);
+		e.preventDefault();
+		$.ajax({
+			method: 'POST',
+			url: '{{ route('register') }}',
+			data: {
+				firstname: $('#register-firstname').val(),
+				lastname: $('#register-lastname').val(),
+				email: $('#register-email').val(),
+				password: $('#register-password').val(),
+				dob: $('#register-dob').val(),
+				gender: $('#register-gender').find(":selected").index(),
+				eula: $('#register-eula').prop('checked'),
+				_token: '{{ Session::token() }}'
+			 }
+		})
+		.done(function (msg) {
+			if(msg.hasOwnProperty('success')) {
+				swal(msg['success'][0], msg['success'][1], "success");
+			} else if(msg.hasOwnProperty('failure')) {
+				swal("Uh-Oh!", msg['failure'], "error");
+			} else {
+				swal("Uh-Oh!", "Something went wrong on our end.", "error");
+			}
 		});
+  });
+
+	// == LOGIN AJAX REQUEST ==
+	$( "#login-btn" ).click(function(e) {
+			e.preventDefault();
+			$.ajax({
+				method: 'POST',
+				url: '{{ route('login') }}',
+				data: {
+					email: $('#login-email').val(),
+					password: $('#login-password').val(),
+					_token: '{{ Session::token() }}'
+				 }
+			})
+			.done(function (msg) {
+				if(msg.hasOwnProperty('success')) {
+					 window.location = msg['success'];
+				} else if(msg.hasOwnProperty('failure')) {
+					swal("Uh-Oh!", msg['failure'], "error");
+				} else {
+					swal("Uh-Oh!", "Something went wrong on our end.", "error");
+				}
+			});
+		});
+	});
 
 </script>
 @endsection
