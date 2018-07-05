@@ -117,16 +117,19 @@ class ProfileController extends Controller
     }
   }
 
-  public function setAbout(Request $request)
+  public function setInformation(Request $request)
   {
-
     try {
-        // $uuid = $request->session()->get('uuid');
-        // $user = User::where('uuid', $uuid)->get()->first();
-        // $interests = Interests::where('uuid', $uuid)->get()->first();
-
-        Profile::amend($request->session()->get('uuid'), $request['about']);
-
+        User::where('uuid', $request->session()->get('uuid'))->first()->update(array(
+          'firstname' => $request['firstname'],
+          'middlename' => $request['middlename'],
+          'lastname' => $request['lastname'],
+          'email' => $request['email'],
+          'phonenumber' => $request['phonenumber'],
+        ));
+        Profile::where('uuid', $request->session()->get('uuid'))->first()->update(array(
+          'about' => $request['about']
+        ));
         return response()->json(['success' => '/profile']);
     } catch (\Exception $e) {
       \Log::error($e);

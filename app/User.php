@@ -14,6 +14,7 @@ class User extends Model
   protected $connection = 'mysql';
   protected $primaryKey = 'uuid';
   public $incrementing = false;
+  public $fillable = array('firstname', 'middlename', 'lastname', 'email', 'phonenumber');
 
   static function create($firstname, $lastname, $email, $hashed_password, $dob, $gender)
   {
