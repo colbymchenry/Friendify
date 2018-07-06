@@ -169,16 +169,6 @@ use \App\Friends;
 						</div>
 						<!-- ABOUT SETUP END -->
 
-<<<<<<< HEAD
-
-=======
-						<!-- <ol>
-						@foreach($interests as $block)
-							{!! $block !!}
-						@endforeach
-						</ol> -->
->>>>>>> afd5b5ccd8cdce2eac616edbca748622d7e59c6b
-
 						<!-- INTERESTS SETUP -->
 						<div class="tab-pane" id="interests" role="tabpanel" data-mh="log-tab">
 							<div class="title h6">Tell us about yourself...</div>
