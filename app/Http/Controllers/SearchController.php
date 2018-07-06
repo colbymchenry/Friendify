@@ -9,7 +9,7 @@ class SearchController extends Controller {
 
   function find_friends() {
     $profile = '';
-    return \View::make('find_friends')->with('profile', $profile);
+    return \View::make('find_friends')->with('profile', $profile)->with('title', 'Find Friends');
   }
 
   public function search_matches(\Illuminate\Http\Request $request) {

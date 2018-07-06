@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-  return view('welcome');
+  return View::make('welcome')->with('title', 'Welcome!');
 });
 
 Route::post('/register', 'AuthController@register')->name('register');

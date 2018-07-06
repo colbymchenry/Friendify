@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
 
-	<title>Landing Page</title>
+	@php
+		if (!isset($title)) {
+			$title = 'Landing Page'
+		}
+	@endphp
+
+	<title>{{ $title }}</title>
 
 	<!-- Required meta tags always come first -->
 	<meta charset="utf-8">
