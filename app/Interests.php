@@ -68,59 +68,75 @@ class Interests extends Model
     foreach ($data as $key => $value) {
       if (is_array($value)) {
           if ($prefix != '') {
+            // THESE ARE THE SECOND LEVEL INTERESTS
             $html = '
-            <ol><li>
-            <div class="remember" style="text-align: left" name="part4">
+            <ul class="hidden" id="ulInterest.' . $prefix . '_' . $key . '"><li>
+            <div class="remember" style="text-align: left" id="' . ('div.' . $prefix . '_' . $key) . '">
                     <div class="checkbox">
                       <label>
-                        <input name="' . $key . '" type="checkbox" id="' . $key . '">' . $key . '</input>
+                        <input type="checkbox" name="' . (substr_count($prefix . '_' . $key, '_')) . '" id="' . 'input.' . ($prefix . '_' . $key) . '">' . $key . '</input>
                       </label>
                     </div>
                   </div>
                   ';
             array_push($htmlArray, $html);
 
+            $i++;
             if(count($value) == 0)
             {
-              array_push($htmlArray, '</li></ol>');
+              array_push($htmlArray, '</li></ul>');
+
+              if($i == count($data)) {
+                for($count = 1; $count <= substr_count($prefix, '_'); $count++)
+                {
+                  array_push($htmlArray, '</ul>');
+                }
+              }
+
             }
             Interests::addInterestsHTML($prefix . '_' . $key, $value);
           } else {
-          $html = '<ol><li><div class="remember" style="text-align: left" name="part3">
+            // THESE ARE THE FIRST LEVEL INTERESTS
+          $html = '<ul id="ulInterest.' . $key . '"><li><div class="remember" style="text-align: left" id="' . 'div.' . $key . '">
                   <div class="checkbox">
                     <label>
-                      <input name="' . $key . '" type="checkbox" id="' . $key . '">' . $key . '</input>
+                      <input type="checkbox" name="0" id="' . 'input.' . $key . '">' . $key . '</input>
                     </label>
                   </div>
                 </div>
                 ';
+
+          $i++;
+          if($i > 1) {
+            array_push($htmlArray, '</ul>');
+          }
           array_push($htmlArray, $html);
           Interests::addInterestsHTML($key, $value);
         }
       } else {
+        // THESE ARE THE THIRD LEVEL INTERESTS
         $i++;
         $html = '
         <li>
-        <div class="remember" style="text-align: left" name="part1">
+        <div class="remember" style="text-align: left" id="' . ('div.' . $prefix . '_' . $value) . '">
                 <div class="checkbox">
                   <label>
-                    <input name="' . $value . '" type="checkbox" id="' . $value . '">' . $value . '</input>
+                    <input type="checkbox" name="' . (substr_count($prefix . '_' . $value, '_')) . '" id="' . 'input.' . ($prefix . '_' . $value) . '">' . $value . '</input>
                   </label>
                 </div>
               </div>
               </li>
               ';
-                // \Log::info("END! " . count($data) . ' ' . $i . ' '. substr_count($prefix, '_'));
         if($i == 1)
         {
-          array_push($htmlArray, '<ol>');
+          array_push($htmlArray, '<ul class="hidden" name="bottom" id="ulInterest.' . $prefix . '_' . $value . '">');
         }
         array_push($htmlArray, $html);
         if($i == count($data))
         {
           for($count = 1; $count <= substr_count($prefix, '_'); $count++)
           {
-            array_push($htmlArray, '</ol>');
+            array_push($htmlArray, '</ul>');
           }
         }
       }

@@ -14,6 +14,11 @@ use \App\Friends;
 	   pointer-events: none;
 	   cursor: default;
 	}
+
+	.hidden {
+	  display: none;
+	  visibility: hidden;
+	}
 </style>
 @endsection
 
@@ -164,59 +169,31 @@ use \App\Friends;
 						</div>
 						<!-- ABOUT SETUP END -->
 
+<<<<<<< HEAD
+
+=======
 						<!-- <ol>
 						@foreach($interests as $block)
 							{!! $block !!}
 						@endforeach
 						</ol> -->
+>>>>>>> afd5b5ccd8cdce2eac616edbca748622d7e59c6b
 
 						<!-- INTERESTS SETUP -->
 						<div class="tab-pane" id="interests" role="tabpanel" data-mh="log-tab">
-							<div class="title h6">Let's find out what you like...</div>
+							<div class="title h6">Tell us about yourself...</div>
 							<form class="content">
 								<div class="row">
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-
-										<div class="ui-block-title">
-											<div class="h6 title">Number with Slider</div>
-											<a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use></svg></a>
-										</div>
-
-										<div class="ui-block-content">
-											<div class="swiper-container" data-slide="fade">
-												<div class="swiper-wrapper">
-													<div class="swiper-slide">
-														<div class="statistics-slide">
-
-														</div>
-													</div>
-													<div class="swiper-slide">
-														<div class="statistics-slide">
-															<div class="count-stat" data-swiper-parallax="-500">358</div>
-															<div class="title" data-swiper-parallax="-100"><span class="c-primary">Olympus</span> Posts Rank</div>
-															<div class="sub-title" data-swiper-parallax="-100">The Olympus Rank measures the quantity of comments, likes and posts.</div>
-														</div>
-													</div>
-													<div class="swiper-slide">
-														<div class="statistics-slide">
-															<div class="count-stat" data-swiper-parallax="-500">711</div>
-															<div class="title" data-swiper-parallax="-100"><span class="c-primary">Olympus</span> Posts Rank</div>
-															<div class="sub-title" data-swiper-parallax="-100">The Olympus Rank measures the quantity of comments, likes and posts.</div>
-														</div>
-													</div>
-												</div>
-
-												<!-- If we need pagination -->
-												<div class="swiper-pagination pagination-blue"></div>
-											</div>
-										</div>
-
-										<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-											<a href="#" id="interests-next" class="btn btn-purple btn-lg full-width">Next!</a>
-										</div>
-
+										<ul id="interest_list">
+										@foreach($interests as $block)
+											{!! $block !!}
+										@endforeach
+										</ul>
 									</div>
-
+									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+										<a href="#" id="about-next" class="btn btn-purple btn-lg full-width">Next!</a>
+									</div>
 								</div>
 							</form>
 						</div>
@@ -415,6 +392,27 @@ use \App\Friends;
 // const inputElement = document.getElementById('phoneNumber');
 $('#phonenumber').on('keydown', enforceFormat);
 $('#phonenumber').on('keyup', formatToPhone);
+
+			$('ul[id^="ulInterest"]').click(function(e) {
+				if(e.target.tagName === 'INPUT') {
+					var inputId = e.target.id;
+					var level = e.target.name;
+
+					$('#interest_list').find('ul').filter(function() {
+							return $(this).find('input')[0].name == level && $(this).attr('id') != inputId.replace('input', 'ulInterest');
+					}).map(function(i, e) {
+							if($(this).attr('name') !== 'bottom') {
+								$(this).addClass("hidden");
+							}
+					});
+
+					$(this).find('ul').filter(function() {
+							return $(this).find('input')[0].name == (parseInt(level) + 1);
+					}).map(function(i, e) {
+							$(this).removeClass("hidden");
+					});
+				}
+			});
 
 </script>
 
