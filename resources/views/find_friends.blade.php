@@ -137,7 +137,7 @@ $(document).ready(function() {
         to_load : to_load,
         loaded : loaded,
         search_string : search_string,
-        _token : '{{ Session::token() }}'
+        _token : token
       }
     }).done(function(msg) {
       loaded = msg['output'].length;

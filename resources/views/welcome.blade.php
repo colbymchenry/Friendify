@@ -344,7 +344,7 @@
 				dob: $('#register-dob').val(),
 				gender: $('#register-gender').find(":selected").index(),
 				eula: $('#register-eula').prop('checked'),
-				_token: '{{ Session::token() }}'
+				_token: token
 			 }
 		})
 		.done(function (msg) {
@@ -367,7 +367,7 @@
 				data: {
 					email: $('#login-email').val(),
 					password: $('#login-password').val(),
-					_token: '{{ Session::token() }}'
+					_token: token
 				 }
 			})
 			.done(function (msg) {

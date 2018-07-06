@@ -2027,10 +2027,10 @@
 
 @if (isset($profile))
 <script src="{{ asset('js/sticky-sidebar.js') }}"></script>
+@endif
+
 <script>
-
 	var token = '{{ Session::token() }}';
-
 	$(document).ready(function() {
 		$.ajaxSetup({
 		  headers: {
@@ -2038,9 +2038,7 @@
 		  }
 		});
 	});
-
 </script>
-@endif
 
 @yield('scripts')
 

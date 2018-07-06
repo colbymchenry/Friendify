@@ -325,7 +325,7 @@ use \App\Friends;
 				state: $('#administrative_area_level_1').val(),
 				country: $('#country').val(),
 				zip_code: $('#postal_code').val(),
-				_token: '{{ Session::token() }}'
+				_token: token
 			 }
 		})
 		.done(function (msg) {
@@ -356,7 +356,7 @@ use \App\Friends;
 				email: $('#email').val(),
 				phonenumber: $('#phonenumber').val(),
 				about: $('#about-you').val(),
-				_token: '{{ Session::token() }}'
+				_token: token
 			 }
 		})
 		.done(function (msg) {
