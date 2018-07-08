@@ -4,7 +4,7 @@
 
 	@php
 		if (!isset($title)) {
-			$title = 'Landing Page'
+			$title = 'Landing Page';
 		}
 	@endphp
 
