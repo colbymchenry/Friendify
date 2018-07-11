@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
   return View::make('welcome')->with('title', 'Welcome!');
-});
+})->name('welcome');
 
 Route::post('/register', 'AuthController@register')->name('register');
 
@@ -21,7 +21,7 @@ Route::post('/login', 'AuthController@login')->name('login');
 
 Route::group(['middleware' => ['checkuuid']], function () {
 
-  Route::get('/profile/{uuid}', 'ProfileController@get')->name('profile');
+  Route::get('/profile/{uuid}', 'ProfileController@get')->name('profile_view');
 
   Route::get('/profile', 'ProfileController@me')->name('profile');
 
@@ -42,6 +42,12 @@ Route::group(['middleware' => ['checkuuid']], function () {
   Route::post('/change_avatar', 'ProfileController@changeAvatar')->name('change.avatar');
 
   Route::get('/test', 'TestController@index');
+
+  Route::post('/request/update', 'RequestController@update')->name('request.update');
+
+  Route::post('/request/add', 'RequestController@add')->name('request.add');
+
+  Route::post('/request/remove', 'RequestController@remove')->name('request.remove');
 
 });
 
