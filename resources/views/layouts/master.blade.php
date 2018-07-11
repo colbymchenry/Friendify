@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
 
-	<title>Landing Page</title>
+	@php
+		if (!isset($title)) {
+			$title = 'Landing Page';
+		}
+	@endphp
+
+	<title>{{ $title }}</title>
 
 	<!-- Required meta tags always come first -->
 	<meta charset="utf-8">
@@ -2027,10 +2033,10 @@
 
 @if (isset($profile))
 <script src="{{ asset('js/sticky-sidebar.js') }}"></script>
+@endif
+
 <script>
-
 	var token = '{{ Session::token() }}';
-
 	$(document).ready(function() {
 		$.ajaxSetup({
 		  headers: {
@@ -2038,9 +2044,7 @@
 		  }
 		});
 	});
-
 </script>
-@endif
 
 @yield('scripts')
 

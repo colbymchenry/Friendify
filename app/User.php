@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use HTTP\Controllers\Utilities\UUID;
 
 class User extends Model
 {
@@ -26,7 +27,7 @@ class User extends Model
     }
     else
     {
-      $uuid = HTTP\Controllers\Utilities\UUID::random();
+      $uuid = UUID::random();
       \DB::table('users')->insert(array(
       'uuid' => $uuid,
       'firstname' => $firstname,

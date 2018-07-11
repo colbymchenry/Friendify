@@ -19,7 +19,7 @@ class ProfileController extends Controller
 
       $top_friends = User::all();
 
-      return \View::make('profile')->with('profile', $user)->with('friends', $top_friends);
+      return \View::make('profile')->with('profile', $user)->with('friends', $top_friends)->with('title', $user->firstname . ' ' . $user->lastname);
     } catch (\Exception $e) {
 
       return "Fail.<br>Error: $e";
@@ -89,7 +89,7 @@ class ProfileController extends Controller
         $user_interests = Interests::where('uuid', $uuid)->get()->first();
         $json = json_decode(\Storage::get('Interests.json'));
 
-        return \View::make('account_setup')->with('profile', $user)->with('user_interests', $user_interests)->with('interests', Interests::getInterestsHTML())->with('json', $json);
+        return \View::make('account_setup')->with('profile', $user)->with('user_interests', $user_interests)->with('interests', Interests::getInterestsHTML())->with('json', $json)->with('title', $user->firstname . ' ' . $user->lastname);
     } catch (\Exception $e) {
       \Log::error($e);
     }
