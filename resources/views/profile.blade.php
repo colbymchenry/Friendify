@@ -64,29 +64,31 @@ use \App\Friends;
 						</div>
 
 						<div class="control-block-button">
-							<a href="35-YourAccount-FriendsRequests.html" class="btn btn-control bg-blue">
-								<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
-							</a>
+							@if(Session::get('uuid') != $profile->uuid)
+								<a href="35-YourAccount-FriendsRequests.html" class="btn btn-control bg-blue">
+									<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
+								</a>
 
-							<a href="#" class="btn btn-control bg-purple">
-								<svg class="olymp-chat---messages-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-chat---messages-icon') }}"></use></svg>
-							</a>
+								<a href="#" class="btn btn-control bg-purple">
+									<svg class="olymp-chat---messages-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-chat---messages-icon') }}"></use></svg>
+								</a>
+							@else
+								<div class="btn btn-control bg-primary more">
+									<svg class="olymp-settings-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-settings-icon') }}"></use></svg>
 
-							<div class="btn btn-control bg-primary more">
-								<svg class="olymp-settings-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-settings-icon') }}"></use></svg>
-
-								<ul class="more-dropdown more-with-triangle triangle-bottom-right">
-									<li>
-										<a href="#" data-toggle="modal" data-target="#update-avatar-photo">Update Profile Photo</a>
-									</li>
-									<li>
-										<a href="#" data-toggle="modal" data-target="#update-header-photo">Update Header Photo</a>
-									</li>
-									<li>
-										<a href="29-YourAccount-AccountSettings.html">Account Settings</a>
-									</li>
-								</ul>
-							</div>
+									<ul class="more-dropdown more-with-triangle triangle-bottom-right">
+										<li>
+											<a href="#" data-toggle="modal" data-target="#update-avatar-photo">Update Profile Photo</a>
+										</li>
+										<li>
+											<a href="#" data-toggle="modal" data-target="#update-header-photo">Update Header Photo</a>
+										</li>
+										<li>
+											<a href="29-YourAccount-AccountSettings.html">Account Settings</a>
+										</li>
+									</ul>
+								</div>
+							@endif
 						</div>
 					</div>
 					<div class="top-header-author">
