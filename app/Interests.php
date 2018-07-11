@@ -14,18 +14,20 @@ class Interests extends Model
   protected $connection = 'mysql';
   protected $primaryKey = 'uuid';
   public $incrementing = false;
+  protected $guarded = ['id'];
 
 /**
 * TOOK FOREVER TO GET THIS TO WORK RECURSIVELY, DON'T FUCK WITH THIS PLEASE.
 **/
+
   public static function getInterests()
   {
     global $interests;
     $interests = array();
     $json = json_decode(\Storage::get('Interests.json'), true);
 
-    // Interests::addInterests('' , $json, $interests);
-    return $json;
+    Interests::addInterests('' , $json);
+    return $interests;
   }
 
   static function addInterests($prefix, $data) {

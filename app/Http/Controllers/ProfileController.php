@@ -87,8 +87,9 @@ class ProfileController extends Controller
         $uuid = $request->session()->get('uuid');
         $user = User::where('uuid', $uuid)->get()->first();
         $user_interests = Interests::where('uuid', $uuid)->get()->first();
+        $json = json_decode(\Storage::get('Interests.json'));
 
-        return \View::make('account_setup')->with('profile', $user)->with('user_interests', $user_interests)->with('interests', Interests::getInterestsHTML());
+        return \View::make('account_setup')->with('profile', $user)->with('user_interests', $user_interests)->with('interests', Interests::getInterestsHTML())->with('json', $json);
     } catch (\Exception $e) {
       \Log::error($e);
     }
@@ -131,6 +132,33 @@ class ProfileController extends Controller
           'about' => $request['about']
         ));
         return response()->json(['success' => '/profile']);
+    } catch (\Exception $e) {
+      \Log::error($e);
+      return response()->json(['failure' => $e->getMessage() ]);
+    }
+  }
+
+  public function setInterest(Request $request)
+  {
+    try {
+        $json = json_decode(\Storage::get('Interests.json'), true);
+        $interests = Interests::getInterests();
+        $interest_index = $request['id'];
+        $index = 0;
+        foreach ($interests as $key => $value) {
+          if($index == $interest_index) {
+            if(($request['value'] !== '0' && $request['value'] !== '1')) {
+              throw new \Exception("Value must be 0 or 1");
+            } else {
+              Interests::where('uuid', $request->session()->get('uuid'))->first()->update(array(
+                $key => $request['value'],
+              ));
+            }
+          }
+          $index += 1;
+        }
+
+        return response()->json(['success' => '/account_setup']);
     } catch (\Exception $e) {
       \Log::error($e);
       return response()->json(['failure' => $e->getMessage() ]);
