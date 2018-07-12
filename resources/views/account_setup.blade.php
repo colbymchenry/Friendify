@@ -19,6 +19,10 @@ use \App\Friends;
 	  display: none;
 	  visibility: hidden;
 	}
+
+	.interest {
+
+	}
 </style>
 @endsection
 
@@ -200,6 +204,10 @@ use \App\Friends;
 <script src="{{ asset('js/interests.js') }}"></script>
 
 <script>
+var interestsJSON = JSON.parse('{!! json_encode($json) !!}');
+var interestObjects = jsonToArray(interestsJSON);
+var user_interests = {!! json_encode($user_interests->toArray()) !!};
+setupInterestsHTML();
 
 	$( "#location-next" ).click(function(e) {
 		e.preventDefault();
@@ -253,54 +261,85 @@ use \App\Friends;
 		});
 	});
 
-var interestsJSON = JSON.parse('{!! json_encode($json) !!}');
-var interestObjects = jsonToArray(interestsJSON);
-var user_interests = {!! json_encode($user_interests->toArray()) !!};
-setupInterestsHTML();
-
-function setInterest(event) {
-  var id = parseInt(event.target.name);
-	var value = (event.target.value == 'on' ? 1 : 0);
-	$.ajax({
-		method: 'POST',
-		url: '{{ route('account_setup.interest') }}',
-		data: {
-			id: id,
-			value: parseInt(value),
-			_token: '{{ Session::token() }}'
-		 }
-	})
-	.done(function (msg) {
-		if(msg.hasOwnProperty('success')) {
-		} else if(msg.hasOwnProperty('failure')) {
-			swal("Uh-Oh!", msg['failure'], "error");
-		} else {
-			swal("Uh-Oh!", "Something went wrong on our end.", "error");
-		}
-	});
-}
-
-$('ul[id^="ulInterest"]').click(function(e) {
-	if(e.target.tagName === 'INPUT') {
-		var inputId = e.target.id;
-		var level = e.target.name;
-
-		$('#interest_list').find('ul').filter(function() {
-				return $(this).find('input')[0].name == level && $(this).attr('id') != inputId.replace('input', 'ulInterest');
-		}).map(function(i, e) {
-				if($(this).attr('name') !== 'bottom') {
-					$(this).addClass("hidden");
-				}
-		});
-
-		$(this).find('ul').filter(function() {
-				return $(this).find('input')[0].name == (parseInt(level) + 1);
-		}).map(function(i, e) {
-				$(this).removeClass("hidden");
-		});
+	function setInterest(event) {
+	  // var level = event.target.name;
+		// var value = (event.target.checked === true ? 1 : 0);
+		// var parentUL = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+		// var id = event.target.id.replace('input.', '');
+		//
+		// // show children
+		// if(value === 1) {
+		// 	// hide everything on this level that isn't what we clicked
+		// 	var find = "#ul." + id;
+		// 	// console.log(find);
+		// 	// console.log($(find).length > 0);
+		//
+		// } else {
+		// 	// hide children
+		//
+		// }
+		//
+		// $.ajax({
+		// 	method: 'POST',
+		// 	url: '{{ route('account_setup.interest') }}',
+		// 	data: {
+		// 		id: id,
+		// 		value: parseInt(value),
+		// 		_token: '{{ Session::token() }}'
+		// 	 }
+		// })
+		// .done(function (msg) {
+		// 	if(msg.hasOwnProperty('success')) {
+		// 	} else if(msg.hasOwnProperty('failure')) {
+		// 		swal("Uh-Oh!", msg['failure'], "error");
+		// 	} else {
+		// 		swal("Uh-Oh!", "Something went wrong on our end.", "error");
+		// 	}
+		// });
 	}
-});
 
+	$( "#interest_list" ).on( "click", "input", function( event ) {
+		var id = event.target.id.replace('input.', '').split('%20').join(' ');
+		var level = event.target.name;
+		var value = (event.target.checked === true ? 1 : 0);
+		var parent = getParent(event.target);
+
+			console.log(parent);
+
+		$(parent.parentNode).find('ul').filter(function() {
+			return $(this).find('input')[0].name == level && $(this).attr('id') != parent.id;
+		}).map(function(i, e) {
+			$(this).addClass("hidden");
+		});
+
+		$(parent).find('div').filter(function() {
+			return $(this).find('input')[0].name == (parseInt(level) + 1);
+		}).map(function(i, e) {
+			$(this).removeClass("hidden");
+		});
+
+		$.ajax({
+			method: 'POST',
+			url: '{{ route('account_setup.interest') }}',
+			data: {
+				id: id,
+				value: parseInt(value),
+				_token: '{{ Session::token() }}'
+			 }
+		})
+		.done(function (msg) {
+			if(msg.hasOwnProperty('success')) {
+			} else if(msg.hasOwnProperty('failure')) {
+				swal("Uh-Oh!", msg['failure'], "error");
+			} else {
+				swal("Uh-Oh!", "Something went wrong on our end.", "error");
+			}
+		});
+	});
+
+	function getParent(element) {
+		return element.parentNode.parentNode.parentNode.parentNode.parentNode;
+	}
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUI1i_osQOGSch2wy1xYI0Fya8b01ZGp4&libraries=places&callback=initAutocomplete" async defer></script>

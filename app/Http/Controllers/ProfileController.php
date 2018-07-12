@@ -145,21 +145,9 @@ class ProfileController extends Controller
     try {
         $json = json_decode(\Storage::get('Interests.json'), true);
         $interests = Interests::getInterests();
-        $interest_index = $request['id'];
-        $index = 0;
-        foreach ($interests as $key => $value) {
-          if($index == $interest_index) {
-            if(($request['value'] !== '0' && $request['value'] !== '1')) {
-              throw new \Exception("Value must be 0 or 1");
-            } else {
-              Interests::where('uuid', $request->session()->get('uuid'))->first()->update(array(
-                $key => $request['value'],
-              ));
-            }
-          }
-          $index += 1;
-        }
-
+        Interests::where('uuid', $request->session()->get('uuid'))->first()->update(array(
+          $request['id'] => $request['value'],
+        ));
         return response()->json(['success' => '/account_setup']);
     } catch (\Exception $e) {
       \Log::error($e);
