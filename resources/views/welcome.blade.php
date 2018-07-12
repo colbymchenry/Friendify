@@ -331,7 +331,6 @@
 
 	// == REGISTER AJAX REQUEST ==
 	$( "#register-btn" ).click(function(e) {
-		// alert('A: ' + token);
 		e.preventDefault();
 		$.ajax({
 			method: 'POST',

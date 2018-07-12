@@ -3,17 +3,18 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\Profile as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\Utilities\UUID;
 
-class Friends extends Model
+class Relationship extends Model
 {
 
-  public $table = 'friends';
+  public $table = 'relationships';
   public $timestamps = false;
   protected $connection = 'mysql';
   protected $primaryKey = 'uuid';
   public $incrementing = false;
-  public $fillable = array('friends');
+  public $fillable = array('friends', 'requests', 'block');
 
 }

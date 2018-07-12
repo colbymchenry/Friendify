@@ -2,11 +2,20 @@
 
 use \App\User;
 use \App\Profile;
-use \App\Friends;
+use \App\Relationship;
 
 @endphp
 
 @extends('layouts.master')
+
+@section('head')
+<style>
+	.hidden {
+		display: none;
+		visibility: hidden;
+	}
+</style>
+@endsection
 
 @section('content')
 <!-- Top Header-Profile -->
@@ -64,29 +73,35 @@ use \App\Friends;
 						</div>
 
 						<div class="control-block-button">
-							<a href="35-YourAccount-FriendsRequests.html" class="btn btn-control bg-blue">
-								<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
-							</a>
 
-							<a href="#" class="btn btn-control bg-purple">
-								<svg class="olymp-chat---messages-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-chat---messages-icon') }}"></use></svg>
-							</a>
+								<a href="#" class="btn btn-control bg-yellow hidden" id="pending_button">
+									<svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg>
+								</a>
+								<a href="#" class="btn btn-control bg-green hidden" id="friend_button">
+									<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
+								</a>
+								<a href="#" class="btn btn-control bg-blue hidden" id="request_button">
+									<svg class="olymp-plus-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-plus-icon') }}"></use></svg>
+								</a>
 
-							<div class="btn btn-control bg-primary more">
-								<svg class="olymp-settings-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-settings-icon') }}"></use></svg>
+								<a href="#" class="btn btn-control bg-purple hidden" id="messages_button">
+									<svg class="olymp-chat---messages-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-chat---messages-icon') }}"></use></svg>
+								</a>
+								<div class="btn btn-control bg-primary more hidden" id="options">
+									<svg class="olymp-settings-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-settings-icon') }}"></use></svg>
 
-								<ul class="more-dropdown more-with-triangle triangle-bottom-right">
-									<li>
-										<a href="#" data-toggle="modal" data-target="#update-avatar-photo">Update Profile Photo</a>
-									</li>
-									<li>
-										<a href="#" data-toggle="modal" data-target="#update-header-photo">Update Header Photo</a>
-									</li>
-									<li>
-										<a href="29-YourAccount-AccountSettings.html">Account Settings</a>
-									</li>
-								</ul>
-							</div>
+									<ul class="more-dropdown more-with-triangle triangle-bottom-right">
+										<li>
+											<a href="#" data-toggle="modal" data-target="#update-avatar-photo">Update Profile Photo</a>
+										</li>
+										<li>
+											<a href="#" data-toggle="modal" data-target="#update-header-photo">Update Header Photo</a>
+										</li>
+										<li>
+											<a href="{{ route('account_setup') }}">Account Settings</a>
+										</li>
+									</ul>
+								</div>
 						</div>
 					</div>
 					<div class="top-header-author">
@@ -181,7 +196,7 @@ use \App\Friends;
 									@endif
 								</div>
 								<div class="author-content">
-									<a href="{{ $friend['profile_link'] }}" class="h5 author-name">{{ $friend->firstname }} {{ $friend->lastname }}</a>
+									<a href="{{ route('profile_view', $friend->uuid) }}" class="h5 author-name">{{ $friend->firstname }} {{ $friend->lastname }}</a>
 									<div class="country">{{ $friend->city }}, {{ $friend->state }}</div>
 								</div>
 							</div>
@@ -534,6 +549,102 @@ use \App\Friends;
 	 document.getElementById("avatar_form").onchange = function() {
    	document.getElementById("avatar_form").submit();
 	};
+
+	function updateButtons() {
+
+		if ('{{ $profile->uuid }}' !== '{{ Session::get('uuid') }}') {
+			$('#messages_button').removeClass('hidden');
+		}
+
+		$.ajax({
+			url: '/request/update',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				profile: '{{ $profile->uuid }}',
+				_token: token
+			},
+		}).done(function(msg) {
+			if (msg.hasOwnProperty('success')) {
+				if (msg['success']['friends?'] !== false) {
+					$('#friend_button').removeClass('hidden');
+					$('#pending_button').addClass('hidden');
+					$('#request_button').addClass('hidden');
+				} else if (msg['success']['requested?'] !== false) {
+					$('#friend_button').addClass('hidden');
+					$('#pending_button').removeClass('hidden');
+					$('#request_button').addClass('hidden');
+				} else {
+					$('#friend_button').addClass('hidden');
+					$('#pending_button').addClass('hidden');
+					$('#request_button').removeClass('hidden');
+				}
+			}
+		});
+	}
+
+	$(document).ready(function() {
+
+		updateButtons();
+
+		$('#request_button').click(function(e) {
+			e.preventDefault();
+			$.ajax({
+		      url: '/request/add',
+		      type: 'POST',
+		      dataType: 'json',
+		      data: {
+						receiver: '{{ $profile->uuid }}',
+						_token: token
+					},
+	     	}).done(function(msg) {
+					updateButtons();
+					if (msg.hasOwnProperty('success')) {
+						swal(msg['success'][0], msg['success'][1], "success");
+						window.location = '#';
+					} else if (msg.hasOwnProperty('failure')) {
+						swal(msg['failure'][0], msg['failure'][1], "error");
+					}
+				});
+		});
+
+		$('#pending_button').click(function(e) {
+			e.preventDefault();
+			$.ajax({
+					url: '/request/remove',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						receiver: '{{ $profile->uuid }}',
+						_token: token
+					},
+				}).done(function(msg) {
+					updateButtons();
+					if (msg.hasOwnProperty('success')) {
+						swal(msg['success'][0], msg['success'][1], "success");
+					}
+				});
+		});
+
+		$('#friend_button').click(function(e) {
+			e.preventDefault();
+			$.ajax({
+					url: '/request/remove',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						receiver: '{{ $profile->uuid }}',
+						_token: token
+					},
+				}).done(function(msg) {
+					updateButtons();
+					if (msg.hasOwnProperty('success')) {
+						swal(msg['success'][0], msg['success'][1], "success");
+					}
+				});
+		});
+
+});
 
 </script>
 @endsection

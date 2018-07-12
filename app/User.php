@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use HTTP\Controllers\Utilities\UUID;
+use App\Http\Controllers\Utilities\UUID;
 
 class User extends Model
 {
@@ -39,7 +39,7 @@ class User extends Model
       ));
       \DB::table('interests')->insert(array('uuid' => $uuid));
       \DB::table('profiles')->insert(array('uuid' => $uuid));
-      \DB::table('friends')->insert(array('uuid' => $uuid));
+      \DB::table('relationships')->insert(array('uuid' => $uuid));
       return $uuid;
     }
 
