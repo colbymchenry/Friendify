@@ -74,20 +74,20 @@ use \App\Relationship;
 
 						<div class="control-block-button">
 
-								<a href="#" class="btn btn-control bg-yellow hidden" id="pending_button">
+								<a class="btn btn-control bg-yellow hidden" id="pending_button">
 									<svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg>
 								</a>
-								<a href="#" class="btn btn-control bg-green hidden" id="friend_button">
+								<a class="btn btn-control bg-green hidden" id="friend_button">
 									<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
 								</a>
-								<a href="#" class="btn btn-control bg-blue hidden" id="request_button">
+								<a class="btn btn-control bg-blue hidden" id="request_button">
 									<svg class="olymp-plus-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-plus-icon') }}"></use></svg>
 								</a>
 
-								<a href="#" class="btn btn-control bg-purple hidden" id="messages_button">
+								<a class="btn btn-control bg-purple hidden" id="messages_button">
 									<svg class="olymp-chat---messages-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-chat---messages-icon') }}"></use></svg>
 								</a>
-								<div class="btn btn-control bg-primary more hidden" id="options">
+								<div class="btn btn-control bg-primary more hidden" id="options_button">
 									<svg class="olymp-settings-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-settings-icon') }}"></use></svg>
 
 									<ul class="more-dropdown more-with-triangle triangle-bottom-right">
@@ -554,33 +554,35 @@ use \App\Relationship;
 
 		if ('{{ $profile->uuid }}' !== '{{ Session::get('uuid') }}') {
 			$('#messages_button').removeClass('hidden');
+			$.ajax({
+				url: '/request/update',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					profile: '{{ $profile->uuid }}',
+					_token: token
+				},
+			}).done(function(msg) {
+				if (msg.hasOwnProperty('success')) {
+					if (msg['success']['friends?'] !== false) {
+						$('#friend_button').removeClass('hidden');
+						$('#pending_button').addClass('hidden');
+						$('#request_button').addClass('hidden');
+					} else if (msg['success']['requested?'] !== false) {
+						$('#friend_button').addClass('hidden');
+						$('#pending_button').removeClass('hidden');
+						$('#request_button').addClass('hidden');
+					} else {
+						$('#friend_button').addClass('hidden');
+						$('#pending_button').addClass('hidden');
+						$('#request_button').removeClass('hidden');
+					}
+				}
+			});
+		} else {
+			$('#options_button').removeClass('hidden');
 		}
 
-		$.ajax({
-			url: '/request/update',
-			type: 'POST',
-			dataType: 'json',
-			data: {
-				profile: '{{ $profile->uuid }}',
-				_token: token
-			},
-		}).done(function(msg) {
-			if (msg.hasOwnProperty('success')) {
-				if (msg['success']['friends?'] !== false) {
-					$('#friend_button').removeClass('hidden');
-					$('#pending_button').addClass('hidden');
-					$('#request_button').addClass('hidden');
-				} else if (msg['success']['requested?'] !== false) {
-					$('#friend_button').addClass('hidden');
-					$('#pending_button').removeClass('hidden');
-					$('#request_button').addClass('hidden');
-				} else {
-					$('#friend_button').addClass('hidden');
-					$('#pending_button').addClass('hidden');
-					$('#request_button').removeClass('hidden');
-				}
-			}
-		});
 	}
 
 	$(document).ready(function() {
@@ -626,6 +628,22 @@ use \App\Relationship;
 				});
 		});
 
+		$('#pending_button').hover(function() {
+			// Enter
+			if (!$(this).hasClass('hidden')) {
+				$(this).removeClass('bg-yellow');
+				$(this).addClass('bg-red');
+				$(this).html('<svg class="olymp-little-delete"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-little-delete') }}"></use></svg>');
+			}
+		}, function() {
+			// Leave
+			if (!$(this).hasClass('hidden')) {
+				$(this).removeClass('bg-red');
+				$(this).addClass('bg-yellow');
+				$(this).html('<svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg>');
+			}
+		});
+
 		$('#friend_button').click(function(e) {
 			e.preventDefault();
 			$.ajax({
@@ -642,6 +660,22 @@ use \App\Relationship;
 						swal(msg['success'][0], msg['success'][1], "success");
 					}
 				});
+		});
+
+		$('#friend_button').hover(function() {
+			// Enter
+			if (!$(this).hasClass('hidden')) {
+				$(this).removeClass('bg-green');
+				$(this).addClass('bg-red');
+				$(this).html('<svg class="olymp-little-delete"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-little-delete') }}"></use></svg>');
+			}
+		}, function() {
+			// Leave
+			if (!$(this).hasClass('hidden')) {
+				$(this).removeClass('bg-red');
+				$(this).addClass('bg-green');
+				$(this).html('<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>');
+			}
 		});
 
 });

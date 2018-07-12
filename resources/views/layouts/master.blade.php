@@ -3,6 +3,8 @@
 <head>
 
 	@php
+		use \App\User;
+
 		if (!isset($title)) {
 			$title = 'Landing Page';
 		}
@@ -941,7 +943,10 @@
 
 			<div class="control-icon more has-items">
 				<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
-				<div class="label-avatar bg-blue">6</div>
+
+				@if(count($requests) > 0 && $requests[0] !== '')
+					<div class="label-avatar bg-blue" id="request-count-notification">{{ count($requests) - 1 }}</div>
+				@endif
 
 				<div class="more-dropdown more-with-triangle triangle-top-center">
 					<div class="ui-block-title ui-block-title-small">
@@ -951,8 +956,51 @@
 					</div>
 
 					<div class="mCustomScrollbar" data-mcs-theme="dark">
-						<ul class="notification-list friend-requests">
-							<li>
+						<ul class="notification-list friend-requests" id="friend-requests">
+
+
+							@if($requests !== null)
+								@foreach($requests as $uuid)
+									@if($uuid !== '')
+										@php
+											$possible_friend = User::where('uuid', $uuid)->first();
+										@endphp
+										<li name="{{ $possible_friend->uuid }}">
+											<div class="author-thumb">
+												@if($possible_friend->avatar !== '')
+													<img src="{{ $possible_friend->avatar }}" alt="author" style="width: 100%; height: 100%">
+												@else
+													<img src="https://i.imgur.com/3gokj8j.png" alt="nature" style="width: 100%; height: 100%">
+												@endif
+											</div>
+											<div class="notification-event">
+												<a href="#" class="h6 notification-friend">{{ $possible_friend->firstname . ' ' . $possible_friend->lastname }}</a>
+												<span class="chat-message-item">Match Score: {{ $possible_friend->match_score_with(\Session::get('uuid')) }}</span>
+											</div>
+											<span class="notification-icon">
+												<a href="#" class="accept accept-request" name="{{ $possible_friend->uuid }}">
+													<span class="icon-add without-text">
+														<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
+													</span>
+												</a>
+
+												<a href="#" class="remove accept-request request-del" id="{{ $possible_friend->uuid }}">
+													<span class="icon-minus">
+														<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
+													</span>
+												</a>
+
+											</span>
+
+											<div class="more">
+												<svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg>
+											</div>
+										</li>
+									@endif
+								@endforeach
+							@endif
+
+							<!-- <li>
 								<div class="author-thumb">
 									<img src="{{ asset('img/avatar55-sm.jpg') }}" alt="author">
 								</div>
@@ -1051,7 +1099,7 @@
 								<div class="more">
 									<svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg>
 								</div>
-							</li>
+							</li> -->
 
 						</ul>
 					</div>
@@ -2043,6 +2091,67 @@
 		    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		  }
 		});
+
+		$('.accept').click(function(e) {
+			e.preventDefault();
+			var name = $(this).attr('name');
+			$.ajax({
+				url: '/request/accept',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					requestUUID: name,
+					_token: token
+				},
+			}).done(function(msg) {
+				updateButtons();
+				if (msg.hasOwnProperty('success')) {
+					swal(msg['success'][0], msg['success'][1], "success");
+				}
+			});
+			$('li[name="' + name + '"]').each(function() {
+				$('#friend-requests').html($('#friend-requests').html().replace($(this).html(), ''));
+			});
+			var amount = parseInt($('#request-count-notification').html()) - 1;
+			if (amount <= 0) {
+				// Remove
+				$('#request-count-notification').remove();
+			} else {
+				// Reset
+				$('#request-count-notification').html(amount);
+			}
+		});
+
+		$('.remove').click(function(e) {
+			e.preventDefault();
+			var name = $(this).attr('name');
+			$.ajax({
+				url: '/request/remove',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					requestUUID: name,
+					_token: token
+				},
+			}).done(function(msg) {
+				updateButtons();
+				if (msg.hasOwnProperty('success')) {
+					swal(msg['success'][0], msg['success'][1], "success");
+				}
+			});
+			$('li[name="' + name + '"]').each(function() {
+				$('#friend-requests').html($('#friend-requests').html().replace($(this).html(), ''));
+			});
+			var amount = parseInt($('#request-count-notification').html()) - 1;
+			if (amount <= 0) {
+				// Remove
+				$('#request-count-notification').remove();
+			} else {
+				// Reset
+				$('#request-count-notification').html(amount);
+			}
+		});
+
 	});
 </script>
 

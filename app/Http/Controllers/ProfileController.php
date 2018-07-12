@@ -6,6 +6,8 @@ use \App\User;
 use \App\Interests;
 use Illuminate\Support\Str;
 use \App\Profile;
+use \App\Relationship;
+use \Session;
 
 class ProfileController extends Controller
 {
@@ -16,10 +18,10 @@ class ProfileController extends Controller
     try {
 
       $user = User::where('uuid', $uuid)->get()->first();
-
       $top_friends = User::all();
+      $requestUUIDS = explode(';', Relationship::where('uuid', Session::get('uuid'))->first()->requests);
 
-      return \View::make('profile')->with('profile', $user)->with('friends', $top_friends)->with('title', $user->firstname . ' ' . $user->lastname);
+      return \View::make('profile')->with('profile', $user)->with('friends', $top_friends)->with('title', $user->firstname . ' ' . $user->lastname)->with('requests', $requestUUIDS);
     } catch (\Exception $e) {
 
       return "Fail.<br>Error: $e";

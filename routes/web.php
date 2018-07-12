@@ -49,6 +49,11 @@ Route::group(['middleware' => ['checkuuid']], function () {
 
   Route::post('/request/remove', 'RequestController@remove')->name('request.remove');
 
+  Route::post('/request/accept', 'RequestController@accept')->name('request.accept');
+
+  Route::post('/request/deny', 'RequestController@deny')->name('request.deny');
+
+
 });
 
 // Keep at bottom
