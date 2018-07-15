@@ -114,7 +114,7 @@ use \App\Relationship;
 							</div>
 						<div class="author-content">
 							<a href="02-ProfilePage.html" class="h4 author-name">{{ $profile->firstname }} {{ $profile->lastname }}</a>
-							<div class="country">{{ $profile->city }}, {{ $profile->state }}</div>
+							<div class="country">{{ $profile->city . ($profile->city !== '' && $profile->state !== '' ? ', ' : '' ) . $profile->state }}</div>
 						</div>
 					</div>
 				</div>

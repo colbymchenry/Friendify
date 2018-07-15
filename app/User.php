@@ -40,6 +40,7 @@ class User extends Model
       \DB::table('interests')->insert(array('uuid' => $uuid));
       \DB::table('profiles')->insert(array('uuid' => $uuid));
       \DB::table('relationships')->insert(array('uuid' => $uuid));
+      \DB::table('messages')->insert(array('uuid' => $uuid));
       return $uuid;
     }
 

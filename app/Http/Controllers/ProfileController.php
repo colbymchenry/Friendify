@@ -14,20 +14,20 @@ class ProfileController extends Controller
 
   function get($uuid)
   {
-
     try {
-
       $user = User::where('uuid', $uuid)->get()->first();
-      $top_friends = User::all();
+      $top_friends = array();
+      $friends_uuids = explode(';', Relationship::where('uuid', Session::get('uuid'))->first()->friends);
+      foreach ($friends_uuids as $uuid) {
+        if ($uuid !== '') {
+          array_push($top_friends, User::where('uuid', $uuid)->first());
+        }
+      }
       $requestUUIDS = explode(';', Relationship::where('uuid', Session::get('uuid'))->first()->requests);
-
       return \View::make('profile')->with('profile', $user)->with('friends', $top_friends)->with('title', $user->firstname . ' ' . $user->lastname)->with('requests', $requestUUIDS);
     } catch (\Exception $e) {
-
       return "Fail.<br>Error: $e";
-
     }
-
   }
 
   function me() {

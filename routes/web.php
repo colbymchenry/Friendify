@@ -53,6 +53,7 @@ Route::group(['middleware' => ['checkuuid']], function () {
 
   Route::post('/request/deny', 'RequestController@deny')->name('request.deny');
 
+  Route::get('/messages', 'MessageController@index')->name('messages');
 
 });
 

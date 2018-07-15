@@ -944,6 +944,12 @@
 			<div class="control-icon more has-items">
 				<svg class="olymp-happy-face-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-happy-face-icon') }}"></use></svg>
 
+				@php
+					if (!isset($requests)) {
+						$requests = array();
+					}
+				@endphp
+
 				@if(count($requests) > 0 && $requests[0] !== '')
 					<div class="label-avatar bg-blue" id="request-count-notification">{{ count($requests) - 1 }}</div>
 				@endif
@@ -1195,7 +1201,7 @@
 						</ul>
 					</div>
 
-					<a href="#" class="view-all bg-purple">View All Messages</a>
+					<a href="{{ route('messages') }}" class="view-all bg-purple">View All Messages</a>
 				</div>
 			</div>
 
