@@ -21,7 +21,20 @@ use \App\Friends;
 	}
 
 	.interest {
+		visibility: visible;
+		opacity: 100;
+		height: 100%;
+		margin: 100%;
+		-webkit-transition: all 0.3s;
+		-moz-transition: all 0.3s;
+		transition: all 0.3s;
+	}
 
+	.interest:not(.active) {
+		opacity: 0;
+		height: 0;
+		margin: 0;
+		visibility: hidden;
 	}
 </style>
 @endsection
@@ -179,6 +192,7 @@ use \App\Friends;
 							<form class="content">
 								<div class="row">
 									<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+										<p id="interest_navigation">...</p>
 										<ul id="interest_list">
 
 										</ul>
@@ -207,7 +221,29 @@ use \App\Friends;
 var interestsJSON = JSON.parse('{!! json_encode($json) !!}');
 var interestObjects = jsonToArray(interestsJSON);
 var user_interests = {!! json_encode($user_interests->toArray()) !!};
+var level = 0;
 setupInterestsHTML();
+
+	function setInterest(id, value) {
+		id = id.split('%20').join(' ');
+		$.ajax({
+			method: 'POST',
+			url: '{{ route('account_setup.interest') }}',
+			data: {
+				id: id,
+				value: parseInt(value),
+				_token: '{{ Session::token() }}'
+			 }
+		})
+		.done(function (msg) {
+			if(msg.hasOwnProperty('success')) {
+			} else if(msg.hasOwnProperty('failure')) {
+				swal("Uh-Oh!", msg['failure'], "error");
+			} else {
+				swal("Uh-Oh!", "Something went wrong on our end.", "error");
+			}
+		});
+	}
 
 	$( "#location-next" ).click(function(e) {
 		e.preventDefault();
@@ -261,85 +297,132 @@ setupInterestsHTML();
 		});
 	});
 
-	function setInterest(event) {
-	  // var level = event.target.name;
-		// var value = (event.target.checked === true ? 1 : 0);
-		// var parentUL = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-		// var id = event.target.id.replace('input.', '');
-		//
-		// // show children
-		// if(value === 1) {
-		// 	// hide everything on this level that isn't what we clicked
-		// 	var find = "#ul." + id;
-		// 	// console.log(find);
-		// 	// console.log($(find).length > 0);
-		//
-		// } else {
-		// 	// hide children
-		//
-		// }
-		//
-		// $.ajax({
-		// 	method: 'POST',
-		// 	url: '{{ route('account_setup.interest') }}',
-		// 	data: {
-		// 		id: id,
-		// 		value: parseInt(value),
-		// 		_token: '{{ Session::token() }}'
-		// 	 }
-		// })
-		// .done(function (msg) {
-		// 	if(msg.hasOwnProperty('success')) {
-		// 	} else if(msg.hasOwnProperty('failure')) {
-		// 		swal("Uh-Oh!", msg['failure'], "error");
-		// 	} else {
-		// 		swal("Uh-Oh!", "Something went wrong on our end.", "error");
-		// 	}
-		// });
-	}
+	/**
+	* THIS IS USED TO UPDATE THE CHECKBOX
+	**/
+	$( "#interest_list" ).on( "click", "span", function( event ) {
+		event.stopPropagation();
 
-	$( "#interest_list" ).on( "click", "input", function( event ) {
-		var id = event.target.id.replace('input.', '').split('%20').join(' ');
-		var level = event.target.name;
-		var value = (event.target.checked === true ? 1 : 0);
-		var parent = getParent(event.target);
+		var parent = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+		var input = $(parent).find('input')[0]
+		var id = input.id.replace('input.', '').split('%20').join(' ');
+		var level =	input.name;
+		var value = (input.checked === true ? 0 : 1);
+		setInterest(id, value);
 
-			console.log(parent);
+		/**
+		* THIS HANDLES ALL PARENT ELEMENTS, BY TURNING THEM ON
+		**/
+		if(value === 1) {
+			$.each(id.split('_'), function(index, value) {
+				var totalID = ''
+				$.each(id.split('_'), function(index1, value1) {
+					if(index1 < index) {
+						totalID += id.split('_')[index1] + '_';
+					}
+				});
 
-		$(parent.parentNode).find('ul').filter(function() {
-			return $(this).find('input')[0].name == level && $(this).attr('id') != parent.id;
-		}).map(function(i, e) {
-			$(this).addClass("hidden");
-		});
+				totalID = totalID.substring(0, totalID.length - 1);
+				if(totalID !== '') {
+					var otherID = 'input.' + totalID;
+					$('#interest_list').find('input').filter(function() {
+						return $(this).attr('id') === otherID && $(this).attr('id') !== input.id;
+					}).map(function(index, value) {
+						$(this).prop('checked', true);
+						setInterest($(this).attr('id').replace('input.', ''), 1);
+					});
+				}
+			});
+		} else {
+			/**
+			* THIS HANDLES UPDATING ALL CHILD ELEMENTS, BY TURNING THEM OFF
+			**/
+			$(parent.parentNode).find('input').filter(function() {
+				return $(this).attr('id') !== input.id;
+			}).map(function(index, value) {
+					$(this).prop('checked', false);
+					setInterest($(this).attr('id').replace('input.', ''), 0)
+			});
+		}
 
-		$(parent).find('div').filter(function() {
-			return $(this).find('input')[0].name == (parseInt(level) + 1);
-		}).map(function(i, e) {
-			$(this).removeClass("hidden");
-		});
-
-		$.ajax({
-			method: 'POST',
-			url: '{{ route('account_setup.interest') }}',
-			data: {
-				id: id,
-				value: parseInt(value),
-				_token: '{{ Session::token() }}'
-			 }
-		})
-		.done(function (msg) {
-			if(msg.hasOwnProperty('success')) {
-			} else if(msg.hasOwnProperty('failure')) {
-				swal("Uh-Oh!", msg['failure'], "error");
-			} else {
-				swal("Uh-Oh!", "Something went wrong on our end.", "error");
-			}
-		});
 	});
 
-	function getParent(element) {
-		return element.parentNode.parentNode.parentNode.parentNode.parentNode;
+	/**
+	* THIS IS USED TO HIDE/SHOW THE INTEREST GROUPS
+	**/
+	$( "#interest_list" ).on( "click", "div", function( event ) {
+		if(event.target.tagName !== 'LABEL') return;
+		event.stopPropagation();
+		event.preventDefault();
+
+		var id = event.target.id.replace('label.', '').split('%20').join(' ');
+
+		// This means we are at the end of an interest tree and need to return as there is no more animating to do
+		if($('input[id^="input.' + id + '_"]').length === 0) {
+			return;
+		}
+
+		var oldLevel = level;
+		if(level === 1 && parseInt($(event.target).attr('name')) === 0) {
+			level = 0;
+		} else {
+			level = parseInt($(event.target).attr('name')) + 1;
+		}
+		var parentLi = event.target.parentNode.parentNode.parentNode;
+		var parentUl = parentLi.parentNode;
+		var masterUl = parentUl.parentNode;
+
+		// this is just a quick fix, if the user is in a level greater than 1 and
+		// tries to go back to the top level it can include interests from other categories
+		// not easy to word.
+		if(oldLevel > 1) {
+			masterUl = parentUl;
+		}
+
+		$(masterUl).find('li').filter(function() {
+			var liLevel = parseInt($(this).find('input')[0].name);
+
+			if(masterUl.id.replace('ul.', '') === 'interest_list' || $(this).find('input')[0].id.replace('input.', '').includes(masterUl.id.replace('ul.', ''))) {
+				// going back
+				if(oldLevel > level) {
+					if(liLevel > level) {
+						return $(this).hasClass('active');
+					} else if (liLevel === level) {
+						return !$(this).hasClass('active');
+					}
+				}
+				// going forward
+				else if (oldLevel <= level) {
+					if(liLevel === level) {
+						return !$(this).hasClass('active') && contains($(this.parentNode).attr('id'), parentUl.id);
+					} else if (liLevel === level - 1) {
+						return $(this).hasClass('active') && $(this.parentNode).attr('id') !== parentUl.id;
+					}
+				}
+			}
+
+			return false;
+		}).map(function(i, e) {
+			$(this).toggleClass("active");
+		});
+
+		$('#interest_navigation').text(id.split("_").join("->").split("%20").join(" "));
+
+		if(level === 0) {
+			$('#interest_navigation').text("...");
+		}
+	});
+
+	function contains(str0, str1) {
+		return count(str0, str1) > 0;
 	}
+
+	$('li[id^="interest"]').click(function(){
+		if(!$(this).hasClass('active')) {
+			return false;
+		}
+		return true;
+	});
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUI1i_osQOGSch2wy1xYI0Fya8b01ZGp4&libraries=places&callback=initAutocomplete" async defer></script>

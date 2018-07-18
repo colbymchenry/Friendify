@@ -27,10 +27,10 @@ function getInterestsHTML(prefix, interest_data) {
     for (var i in interest_data) {
         if (interest_data[i] instanceof Array) {
             interestHTML += '<ul id="ul.' + (prefix + '_' + i).substring(1) + '">';
-            interestHTML += getInterestElement((prefix + '_' + i).substring(1), true, user_interests[(prefix + '_' + i).substring(1)] === 1);
+            interestHTML += getInterestElement((prefix + '_' + i).substring(1), i, true, user_interests[(prefix + '_' + i).substring(1)] === 1);
             if (interest_data[i].length > 0) {
                 for (var a in interest_data[i]) {
-                    interestHTML += getInterestElement((prefix + '_' + i + '_' + interest_data[i][a]).substring(1), true, user_interests[(prefix + '_' + i + '_' + interest_data[i][a]).substring(1)] === 1);
+                    interestHTML += getInterestElement((prefix + '_' + i + '_' + interest_data[i][a]).substring(1), interest_data[i][a], true, user_interests[(prefix + '_' + i + '_' + interest_data[i][a]).substring(1)] === 1);
                     interestHTML += '</li>';
                 }
             }
@@ -42,7 +42,6 @@ function getInterestsHTML(prefix, interest_data) {
 
             // we've reached the end of a section
             if (index === (Object.keys(interest_data).length) - 1) {
-              console.log(i + "," + prefix);
                 for (var k = 1; k <= count(prefix, '_') - 1; k++) {
                     interestHTML += '</li>';
                     interestHTML += '</ul>';
@@ -55,21 +54,20 @@ function getInterestsHTML(prefix, interest_data) {
             interestHTML += '</ul>';
           }
             interestHTML += '<ul id="ul.' + (prefix + '_' + i).substring(1) + '">';
-            interestHTML += getInterestElement((prefix + '_' + i).substring(1), (prefix + '_' + i).substring(1).includes('_') === true, user_interests[(prefix + '_' + i).substring(1)] === 1);
+            interestHTML += getInterestElement((prefix + '_' + i).substring(1), i, (prefix + '_' + i).substring(1).includes('_') === true, user_interests[(prefix + '_' + i).substring(1)] === 1);
             getInterestsHTML(prefix + '_' + i, interest_data[i]);
             index++;
         }
     }
 }
 
-function getInterestElement(id, hidden, checked) {
-    var displayName = id.split('_').join(' ');
+function getInterestElement(id, text, hidden, checked) {
     return '\
-      <li>\
-        <div class="remember ' + (hidden ? '' : '') + '" style="text-align: left">\
+      <li class="remember ' + (hidden ? 'interest' : 'interest active') + '">\
+        <div style="text-align: left">\
             <div class="checkbox">\
-                <label>\
-                  <input type="checkbox" ' + ('id=input.' + id.split(' ').join('%20')) + ' ' + ('name=' + count(id, '_')) + ' ' + (checked ? 'checked' : '') + ' onclick="setInterest(event);">' + displayName + '</input>\
+                <label '+ ('id=label.' + id.split(' ').join('%20')) + ' ' + ('name=' + count(id, '_')) + '>\
+                  <input type="checkbox" ' + ('id=input.' + id.split(' ').join('%20')) + ' ' + ('name=' + count(id, '_')) + ' ' + (checked ? 'checked' : '') + '>' + text + '</input>\
                 </label>\
             </div>\
         </div>\

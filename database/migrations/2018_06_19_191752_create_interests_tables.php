@@ -6,7 +6,13 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateInterestsTables extends Migration
 {
-    /**
+   /* ===== IF WE NEED TO UPDATE WE HAVE TO DO THIS EVERY TIME =====
+    * You create another migration to alter tables.
+    * So when you first make the table, you'll create all the fields etc.
+    * If you want to add another column, or change a column then you create a NEW migration. If you just edit the old one then running php artisan migrate wont do anything.
+    */
+
+    /*
      * Run the migrations.
      *
      * @return void
