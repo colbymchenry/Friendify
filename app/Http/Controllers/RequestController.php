@@ -26,6 +26,8 @@ class RequestController extends Controller {
       $relationship->requests = $request->session()->get('uuid') . ';' . Relationship::where('uuid', $request['receiver'])->first()->requests;
       $relationship->save();
       return response()->json(['success' => ['Request Sent!', '']]);
+    } elseif (strpos($relationship->friends, $request->session()->get('uuid')) == false) {
+      return response()->json(['failure' => ['You are already friends.', '']]);
     } else {
       return response()->json(['failure' => ['A request has already been sent.', '']]);
     }
@@ -38,6 +40,25 @@ class RequestController extends Controller {
     $receiverRelationship->friends = str_replace(Session::get('uuid') . ';', '', $receiverRelationship->friends);
     $receiverRelationship->save();
     $sessionRelationship->friends = str_replace($request['receiver'] . ';', '', $sessionRelationship->friends);
+    $sessionRelationship->save();
+    return response()->json(['success' => ['Removed!', '']]);
+  }
+
+  public function accept(Request $request) {
+    $sessionRelationship = Relationship::where('uuid', $request->session()->get('uuid'))->first();
+    $requestRelationship = Relationship::where('uuid', $request['requestUUID'])->first();
+    $sessionRelationship->requests = str_replace($request['requestUUID'] . ';', '', $sessionRelationship->requests);
+    $sessionRelationship->friends = $request['requestUUID'] . ';' . $sessionRelationship->friends;
+    $sessionRelationship->save();
+    $requestRelationship->friends = $request->session()->get('uuid') . ';' . $requestRelationship->friends;
+    $requestRelationship->save();
+    return response()->json(['success' => ['Accepted!', '']]);
+  }
+
+  public function deny(Request $request) {
+    $sessionRelationship = Relationship::where('uuid', $request->session()->get('uuid'))->first();
+    $requestRelationship = Relationship::where('uuid', $request['requestUUID'])->first();
+    $sessionRelationship->requests = str_replace($request['requestUUID'] . ';', '', $sessionRelationship->requests);
     $sessionRelationship->save();
     return response()->json(['success' => ['Removed!', '']]);
   }

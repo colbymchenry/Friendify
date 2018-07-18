@@ -40,6 +40,7 @@ class User extends Model
       \DB::table('interests')->insert(array('uuid' => $uuid));
       \DB::table('profiles')->insert(array('uuid' => $uuid));
       \DB::table('relationships')->insert(array('uuid' => $uuid));
+      \DB::table('messages')->insert(array('uuid' => $uuid));
       return $uuid;
     }
 
@@ -47,7 +48,7 @@ class User extends Model
 
   function match_score_with($other_user) {
     $first = (array) \DB::table('interests')->where('uuid', $this->uuid)->get()->first();
-    $second = (array) \DB::table('interests')->where('uuid', $other_user['uuid'])->get()->first();
+    $second = (array) \DB::table('interests')->where('uuid', $other_user)->get()->first();
     $sum = 0;
     $keys = array_keys($second);
     foreach ($keys as $key) {
