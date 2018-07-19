@@ -258,14 +258,18 @@
 			<div class="control-block">
 				<div class="author-page author vcard inline-items">
 					<div class="author-thumb">
-						<img alt="author" src="{{ asset('img/author-page.jpg') }}" class="avatar">
+						@if($profile->avatar !== '')
+							<img src="{{ $profile->avatar }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;" class="avatar">
+						@else
+							<img src="https://i.imgur.com/3gokj8j.png" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;" class="avatar">
+						@endif
 						<span class="icon-status online"></span>
 					</div>
 					<a href="02-ProfilePage.html" class="author-name fn">
 						<div class="author-title">
-							James Spiegel <svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon') }}"></use></svg>
+							{{ $profile->firstname }} {{ $profile->lastname }} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon') }}"></use></svg>
 						</div>
-						<span class="author-subtitle">SPACE COWBOY</span>
+						<!-- <span class="author-subtitle">SPACE COWBOY</span> -->
 					</a>
 				</div>
 			</div>
@@ -1322,7 +1326,11 @@
 
 			<div class="author-page author vcard inline-items more">
 				<div class="author-thumb">
-					<img alt="author" src="{{ asset('img/author-page.jpg') }}" class="avatar">
+					@if($profile->avatar !== '')
+						<img src="{{ $profile->avatar }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;max-height: 3em;" class="avatar">
+					@else
+						<img src="https://i.imgur.com/3gokj8j.png" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;max-height: 3em;" class="avatar">
+					@endif
 					<span class="icon-status online"></span>
 					<div class="more-dropdown more-with-triangle">
 						<div class="mCustomScrollbar" data-mcs-theme="dark">
@@ -1431,9 +1439,9 @@
 				</div>
 				<a href="02-ProfilePage.html" class="author-name fn">
 					<div class="author-title">
-						James Spiegel <svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon') }}"></use></svg>
+						{{ $profile->firstname }} {{ $profile->lastname }} <svg class="olymp-dropdown-arrow-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon') }}"></use></svg>
 					</div>
-					<span class="author-subtitle">SPACE COWBOY</span>
+					<!-- <span class="author-subtitle">SPACE COWBOY</span> -->
 				</a>
 			</div>
 
