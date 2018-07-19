@@ -329,7 +329,7 @@ setupInterestsHTML();
 						return $(this).attr('id') === otherID && $(this).attr('id') !== input.id;
 					}).map(function(index, value) {
 						$(this).prop('checked', true);
-						setInterest($(this).attr('id').replace('input.', ''), 1);
+						// setInterest($(this).attr('id').replace('input.', ''), 1);
 					});
 				}
 			});
@@ -341,7 +341,7 @@ setupInterestsHTML();
 				return $(this).attr('id') !== input.id;
 			}).map(function(index, value) {
 					$(this).prop('checked', false);
-					setInterest($(this).attr('id').replace('input.', ''), 0)
+					// setInterest($(this).attr('id').replace('input.', ''), 0)
 			});
 		}
 

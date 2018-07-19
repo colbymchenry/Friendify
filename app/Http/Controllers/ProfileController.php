@@ -6,28 +6,26 @@ use \App\User;
 use \App\Interests;
 use Illuminate\Support\Str;
 use \App\Profile;
-use \App\Relationship;
-use \Session;
 
 class ProfileController extends Controller
 {
 
   function get($uuid)
   {
+
     try {
+
       $user = User::where('uuid', $uuid)->get()->first();
-      $top_friends = array();
-      $friends_uuids = explode(';', Relationship::where('uuid', Session::get('uuid'))->first()->friends);
-      foreach ($friends_uuids as $uuid) {
-        if ($uuid !== '') {
-          array_push($top_friends, User::where('uuid', $uuid)->first());
-        }
-      }
-      $requestUUIDS = explode(';', Relationship::where('uuid', Session::get('uuid'))->first()->requests);
-      return \View::make('profile')->with('profile', $user)->with('friends', $top_friends)->with('title', $user->firstname . ' ' . $user->lastname)->with('requests', $requestUUIDS);
+
+      $top_friends = User::all();
+
+      return \View::make('profile')->with('profile', $user)->with('friends', $top_friends)->with('title', $user->firstname . ' ' . $user->lastname);
     } catch (\Exception $e) {
+
       return "Fail.<br>Error: $e";
+
     }
+
   }
 
   function me() {
@@ -145,9 +143,67 @@ class ProfileController extends Controller
     try {
         $json = json_decode(\Storage::get('Interests.json'), true);
         $interests = Interests::getInterests();
+        $columns = \Schema::getColumnListing('interests');
+        $validInterest = false;
+        foreach($columns as $column) {
+            if($request['id'] == $column) {
+              $validInterest = true;
+              break;
+            }
+        }
+
+        if($validInterest == false) {
+          throw new \Exception('Invalid interest selection: "' + $request['id'] + '"');
+          return;
+        }
+
+        if($request['value'] != 0 && $request['value'] != 1) {
+          throw new \Exception("Invalid value for interest");
+          return;
+        }
+
         Interests::where('uuid', $request->session()->get('uuid'))->first()->update(array(
           $request['id'] => $request['value'],
         ));
+
+        /**
+    		* THIS HANDLES ALL PARENT ELEMENTS, BY TURNING THEM ON
+    		**/
+    		if($request['value'] == 1) {
+          foreach(explode('_', $request['id']) as $index=>$value) {
+            $totalID = '';
+              foreach(explode('_', $request['id']) as $index1=>$value1) {
+                \Log::info($index1 . ',' . $index);
+                if($index1 < $index) {
+                  $totalID .= explode('_', $request['id'])[$index1] . '_';
+                }
+              }
+              $totalID = substr($totalID, 0, strlen($totalID) - 1);
+
+              if($totalID != '') {
+                foreach($columns as $column) {
+                  if($column == $totalID && $column != $request['id']) {
+                    Interests::where('uuid', $request->session()->get('uuid'))->first()->update(array(
+                      $column => $request['value'],
+                    ));
+                  }
+                }
+              }
+          }
+    		} else {
+    			/**
+    			* THIS HANDLES UPDATING ALL CHILD ELEMENTS, BY TURNING THEM OFF
+    			**/
+          foreach($columns as $column) {
+            if(strpos($column, $request['id']) !== false && $column !== $request['id']) {
+              Interests::where('uuid', $request->session()->get('uuid'))->first()->update(array(
+                $column => $request['value'],
+              ));
+            }
+          }
+    		}
+
+
         return response()->json(['success' => '/account_setup']);
     } catch (\Exception $e) {
       \Log::error($e);
