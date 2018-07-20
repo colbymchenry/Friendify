@@ -19,8 +19,6 @@ class AuthController extends Controller
         $dob = $dobArray[1] . '/' . $dobArray[0] . '/' . $dobArray[2];
         $request['dob'] = $dob;
 
-        \Log::info($request->all());
-
         $validator = $this->validator($request->all());
         if($validator->fails())
         {

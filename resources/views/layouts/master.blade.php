@@ -259,9 +259,9 @@
 				<div class="author-page author vcard inline-items">
 					<div class="author-thumb">
 						@if($profile->avatar !== '')
-							<img src="{{ $profile->avatar }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;" class="avatar">
+							<img src="{{ $profile->avatar }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;max-height: 3em;" class="avatar">
 						@else
-							<img src="https://i.imgur.com/3gokj8j.png" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;" class="avatar">
+							<img src="https://i.imgur.com/3gokj8j.png" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%;max-height: 3em;" class="avatar">
 						@endif
 						<span class="icon-status online"></span>
 					</div>
