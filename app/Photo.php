@@ -17,4 +17,24 @@ class Photo extends Model
   public $incrementing = true;
   // public $fillable = array('message_history');
 
+  static function create($owner, $name, $description, $tagged_people)
+  {
+    $result = Photo::where('owner', $owner)->where('name', $name)->get()->first();
+    if (count($result) != 0)
+    {
+      throw new \Exception("A photo with that name already exists.");
+    }
+    else
+    {
+      $photo = new Photo;
+      $photo->owner = $owner;
+      $photo->name = $name;
+      $photo->description = $description;
+      $photo->tagged_people = $tagged_people;
+      $photo->server_id = 1;
+      $photo->save();
+    }
+
+  }
+
 }

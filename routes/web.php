@@ -57,7 +57,9 @@ Route::group(['middleware' => ['checkuuid']], function () {
 
   Route::get('/photos/{uuid}', 'PhotoController@getPhotoView')->name('photos_view');
 
-  Route::post('/photos/create_album', 'PhotoController@createAlbum')->name('photos.create_album');;
+  Route::post('/photos/create_album', 'PhotoController@createAlbum')->name('photos.create_album');
+
+  Route::post('/photos/upload', 'PhotoController@upload')->name('photos.upload');
 
 });
 

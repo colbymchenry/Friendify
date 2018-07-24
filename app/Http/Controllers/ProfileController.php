@@ -34,7 +34,6 @@ class ProfileController extends Controller
 
   public function changeCoverImage(Request $request)
   {
-
     $this->validate($request, [ 'user_photo' => 'mimes:png,jpeg,jpg,gif | max:2048', ]);
 
     // get current time and append the upload file extension to it,

@@ -60,12 +60,9 @@ class AuthController extends Controller
       return response()->json(['failure' => ['Sorry!', 'Incorrect Email/Password']]);
     }
 
-    \Log::info($request->session()->all());
-
     $request->session()->put('uuid', $result->uuid);
     $request->session()->save();
     \Session::save();
-    \Log::info("HELLO");
     return response()->json(['success' => '/profile']);
   }
 

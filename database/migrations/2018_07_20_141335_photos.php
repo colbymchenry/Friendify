@@ -15,7 +15,9 @@ class Photos extends Migration
     {
       Schema::create('photos', function (Blueprint $table) {
         $table->increments('id')->unique();
+        $table->string('name');
         $table->uuid('owner');
+        $table->integer('server_id');
         $table->string('description')->default('');
         $table->string('tagged_people');
         $table->string('likes');

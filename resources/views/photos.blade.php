@@ -116,7 +116,7 @@
 					<div class="block-btn align-right">
 						<a href="#" data-toggle="modal" data-target="#create-photo-album" class="btn btn-primary btn-md-2">Create Album  +</a>
 
-						<a href="#" data-toggle="modal" data-target="#update-header-photo" class="btn btn-md-2 btn-border-think custom-color c-grey">Add Photos</a>
+						<a href="#" onclick="photoSubmit();" data-toggle="modal" data-target="#update-header-photo" class="btn btn-md-2 btn-border-think custom-color c-grey">Add Photos</a>
 					</div>
 
 					<ul class="nav nav-tabs photo-gallery" role="tablist">
@@ -169,16 +169,36 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </div>
+
+<div class="modal-body" style="height:0px;overflow:hidden;">
+	{{Form::open(['route' => 'photos.upload', 'files' => true, 'id' => 'photo_form'])}}
+
+	{{Form::label('photo', 'User Photo',['class' => 'control-label'])}}
+	{{Form::file('user_photo', ['id' => 'photo_input', 'accept' => '.png,.jpg,.jpeg'])}}
+	{{Form::submit('Save', ['class' => 'btn btn-success'])}}
+
+	{{Form::close()}}
+</div>
+
 @endsection
 
 
 @section('scripts')
 
 <script>
+
+function photoSubmit() {
+		document.getElementById("photo_input").click();
+ }
+
+ document.getElementById("photo_form").onchange = function() {
+	document.getElementById("photo_form").submit();
+};
+
+
 	$( "#create-photo-album" ).click(function(e) {
 		e.preventDefault();
 		swal({
@@ -195,8 +215,6 @@
 		     swal.showInputError("You need to write something!");
 		     return false;
 	   	}
-
-			console.log("BOOM");
 
 			$.ajax({
 				method: 'POST',
@@ -217,7 +235,6 @@
 			});
 		});
 	});
-
 </script>
 
 @endsection
