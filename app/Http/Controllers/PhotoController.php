@@ -6,6 +6,7 @@ use \App\Album;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Utilities\UUID;
 use \App\Server;
+use \App\Photo;
 
 class PhotoController extends Controller {
 
@@ -31,37 +32,31 @@ class PhotoController extends Controller {
     return response()->json(['success' => 'Album created!' ]);
   }
 
-  // TODO: Files not writing to server?
   public function upload(Request $request)
   {
     $this->validate($request, [ 'user_photo' => 'mimes:png,jpeg,jpg,gif | max:2048', ]);
 
+    $original_name = $request->user_photo->getClientOriginalName();
+    $file_path = $request->user_photo->getPathName();
+
     $photoName = UUID::random() . '.' . $request->user_photo->getClientOriginalExtension();
 
-    $serverSpace = Server::getServerSpace("1");
+    $serverId = Server::getAvailableServerID($request->user_photo->getClientSize());
 
-    \Log::info($serverSpace);
-
-    if($serverSpace < 100) {
+    // TODO: Notify of error;
+    if($serverId == -1) {
       return;
     }
 
-    \Log::info($request->user_photo);
-    \Log::info($photoName);
+    Server::uploadFile($serverId, '/var/www/html/', $request->user_photo, $photoName);
 
-    Server::uploadFile("1", $request->user_photo, $photoName);
-
-
-
-    // $request->photo->move(public_path('photos'), $photoName);
-    //
-    // try {
-    //   $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
-    //   Photo::create($user->uuid, $photoName, $request['description'], $request['tagged_people']);
-    // } catch (\Exception $e) {
-    //     \Log::error($e);
-    //     return response()->json(['failure' => $e->getMessage() ]);
-    // }
+    try {
+      $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
+      Photo::create($serverId, $user->uuid, $photoName, $request['description'], $request['tagged_people']);
+    } catch (\Exception $e) {
+        \Log::error($e);
+        return response()->json(['failure' => $e->getMessage() ]);
+    }
 
     return redirect()->route('photos_view', $request->session()->get('uuid'));
   }

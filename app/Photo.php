@@ -17,7 +17,7 @@ class Photo extends Model
   public $incrementing = true;
   // public $fillable = array('message_history');
 
-  static function create($owner, $name, $description, $tagged_people)
+  static function create($server_id, $owner, $name, $description, $tagged_people)
   {
     $result = Photo::where('owner', $owner)->where('name', $name)->get()->first();
     if (count($result) != 0)
@@ -31,7 +31,7 @@ class Photo extends Model
       $photo->name = $name;
       $photo->description = $description;
       $photo->tagged_people = $tagged_people;
-      $photo->server_id = 1;
+      $photo->server_id = $server_id;
       $photo->save();
     }
 

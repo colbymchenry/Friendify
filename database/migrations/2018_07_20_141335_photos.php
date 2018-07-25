@@ -18,10 +18,10 @@ class Photos extends Migration
         $table->string('name');
         $table->uuid('owner');
         $table->integer('server_id');
-        $table->string('description')->default('');
-        $table->string('tagged_people');
-        $table->string('likes');
-        $table->string('comments');
+        $table->string('description')->nullable()->default('');
+        $table->string('tagged_people')->nullable()->default('');
+        $table->integer('likes')->default(0);
+        $table->string('comments')->nullable()->default('');
         $table->rememberToken();
         $table->timestamps();
       });
