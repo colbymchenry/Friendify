@@ -51,6 +51,6 @@ class Server {
       \Log::info($e);
     }
   }
-  
+
 
 }
