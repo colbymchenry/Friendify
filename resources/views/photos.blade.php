@@ -116,7 +116,7 @@
 					<div class="block-btn align-right">
 						<a href="#" data-toggle="modal" data-target="#create-photo-album" class="btn btn-primary btn-md-2">Create Album  +</a>
 
-						<a href="#" onclick="photoSubmit();" data-toggle="modal" data-target="#update-header-photo" class="btn btn-md-2 btn-border-think custom-color c-grey">Add Photos</a>
+						<a href="#" onclick="photoSubmit({{ $albums }});" data-toggle="modal" data-target="#update-header-photo" class="btn btn-md-2 btn-border-think custom-color c-grey">Add Photos</a>
 					</div>
 
 					<ul class="nav nav-tabs photo-gallery" role="tablist">
@@ -166,6 +166,47 @@
 			      </div>
             <!-- [END] CREATE AN ALBUM BUTTON -->
 
+						@foreach($albums as $album)
+						<div class="photo-album-item-wrap col-4-width">
+							<div class="photo-album-item" data-mh="album-item">
+								<div class="photo-item">
+									<img src="{{ asset('img/photo-item2.jpg') }}" alt="photo">
+									<div class="overlay overlay-dark"></div>
+									<a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg></a>
+									<a href="#" class="post-add-icon">
+										<svg class="olymp-heart-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-heart-icon') }}"></use></svg>
+										<span>324</span>
+									</a>
+									<a href="#" data-toggle="modal" data-target="#open-photo-popup-v2" class="  full-block"></a>
+								</div>
+
+								<div class="content">
+									<a href="#" class="title h5">{{ $album->name }}</a>
+									<span class="sub-title">Last Added: 2 hours ago</span>
+
+									<div class="swiper-container">
+										<div class="swiper-wrapper">
+											<div class="swiper-slide">
+												<div class="friend-count" data-swiper-parallax="-500">
+													<a href="#" class="friend-count-item">
+														<div class="h6">{{ substr_count($album->photos, ',') }}</div>
+														<div class="title">Photos</div>
+													</a>
+													<a href="#" class="friend-count-item">
+														<div class="h6">86</div>
+														<div class="title">Comments</div>
+													</a>
+												</div>
+											</div>
+										</div>
+
+										<!-- If we need pagination -->
+										<div class="swiper-pagination"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						@endforeach
 					</div>
 				</div>
 			</div>
@@ -174,7 +215,7 @@
 </div>
 
 <div class="modal-body" style="height:0px;overflow:hidden;">
-	{{Form::open(['route' => 'photos.upload', 'files' => true, 'id' => 'photo_form'])}}
+	{{Form::open(['files' => true, 'id' => 'photo_form'])}}
 
 	{{Form::label('photo', 'User Photo',['class' => 'control-label'])}}
 	{{Form::file('user_photo', ['id' => 'photo_input', 'accept' => '.png,.jpg,.jpeg'])}}
@@ -190,13 +231,50 @@
 
 <script>
 
-function photoSubmit() {
-		document.getElementById("photo_input").click();
+function doSomething() {
+	document.getElementById("photo_input").click();
+}
+
+async function photoSubmit(albums) {
+		var options = {};
+
+		for(var a in albums) {
+			options[albums[a]['id']] = albums[a]['name'];
+		}
+
+		const {value: album} = await swal({
+		  title: 'Upload a new photo!',
+		  input: 'select',
+		  inputOptions: options,
+		  inputPlaceholder: 'Select album',
+			html: '<a onmouseover="" style="cursor: pointer;" onclick="doSomething();"><img id="selectedImage" style="width: 64px;height:64px;" src="{{ asset('img/icons8-image-file-128.png') }}"></img></a>',
+		  showCancelButton: true,
+		  inputValidator: (value) => {
+		    return new Promise((resolve) => {
+		      if (value === '') {
+		        resolve('You need to select an album.');
+		      } else {
+		        resolve();
+		      }
+		    })
+		  }
+		});
+
+		if (album) {
+		  swal('You selected: ' + album);
+		}
  }
 
- document.getElementById("photo_form").onchange = function() {
-	document.getElementById("photo_form").submit();
-};
+document.getElementById("photo_form").onchange = function() {
+	var selectedFile = document.getElementById('photo_input').files[0];
+	var reader = new FileReader();
+
+	reader.onload = function (e) {
+    $('#selectedImage').attr('src', e.target.result);
+  }
+
+	reader.readAsDataURL(selectedFile);
+}
 
 
 	$( "#create-photo-album" ).click(function(e) {
