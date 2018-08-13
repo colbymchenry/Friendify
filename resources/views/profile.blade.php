@@ -25,6 +25,11 @@ use \App\Relationship;
 		<div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="ui-block">
 				<div class="top-header">
+					<div style="z-index: 10;position: absolute;right: 0px;padding: 10px;">
+						<a class="btn btn-control bg-yellow">
+							<h4 style="color:white;line-height: 2;vertical-align: middle;" id="user-score-display"><b>{{ $match_score }}</b></h4>
+						</a>
+					</div>
 					<div class="top-header-thumb" style="max-height:calc(100vh - 300px);min-height:240px;overflow:hidden;display: flex;justify-content: center;align-items: center;">
 						@if($profile->cover_image !== '')
 							<img src="{{ $profile->cover_image }}" alt="nature" style="flex-shrink: 0;min-width: 100%;min-height: 100%">
@@ -37,9 +42,6 @@ use \App\Relationship;
 							<div class="col col-lg-5 col-md-5 col-sm-12 col-12">
 								<ul class="profile-menu">
 									<li>
-										<a href="02-ProfilePage.html" class="active">Timeline</a>
-									</li>
-									<li>
 										<a href="05-ProfilePage-About.html">About</a>
 									</li>
 									<li>
@@ -49,12 +51,6 @@ use \App\Relationship;
 							</div>
 							<div class="col col-lg-5 ml-auto col-md-5 col-sm-12 col-12">
 								<ul class="profile-menu">
-									<li>
-										<a href="{!! route('photos_view', ['uuid'=>$profile->uuid]) !!}">Photos</a>
-									</li>
-									<li>
-										<a href="09-ProfilePage-Videos.html">Videos</a>
-									</li>
 									<li>
 										<div class="more">
 											<svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg>
@@ -533,6 +529,8 @@ use \App\Relationship;
 
 @section('scripts')
 <script>
+
+ jQuery("#user-score-display").fitText(0.2);
 
 	function coverImageSubmit() {
       document.getElementById("cover_image_input").click();

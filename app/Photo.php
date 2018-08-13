@@ -33,8 +33,10 @@ class Photo extends Model
       $photo->tagged_people = $tagged_people;
       $photo->server_id = $server_id;
       $photo->save();
+      return $photo->id;
     }
 
+    return -1;
   }
 
 }

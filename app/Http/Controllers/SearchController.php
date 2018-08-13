@@ -8,8 +8,8 @@ class SearchController extends Controller {
   static $min_match_score = 1;
 
   function find_friends() {
-    $profile = '';
-    return \View::make('find_friends')->with('profile', $profile)->with('title', 'Find Friends');
+    $user = User::where('uuid', \Session::get('uuid'))->get()->first();
+    return \View::make('find_friends')->with('profile', $user)->with('title', 'Find Friends');
   }
 
   public function search_matches(\Illuminate\Http\Request $request) {

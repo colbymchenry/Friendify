@@ -38,21 +38,35 @@ class PhotoController extends Controller {
 
     $original_name = $request->user_photo->getClientOriginalName();
     $file_path = $request->user_photo->getPathName();
-
     $photoName = UUID::random() . '.' . $request->user_photo->getClientOriginalExtension();
-
     $serverId = Server::getAvailableServerID($request->user_photo->getClientSize());
 
     // TODO: Notify of error;
     if($serverId == -1) {
-      return;
+      return response()->json(['failure' => 'Could not find available server space.' ]);
     }
 
-    Server::uploadFile($serverId, '/var/www/html/', $request->user_photo, $photoName);
-
     try {
+      $album = Album::where('owner',  $request->session()->get('uuid'))->where('id', $request->album)->get()->first();
+
+      if (count($album) == 0)
+      {
+        throw new \Exception("We could not find that album.");
+      }
+
       $user = User::where('uuid', $request->session()->get('uuid'))->get()->first();
-      Photo::create($serverId, $user->uuid, $photoName, $request['description'], $request['tagged_people']);
+      $photoId = Photo::create($serverId, $user->uuid, $photoName, $request->description, '');
+
+      if($photoId != -1)  {
+        if($album->photos === '') {
+          $album->photos = $photoId;
+        } else {
+          $album->photos = $album->photos . ',' . $photoId;
+        }
+        $album->save();
+        Server::uploadFile($serverId, '/var/www/html/', $request->user_photo, $photoName);
+      }
+
     } catch (\Exception $e) {
         \Log::error($e);
         return response()->json(['failure' => $e->getMessage() ]);

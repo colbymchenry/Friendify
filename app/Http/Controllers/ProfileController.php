@@ -19,7 +19,13 @@ class ProfileController extends Controller
 
       $top_friends = User::all();
 
-      return \View::make('profile')->with('profile', $user)->with('friends', $top_friends)->with('title', $user->firstname . ' ' . $user->lastname);
+      \Log::info(\Session::get('uuid'));
+
+      $match_score = $user->match_score_with(\Session::get('uuid'));
+
+      \Log::info("SCORE: " . $match_score);
+
+      return \View::make('profile')->with('profile', $user)->with('friends', $top_friends)->with('title', $user->firstname . ' ' . $user->lastname)->with('match_score', $match_score);
     } catch (\Exception $e) {
 
       return "Fail.<br>Error: $e";

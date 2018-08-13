@@ -2087,6 +2087,7 @@
 <script src="{{ asset('js/jquery.gifplayer.js') }}"></script>
 <script src="{{ asset('js/mediaelement-and-player.js') }}"></script>
 <script src="{{ asset('js/mediaelement-playlist-plugin.min.js') }}"></script>
+<script src="{{ asset('js/jquery.fittext.js') }}"></script>
 
 <script src="{{ asset('js/base-init.js') }}"></script>
 <script defer src="{{ asset('fonts/fontawesome-all.js') }}"></script>

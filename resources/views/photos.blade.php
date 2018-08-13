@@ -116,7 +116,7 @@
 					<div class="block-btn align-right">
 						<a href="#" data-toggle="modal" data-target="#create-photo-album" class="btn btn-primary btn-md-2">Create Album  +</a>
 
-						<a href="#" onclick="photoSubmit({{ $albums }});" data-toggle="modal" data-target="#update-header-photo" class="btn btn-md-2 btn-border-think custom-color c-grey">Add Photos</a>
+						<a href="#" id="add_photo" data-toggle="modal" data-target="#update-header-photo" class="btn btn-md-2 btn-border-think custom-color c-grey">Add Photos</a>
 					</div>
 
 					<ul class="nav nav-tabs photo-gallery" role="tablist">
@@ -148,6 +148,8 @@
 			<div class="tab-content">
 
 				<div class="tab-pane active" id="album-page" role="tabpanel">
+
+					@if($current_album === '')
 
 					<div class="photo-album-wrapper">
 
@@ -208,6 +210,54 @@
 						</div>
 						@endforeach
 					</div>
+
+					@else
+
+					<div class="photo-album-wrapper">
+						@foreach(str_split($album->photos, ',') as $photo)
+						<div class="photo-album-item-wrap col-4-width">
+							<div class="photo-album-item" data-mh="album-item">
+								<div class="photo-item">
+									<img src="{{ asset('img/photo-item2.jpg') }}" alt="photo">
+									<div class="overlay overlay-dark"></div>
+									<a href="#" class="more"><svg class="olymp-three-dots-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-three-dots-icon') }}"></use></svg></a>
+									<a href="#" class="post-add-icon">
+										<svg class="olymp-heart-icon"><use xlink:href="{{ asset('svg-icons/sprites/icons.svg#olymp-heart-icon') }}"></use></svg>
+										<span>324</span>
+									</a>
+									<a href="#" data-toggle="modal" data-target="#open-photo-popup-v2" class="  full-block"></a>
+								</div>
+
+								<div class="content">
+									<a href="#" class="title h5">{{ $album->name }}</a>
+									<span class="sub-title">Last Added: 2 hours ago</span>
+
+									<div class="swiper-container">
+										<div class="swiper-wrapper">
+											<div class="swiper-slide">
+												<div class="friend-count" data-swiper-parallax="-500">
+													<a href="#" class="friend-count-item">
+														<div class="h6">{{ substr_count($album->photos, ',') }}</div>
+														<div class="title">Photos</div>
+													</a>
+													<a href="#" class="friend-count-item">
+														<div class="h6">86</div>
+														<div class="title">Comments</div>
+													</a>
+												</div>
+											</div>
+										</div>
+
+										<!-- If we need pagination -->
+										<div class="swiper-pagination"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						@endforeach
+					</div>
+
+					@endif
 				</div>
 			</div>
 		</div>
@@ -215,9 +265,11 @@
 </div>
 
 <div class="modal-body" style="height:0px;overflow:hidden;">
-	{{Form::open(['files' => true, 'id' => 'photo_form'])}}
+	{{Form::open(['route' => 'photos.upload', 'files' => true, 'id' => 'photo_form'])}}
 
 	{{Form::label('photo', 'User Photo',['class' => 'control-label'])}}
+	{{Form::text('album', 'User Album', ['id' => 'album_input'])}}
+	{{Form::text('description', 'User Description', ['id' => 'description_input'])}}
 	{{Form::file('user_photo', ['id' => 'photo_input', 'accept' => '.png,.jpg,.jpeg'])}}
 	{{Form::submit('Save', ['class' => 'btn btn-success'])}}
 
@@ -235,6 +287,11 @@ function doSomething() {
 	document.getElementById("photo_input").click();
 }
 
+$( "#add_photo" ).click(function(e) {
+	e.preventDefault();
+	photoSubmit({!! $albums !!});
+});
+
 async function photoSubmit(albums) {
 		var options = {};
 
@@ -242,17 +299,37 @@ async function photoSubmit(albums) {
 			options[albums[a]['id']] = albums[a]['name'];
 		}
 
+		var description = '';
+
+		// TODO: Can't get image to center, need to add album to form that way we know what album we are using in controller
 		const {value: album} = await swal({
 		  title: 'Upload a new photo!',
 		  input: 'select',
 		  inputOptions: options,
 		  inputPlaceholder: 'Select album',
-			html: '<a onmouseover="" style="cursor: pointer;" onclick="doSomething();"><img id="selectedImage" style="width: 64px;height:64px;" src="{{ asset('img/icons8-image-file-128.png') }}"></img></a>',
+			html: '\
+			<div class="container">\
+				<div class="row" style="padding-bottom: 0.5em;">\
+					<div class="span6" style="float: none; margin: 0 auto;"> \
+						<a onmouseover="" style="cursor: pointer;" onclick="doSomething();">\
+							<img id="selectedImage" style="max-height:30em;" src="{{ asset('img/icons8-image-file-128.png') }}"></img>\
+						</a>\
+					</div>\
+				</div> \
+				<div class="row">\
+					<textarea class="form-control" maxlength="255" id="selectedItem.description" placeholder="Description"></textarea>\
+				</div> \
+			</div>',
 		  showCancelButton: true,
 		  inputValidator: (value) => {
+
+				description = document.getElementById('selectedItem.description').value;
+
 		    return new Promise((resolve) => {
 		      if (value === '') {
 		        resolve('You need to select an album.');
+					} else if($('#photo_input').val() == '') {
+						resolve('You need to select a photo.')
 		      } else {
 		        resolve();
 		      }
@@ -260,9 +337,17 @@ async function photoSubmit(albums) {
 		  }
 		});
 
-		if (album) {
-		  swal('You selected: ' + album);
+
+		if(album !== undefined) {
+			$('#album_input').val(album);
+			$('#description_input').val(description);
+			document.getElementById("photo_form").submit();
 		}
+
+		$('#album_input').val('');
+		$('#description_input').val('');
+		$('#photo_input').val('');
+		$('#selectedImage').attr('src', "{{ asset('img/icons8-image-file-128.png') }}");
  }
 
 document.getElementById("photo_form").onchange = function() {
@@ -279,38 +364,37 @@ document.getElementById("photo_form").onchange = function() {
 
 	$( "#create-photo-album" ).click(function(e) {
 		e.preventDefault();
+
+
 		swal({
-			title: "What's the name of the album?",
-		  type: "input",
+		  title: 'Create New Album',
+		  input: 'text',
+		  inputAttributes: {
+		    autocapitalize: 'on'
+		  },
 		  showCancelButton: true,
-		  closeOnConfirm: false,
-		  animation: "slide-from-top",
-		  inputPlaceholder: "Write something..."
-		}, function(inputValue) {
-			if (inputValue === false) return false;
-
-	   	if (inputValue === "") {
-		     swal.showInputError("You need to write something!");
-		     return false;
-	   	}
-
-			$.ajax({
-				method: 'POST',
-				url: '{{ route('photos.create_album') }}',
-				data: {
-					name: inputValue,
-					_token: token
-				 }
-			})
-			.done(function (msg) {
-				if(msg.hasOwnProperty('success')) {
-					 swal("Success!", msg['success'], "success");
-				} else if(msg.hasOwnProperty('failure')) {
-					swal("Uh-Oh!", msg['failure'], "error");
-				} else {
-					swal("Uh-Oh!", "Something went wrong on our end.", "error");
-				}
-			});
+		  confirmButtonText: 'Create!',
+		  showLoaderOnConfirm: true
+		}).then((result) => {
+		  if (result.value) {
+				$.ajax({
+					method: 'POST',
+					url: '{{ route('photos.create_album') }}',
+					data: {
+						name: result.value,
+						_token: token
+					 }
+				})
+				.done(function (msg) {
+					if(msg.hasOwnProperty('success')) {
+						 swal("Success!", msg['success'], "success");
+					} else if(msg.hasOwnProperty('failure')) {
+						swal("Uh-Oh!", msg['failure'], "error");
+					} else {
+						swal("Uh-Oh!", "Something went wrong on our end.", "error");
+					}
+				});
+		  }
 		});
 	});
 </script>
